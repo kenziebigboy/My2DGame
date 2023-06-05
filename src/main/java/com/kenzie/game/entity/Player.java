@@ -40,8 +40,12 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues(){
-         worldX = gp.tileSize * 23;
-         worldY = gp.tileSize * 21;
+         //worldX = gp.tileSize * 23;
+         //worldY = gp.tileSize * 21;
+
+        worldX = gp.tileSize * 10;
+        worldY = gp.tileSize * 13;
+
          speed = 4;
          direction = "down";
 
@@ -95,6 +99,11 @@ public class Player extends Entity{
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
+            // Check Monster Collision
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            contactMonster(monsterIndex);
+
+
             // Check Event
             gp.eHandler.checkEvent();
 
@@ -121,6 +130,15 @@ public class Player extends Entity{
                 }
                 spriteCounter = 0;
             }
+        } else {
+
+        }
+        if(invincible){
+            invincibleCounter++;
+            if(invincibleCounter > 60){
+                invincible = false;
+                invincibleCounter = 0;
+            }
         }
 
     }
@@ -141,6 +159,18 @@ public class Player extends Entity{
                 gp.npc[i].speak();
             }
         }
+    }
+
+    public void contactMonster(int i){
+
+        if(i != 999){
+
+            if(!invincible) {
+                life -= 1;
+                invincible = true;
+            }
+        }
+
     }
 
     public void draw(Graphics2D g2){
@@ -185,6 +215,18 @@ public class Player extends Entity{
                 }
         }
 
+        if(invincible){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         g2.drawImage(image, screenX, screenY, null);
+
+        // Reset alpha
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+        // Debug
+  /*      g2.setFont(new Font("Arial", Font.PLAIN, 26));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Invincible: " + invincibleCounter, 10,400);*/
     }
 }
