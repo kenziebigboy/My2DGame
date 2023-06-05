@@ -50,7 +50,7 @@ public class EventHandler {
         if(canTouchEvent) {
             if (hit(27, 16, "right")) damagePit(27, 16, gp.dialoguState);
 
-            //if(hit(27,16,"right")){ teleport(gp.dialoguState);}
+            if(hit(27,14,"any")){ teleport(gp.dialoguState);}
             if (hit(23, 12, "up")) healingPool(23, 12, gp.dialoguState);
         }
 
