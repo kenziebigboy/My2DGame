@@ -2,14 +2,11 @@ package com.kenzie.game.entity;
 
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.KeyHandler;
-import com.kenzie.game.UtilityTool;
+import com.kenzie.game.object.OBJ_Shield_Wood;
+import com.kenzie.game.object.OBJ_Sword_Normal;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.Objects;
 
 public class Player extends Entity {
 
@@ -18,6 +15,8 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
+    int standCounter = 0;
+    public boolean attackCanceled = false;
 
     //public int hasKey = 0;
 
@@ -54,8 +53,33 @@ public class Player extends Entity {
         direction = "down";
 
         // Player Status
+        level = 1;
         maxLife = 6;
         life = maxLife;
+        strength = 1; // The more strength he has, the more damage he gives.
+        dexterity = 1; // The more dexterity he has, the less damage he receives.
+        exp = 0;
+        nextLevelExp = 5;
+        coin = 0;
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentShield = new OBJ_Shield_Wood(gp);
+        attack = getAttack(); // The total attack value is decided by strength and weapon
+        defense = getDefense(); // The total defense value is decided by dexterity and shield
+
+    }
+
+    public int getAttack() {
+        if (currentWeapon.attackValue > 0) {
+            return strength * currentWeapon.attackValue;
+        }
+        return strength;
+    }
+
+    public int getDefense(){
+        if(currentShield.defenseValue > 0) {
+            return dexterity * currentShield.defenseValue;
+        }
+        return dexterity;
     }
 
     public void getPlayerImage() {
@@ -136,6 +160,13 @@ public class Player extends Entity {
                 }
             }
 
+            if(keyH.enterPressed && !attackCanceled){
+                gp.playSE(7);
+                attacking = true;
+                spriteCounter = 0;
+            }
+
+            attackCanceled = false;
             gp.keyH.enterPressed = false;
 
             spriteCounter++;
@@ -148,7 +179,11 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         } else {
-
+            standCounter++;
+            if(standCounter == 20){
+                spriteNum = 1;
+                standCounter = 0;
+            }
         }
         if (invincible) {
             invincibleCounter++;
@@ -222,13 +257,9 @@ public class Player extends Entity {
         if (gp.keyH.enterPressed) {
 
             if (i != 999) {
-
-                gp.gameState = gp.dialoguState;
+                attackCanceled = true;
+                gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
-
-            } else {
-                gp.playSE(7);
-                attacking = true;
 
             }
         }

@@ -1,7 +1,5 @@
 package com.kenzie.game;
 
-import java.awt.*;
-
 public class EventHandler {
 
     GamePanel gp;
@@ -48,10 +46,10 @@ public class EventHandler {
         }
 
         if(canTouchEvent) {
-            if (hit(27, 16, "right")) damagePit(27, 16, gp.dialoguState);
+            if (hit(27, 16, "right")) damagePit(27, 16, gp.dialogueState);
 
-            if(hit(27,14,"any")){ teleport(gp.dialoguState);}
-            if (hit(23, 12, "up")) healingPool(23, 12, gp.dialoguState);
+            if(hit(27,14,"any")){ teleport(gp.dialogueState);}
+            if (hit(23, 12, "up")) healingPool(23, 12, gp.dialogueState);
         }
 
     }
@@ -85,6 +83,7 @@ public class EventHandler {
     public void damagePit(int col, int row, int gameState){
 
         gp.gameState = gameState;
+        gp.playSE(6);
         gp.ui.currentDialouge = "You fail into a pit!";
         gp.player.life -= 1;
         eventRect[col][row].eventDone = true;
@@ -96,6 +95,8 @@ public class EventHandler {
 
         if(gp.keyH.enterPressed) {
             gp.gameState = gameState;
+            gp.player.attackCanceled = true;
+            gp.playSE(2);
             gp.ui.currentDialouge = "You drink the water.\nYour life has been recovered.";
             gp.player.life = gp.player.maxLife;
         }
