@@ -58,6 +58,8 @@ public class Entity {
     // Character Status
     public int maxLife;
     public int life;
+    public int maxMana;
+    public int mana;
     public int level;
     public int strength;
     public int dexterity;
@@ -68,11 +70,14 @@ public class Entity {
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
+    public Projectile projectile;
 
     // Item Attributes
     public int attackValue;
     public int defenseValue;
     public String description = "";
+    public int useCost;
+    public int shotAvailableCountet = 0;
 
     public Entity(GamePanel gp){
         this.gp = gp;
@@ -233,7 +238,7 @@ public class Entity {
         if(dyingCounter > i * 7 && dyingCounter <= i * 8){changeAlpha(g2,1);}
 
         if(dyingCounter > i * 8){
-            dying = false;
+
             alive = false;
         }
 

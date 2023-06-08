@@ -2,6 +2,7 @@ package com.kenzie.game.entity;
 
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.KeyHandler;
+import com.kenzie.game.object.OBJ_Fireball;
 import com.kenzie.game.object.OBJ_Key;
 import com.kenzie.game.object.OBJ_Shield_Wood;
 import com.kenzie.game.object.OBJ_Sword_Normal;
@@ -68,6 +69,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        projectile = new OBJ_Fireball(gp);
         attack = getAttack(); // The total attack value is decided by strength and weapon
         defense = getDefense(); // The total defense value is decided by dexterity and shield
 
@@ -215,12 +217,26 @@ public class Player extends Entity {
                 standCounter = 0;
             }
         }
+
+        if(gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCountet == 30){
+            projectile.set(worldX, worldY, direction, true, this);
+
+            // Add it to the list
+            gp.projectileList.add(projectile);
+            shotAvailableCountet = 0;
+            gp.playSE(10);
+        }
+
         if (invincible) {
             invincibleCounter++;
             if (invincibleCounter > 60) {
                 invincible = false;
                 invincibleCounter = 0;
             }
+        }
+
+        if(shotAvailableCountet < 30){
+            shotAvailableCountet++;
         }
 
     }
@@ -256,7 +272,7 @@ public class Player extends Entity {
 
             // Check monster collision with updated worldX, worldY, and solidArea
             int monsterIndex = gp.cChecker.checkEntity(this,gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex, attack);
 
             // After checking collision, resotre the original data.
             worldX = currentWorldX;
@@ -309,7 +325,7 @@ public class Player extends Entity {
 
         if (i != 999) {
 
-            if (!invincible) {
+            if (!invincible && !gp.monster[i].dying) {
                 gp.playSE(6);
 
                 int damage = gp.monster[i].attack - defense;
@@ -324,7 +340,7 @@ public class Player extends Entity {
 
     }
 
-    public void damageMonster(int i){
+    public void damageMonster(int i, int attack){
 
         if(i != 999){
 
