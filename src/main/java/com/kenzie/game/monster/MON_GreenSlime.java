@@ -2,6 +2,9 @@ package com.kenzie.game.monster;
 
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.entity.Entity;
+import com.kenzie.game.object.OBJ_Coin_Bronze;
+import com.kenzie.game.object.OBJ_Heart;
+import com.kenzie.game.object.OBJ_ManaCrystal;
 import com.kenzie.game.object.OBJ_Rock;
 
 import java.util.Random;
@@ -87,5 +90,22 @@ public class MON_GreenSlime extends Entity {
 
         actionLockCounter = 0;
         direction = gp.player.direction;
+    }
+
+    public void checkDrop(){
+
+        // Cast a dies
+        int i = new Random().nextInt(100) + 1;
+
+        if(i < 50){
+            dropItem(new OBJ_Coin_Bronze(gp));
+        }
+        if(i >= 50 && i < 75){
+            dropItem(new OBJ_Heart(gp));
+        }
+
+        if(i >= 75 && i < 100){
+            dropItem(new OBJ_ManaCrystal(gp));
+        }
     }
 }

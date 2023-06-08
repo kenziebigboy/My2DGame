@@ -15,12 +15,12 @@ public class AssetSetter {
     public void setObject(){
 
         int i = 0;
-        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i] = new OBJ_Coin_Bronze(gp);
         gp.obj[i].worldX = gp.tileSize * 25;
         gp.obj[i].worldY = gp.tileSize * 23;
 
         i++;
-        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i] = new OBJ_Coin_Bronze(gp);
         gp.obj[i].worldX = gp.tileSize * 21;
         gp.obj[i].worldY = gp.tileSize * 19;
 
@@ -38,6 +38,16 @@ public class AssetSetter {
         gp.obj[i] = new OBJ_Potion_Red(gp);
         gp.obj[i].worldX = gp.tileSize * 36;
         gp.obj[i].worldY = gp.tileSize * 21;
+
+        i++;
+        gp.obj[i] = new OBJ_Heart(gp);
+        gp.obj[i].worldX = gp.tileSize * 22;
+        gp.obj[i].worldY = gp.tileSize * 29;
+
+        i++;
+        gp.obj[i] = new OBJ_ManaCrystal(gp);
+        gp.obj[i].worldX = gp.tileSize * 22;
+        gp.obj[i].worldY = gp.tileSize * 31;
     }
 
     public void setNPC(){
@@ -59,12 +69,12 @@ public class AssetSetter {
     public void setMonster(){
 
         gp.monster[0] = new MON_GreenSlime(gp);
-        gp.monster[0].worldX = gp.tileSize * 21;
+        gp.monster[0].worldX = gp.tileSize * 28;
         gp.monster[0].worldY = gp.tileSize * 21;
 
         gp.monster[1] = new MON_GreenSlime(gp);
-        gp.monster[1].worldX = gp.tileSize * 11;
-        gp.monster[1].worldY = gp.tileSize * 11;
+        gp.monster[1].worldX = gp.tileSize * 30;
+        gp.monster[1].worldY = gp.tileSize * 26;
 
     }
 }
