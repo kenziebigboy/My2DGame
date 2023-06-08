@@ -2,10 +2,7 @@ package com.kenzie.game;
 
 import com.kenzie.game.entity.NPC_OldMan;
 import com.kenzie.game.monster.MON_GreenSlime;
-import com.kenzie.game.object.OBJ_Boots;
-import com.kenzie.game.object.OBJ_Chest;
-import com.kenzie.game.object.OBJ_Door;
-import com.kenzie.game.object.OBJ_Key;
+import com.kenzie.game.object.*;
 
 public class AssetSetter {
 
@@ -17,6 +14,30 @@ public class AssetSetter {
 
     public void setObject(){
 
+        int i = 0;
+        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i].worldX = gp.tileSize * 25;
+        gp.obj[i].worldY = gp.tileSize * 23;
+
+        i++;
+        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i].worldX = gp.tileSize * 21;
+        gp.obj[i].worldY = gp.tileSize * 19;
+
+        i++;
+        gp.obj[i] = new OBJ_Axe(gp);
+        gp.obj[i].worldX = gp.tileSize * 26;
+        gp.obj[i].worldY = gp.tileSize * 21;
+
+        i++;
+        gp.obj[i] = new OBJ_Shield_Blue(gp);
+        gp.obj[i].worldX = gp.tileSize * 35;
+        gp.obj[i].worldY = gp.tileSize * 21;
+
+        i++;
+        gp.obj[i] = new OBJ_Potion_Red(gp);
+        gp.obj[i].worldX = gp.tileSize * 36;
+        gp.obj[i].worldY = gp.tileSize * 21;
     }
 
     public void setNPC(){

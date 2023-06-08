@@ -6,6 +6,7 @@ import com.kenzie.game.tile.TileManger;
 
 import javax.swing.*;
 import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -193,16 +194,17 @@ public class GamePanel extends JPanel implements Runnable{
             });
 
             for(int i = 0; i < entityList.size(); i++){
+
                 entityList.get(i).draw(g2);
             }
 
             entityList.clear();
 
+
+
             // UI
-            ui.draw(g2);
+           ui.draw(g2);
         }
-
-
 
         g2.dispose();
     }
