@@ -2,6 +2,7 @@ package com.kenzie.game.monster;
 
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.entity.Entity;
+import com.kenzie.game.object.OBJ_Rock;
 
 import java.util.Random;
 
@@ -21,6 +22,7 @@ public class MON_GreenSlime extends Entity {
         attack = 5;
         defense = 0;
         exp = 2;
+        projectile = new OBJ_Rock(gp);
 
         solidArea.x = 3;
         solidArea.y = 18;
@@ -47,10 +49,10 @@ public class MON_GreenSlime extends Entity {
 
     public void setAction(){
         actionLockCounter++;
-
+        Random random = new Random();
         if (actionLockCounter == 120) {
 
-            Random random = new Random();
+
             int i = random.nextInt(100) + 1; // pick up number from 1 to 100
 
             if (i <= 25) {
@@ -70,6 +72,13 @@ public class MON_GreenSlime extends Entity {
             }
 
             actionLockCounter = 0;
+        }
+
+        int i = random.nextInt(100) + 1;
+        if(i > 99 && !projectile.alive && shotAvailableCountet == 30){
+            projectile.set(worldX, worldY, direction, true, this);
+            gp.projectileList.add(projectile);
+            shotAvailableCountet = 0;
         }
     }
 

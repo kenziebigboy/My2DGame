@@ -2,10 +2,7 @@ package com.kenzie.game.entity;
 
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.KeyHandler;
-import com.kenzie.game.object.OBJ_Fireball;
-import com.kenzie.game.object.OBJ_Key;
-import com.kenzie.game.object.OBJ_Shield_Wood;
-import com.kenzie.game.object.OBJ_Sword_Normal;
+import com.kenzie.game.object.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -62,6 +59,11 @@ public class Player extends Entity {
         level = 1;
         maxLife = 6;
         life = maxLife;
+
+        maxMana = 4;
+        mana = maxMana;
+        ammo = 10;
+
         strength = 1; // The more strength he has, the more damage he gives.
         dexterity = 1; // The more dexterity he has, the less damage he receives.
         exp = 0;
@@ -70,6 +72,7 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp);
+        //projectile = new OBJ_Rock(gp);
         attack = getAttack(); // The total attack value is decided by strength and weapon
         defense = getDefense(); // The total defense value is decided by dexterity and shield
 
@@ -218,11 +221,17 @@ public class Player extends Entity {
             }
         }
 
-        if(gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCountet == 30){
+        if(gp.keyH.shotKeyPressed && !projectile.alive &&
+                shotAvailableCountet == 30 && projectile.haveResource(this)){
+
             projectile.set(worldX, worldY, direction, true, this);
 
             // Add it to the list
             gp.projectileList.add(projectile);
+
+            // Subtract the cost (Mana, Ammo, Etc.)
+            projectile.subtractResource(this);
+
             shotAvailableCountet = 0;
             gp.playSE(10);
         }

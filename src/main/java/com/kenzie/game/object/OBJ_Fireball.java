@@ -1,6 +1,7 @@
 package com.kenzie.game.object;
 
 import com.kenzie.game.GamePanel;
+import com.kenzie.game.entity.Entity;
 import com.kenzie.game.entity.Projectile;
 
 public class OBJ_Fireball extends Projectile {
@@ -36,5 +37,16 @@ public class OBJ_Fireball extends Projectile {
         right1 = setup("/projectile/fireball_right_1",gp.tileSize, gp.tileSize);
         right2 = setup("/projectile/fireball_right_2",gp.tileSize, gp.tileSize);
 
+    }
+
+    public boolean haveResource(Entity user){
+
+        boolean haveResource = user.mana >= useCost;
+
+        return haveResource;
+    }
+
+    public void subtractResource(Entity user){
+        user.mana -= useCost;
     }
 }
