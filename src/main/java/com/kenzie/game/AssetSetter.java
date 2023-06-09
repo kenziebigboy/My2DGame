@@ -3,6 +3,7 @@ package com.kenzie.game;
 import com.kenzie.game.entity.NPC_OldMan;
 import com.kenzie.game.monster.MON_GreenSlime;
 import com.kenzie.game.object.*;
+import com.kenzie.game.tile_interactive.IT_DryTree;
 
 public class AssetSetter {
 
@@ -75,6 +76,28 @@ public class AssetSetter {
         gp.monster[1] = new MON_GreenSlime(gp);
         gp.monster[1].worldX = gp.tileSize * 30;
         gp.monster[1].worldY = gp.tileSize * 26;
+
+    }
+
+    public void setInteractiveTile(){
+
+        int i = 0;
+        gp.iTile[i] = new IT_DryTree(gp, 27, 12); i++;
+        gp.iTile[i] = new IT_DryTree(gp, 28, 12); i++;
+        gp.iTile[i] = new IT_DryTree(gp, 29, 12); i++;
+        gp.iTile[i] = new IT_DryTree(gp, 30, 12); i++;
+        gp.iTile[i] = new IT_DryTree(gp, 31, 12); i++;
+        gp.iTile[i] = new IT_DryTree(gp, 32, 12); i++;
+        gp.iTile[i] = new IT_DryTree(gp,  33, 12); i++;
+
+        gp.iTile[i] = new IT_DryTree(gp,  30, 20); i++;
+        gp.iTile[i] = new IT_DryTree(gp,  30, 21); i++;
+        gp.iTile[i] = new IT_DryTree(gp,  30, 22); i++;
+        gp.iTile[i] = new IT_DryTree(gp,  20, 23); i++;
+        gp.iTile[i] = new IT_DryTree(gp,  20, 24); i++;
+        gp.iTile[i] = new IT_DryTree(gp,  22, 25); i++;
+        gp.iTile[i] = new IT_DryTree(gp,  23, 26); i++;
+
 
     }
 }
