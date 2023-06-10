@@ -616,7 +616,7 @@ public class UI {
         volumeWidth = 24 * gp.se.volumeScale;
         g2.fillRect(textX, textY, volumeWidth, 24);
 
-
+        gp.config.saveConfig();
     }
 
     public void options_fullScreenNotification(int frameX, int frameY){
@@ -711,6 +711,7 @@ public class UI {
             if(gp.keyH.enterPressed){
                 subState = 0;
                 gp.gameState = gp.titleState;
+
             }
         }
 
