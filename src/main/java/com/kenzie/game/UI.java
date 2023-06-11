@@ -32,6 +32,9 @@ public class UI {
     public int slotRow = 0;
     int subState = 0;
 
+    int count = 0;
+    int image = 1;
+
 
 
     public UI(GamePanel gp) {
@@ -257,7 +260,11 @@ public class UI {
     public void drawTitleScreen(){
 
 
+
         if(titleScreenState == 0) {
+
+            count++;
+
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
             String text = "Blue Boy Adventure";
             int x = getXforCenteredText(text);
@@ -271,11 +278,35 @@ public class UI {
             g2.setColor(Color.WHITE);
             g2.drawString(text, x, y);
 
+            // Add Thank You to RyiSnow
+            g2.setColor(Color.YELLOW);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+            text = "Thanks to RIYSNOW for the great game Tutorial!";
+            x = getXforCenteredText(text);
+            y = gp.tileSize * 4;
+            g2.drawString(text, x, y);
+
+
+            g2.setColor(Color.WHITE);
+
             // Blue Boy Image
             x = gp.screenWidth / 2 - (gp.tileSize * 2) / 2;
-            y += gp.tileSize * 2;
-            g2.drawImage(gp.player.down1, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
+            y += gp.tileSize;
 
+            if(count > 12){
+                if(image == 1) {
+                    image = 2;
+                } else {
+                    image = 1;
+                }
+                count = 0;
+            }
+            if(image == 1) {
+                g2.drawImage(gp.player.down1, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
+            }
+            if(image == 2){
+                g2.drawImage(gp.player.down2, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
+            }
             // Menu
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
 

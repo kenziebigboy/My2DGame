@@ -292,6 +292,7 @@ public class KeyHandler implements KeyListener {
             if(gp.ui.commandNum == 0){
                 gp.gameState = gp.playState;
                 gp.retry();
+                gp.playSE(0);
             } else {
                 gp.gameState = gp.titleState;
                 gp.reStart();
