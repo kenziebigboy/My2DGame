@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Entity {
@@ -75,12 +76,15 @@ public class Entity {
     public Projectile projectile;
 
     // Item Attributes
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
     public int value;
     public int attackValue;
     public int defenseValue;
     public String description = "";
     public int useCost;
-    public int shotAvailableCountet = 0;
+    public int price;
+    public int shotAvailableCount = 0;
 
     public Entity(GamePanel gp){
         this.gp = gp;
@@ -95,7 +99,11 @@ public class Entity {
     }
 
     public void speak(){
-
+        if(dialogues[dialogueIndex] == null){
+            dialogueIndex = 0;
+        }
+        gp.ui.currentDialouge = dialogues[dialogueIndex];
+        dialogueIndex++;
     }
 
     public void use(Entity entity){
@@ -182,7 +190,7 @@ public class Entity {
 
 
         spriteCounter++;
-        if(spriteCounter > 12){
+        if(spriteCounter > 24){
             if(spriteNum == 1) {
                 spriteNum = 2;
             } else if(spriteNum == 2){
@@ -199,8 +207,8 @@ public class Entity {
             }
         }
 
-        if(shotAvailableCountet < 30){
-            shotAvailableCountet++;
+        if(shotAvailableCount < 30){
+            shotAvailableCount++;
         }
     }
 

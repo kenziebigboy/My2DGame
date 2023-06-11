@@ -78,10 +78,10 @@ public class MON_GreenSlime extends Entity {
         }
 
         int i = random.nextInt(100) + 1;
-        if(i > 99 && !projectile.alive && shotAvailableCountet == 30){
+        if(i > 99 && !projectile.alive && shotAvailableCount == 30){
             projectile.set(worldX, worldY, direction, true, this);
             gp.projectileList.add(projectile);
-            shotAvailableCountet = 0;
+            shotAvailableCount = 0;
         }
     }
 

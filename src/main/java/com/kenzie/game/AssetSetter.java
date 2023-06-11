@@ -1,5 +1,6 @@
 package com.kenzie.game;
 
+import com.kenzie.game.entity.NPC_Merchant;
 import com.kenzie.game.entity.NPC_OldMan;
 import com.kenzie.game.monster.MON_GreenSlime;
 import com.kenzie.game.object.*;
@@ -55,17 +56,22 @@ public class AssetSetter {
     public void setNPC(){
 
         int mapNum = 0;
-        gp.npc[mapNum][0] = new NPC_OldMan(gp);
-        gp.npc[mapNum][0].worldX = gp.tileSize * 9;
-        gp.npc[mapNum][0].worldY = gp.tileSize * 10;
+        int i = 0;
 
-        gp.npc[mapNum][1] = new NPC_OldMan(gp);
-        gp.npc[mapNum][1].worldX = gp.tileSize * 11;
-        gp.npc[mapNum][1].worldY = gp.tileSize * 21;
+        gp.npc[mapNum][i] = new NPC_OldMan(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 25;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 10;
 
-        gp.npc[mapNum][2] = new NPC_OldMan(gp);
-        gp.npc[mapNum][2].worldX = gp.tileSize * 31;
-        gp.npc[mapNum][2].worldY = gp.tileSize * 21;
+        i++;
+        gp.npc[mapNum][i] = new NPC_OldMan(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 11;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 21;
+
+        mapNum = 1;
+        i = 0;
+        gp.npc[mapNum][i] = new NPC_Merchant(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 12;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 7;
 
     }
 
