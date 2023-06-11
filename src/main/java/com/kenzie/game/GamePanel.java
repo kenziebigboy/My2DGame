@@ -1,5 +1,6 @@
 package com.kenzie.game;
 
+import com.kenzie.game.ai.PathFinder;
 import com.kenzie.game.entity.Entity;
 import com.kenzie.game.entity.Player;
 import com.kenzie.game.tile.TileManger;
@@ -29,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int maxMap = 10;
-    public int currentMap = 1;
+    public int currentMap = 0;
 
     // For Full Screen
     int screenWidth2 = screenWidth;
@@ -42,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
     // FPS
     int FPS = 60;
 
-    TileManger tileM = new TileManger(this);
+    public TileManger tileM = new TileManger(this);
     public KeyHandler keyH = new KeyHandler(this);
     Sound music = new Sound();
     Sound se = new Sound();
@@ -52,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
     Config config = new Config(this);
+    public PathFinder pFinder = new PathFinder(this);
     Thread gameThread;
 
     // Entity & Objects

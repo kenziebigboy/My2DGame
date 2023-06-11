@@ -1,6 +1,8 @@
 package com.kenzie.game.entity;
 
 import com.kenzie.game.GamePanel;
+
+import java.awt.*;
 import java.util.Random;
 
 public class NPC_OldMan extends Entity {
@@ -9,10 +11,20 @@ public class NPC_OldMan extends Entity {
         super(gp);
 
         direction = "down";
-        speed = 1;
+        speed = 2;
 
         getImage();
         setDialogue();
+
+
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        solidArea.width = 30;
+        solidArea.height = 30;
+
     }
 
     public void getImage() {
@@ -38,41 +50,51 @@ public class NPC_OldMan extends Entity {
 
     public void setAction() {
 
-        actionLockCounter++;
+        if(onPath) {
 
-        if (actionLockCounter == 120) {
+            // NPC House
+            //int goalCol = 12;
+            //int goalRow = 9;
 
-            Random random = new Random();
-            int i = random.nextInt(100) + 1; // pick up number from 1 to 100
+            // Follow player
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
+            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
 
-            if (i <= 25) {
-                direction = "up";
+            searchPath(goalCol, goalRow);
+
+        } else {
+            actionLockCounter++;
+
+            if (actionLockCounter == 120) {
+
+                Random random = new Random();
+                int i = random.nextInt(100) + 1; // pick up number from 1 to 100
+
+                if (i <= 25) {
+                    direction = "up";
+                }
+
+                if (i > 25 && i <= 50) {
+                    direction = "down";
+                }
+
+                if (i > 50 && i <= 75) {
+                    direction = "left";
+                }
+
+                if (i > 75 && i <= 100) {
+                    direction = "right";
+                }
+
+                actionLockCounter = 0;
             }
-
-            if (i > 25 && i <= 50) {
-                direction = "down";
-            }
-
-            if (i > 50 && i <= 75) {
-                direction = "left";
-            }
-
-            if (i > 75 && i <= 100) {
-                direction = "right";
-            }
-
-            actionLockCounter = 0;
         }
     }
 
     public void speak(){
-        //super.speak();
+        super.speak();
 
-        if(dialogues[dialogueIndex] == null){
-            dialogueIndex = 0;
-        }
-        gp.ui.currentDialouge = dialogues[dialogueIndex];
-        dialogueIndex++;
+        onPath = true;
     }
 
 
