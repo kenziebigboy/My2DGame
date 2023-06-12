@@ -41,6 +41,7 @@ public class Entity {
     int dyingCounter = 0;
     public boolean onPath = false;
     public boolean knockBack = false;
+    public Entity currentLight;
 
     String[] dialogues = new String[20];
     int dialogueIndex = 0;
@@ -60,6 +61,7 @@ public class Entity {
     public final int type_consumable = 6;
     public final int type_pickupOnly = 7;
     public final int type_obstacle = 8;
+    public final int type_light = 9;
 
     // Character Status
     public int defaultSpeed;
@@ -93,6 +95,7 @@ public class Entity {
     public int knockBackPower = 0;
     public boolean stackable = false;
     public int amount = 1;
+    public int lightRadius;
 
     public Entity(GamePanel gp){
         this.gp = gp;

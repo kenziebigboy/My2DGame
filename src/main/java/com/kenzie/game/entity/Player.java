@@ -16,6 +16,7 @@ public class Player extends Entity {
     public final int screenY;
     int standCounter = 0;
     public boolean attackCanceled = false;
+    public boolean lightUpdated = false;
 
     //public int hasKey = 0;
 
@@ -46,8 +47,8 @@ public class Player extends Entity {
         //worldX = gp.tileSize * 23;
         //worldY = gp.tileSize * 21;
 
-        worldX = gp.tileSize * 12;
-        worldY = gp.tileSize * 10;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
 
         defaultSpeed = 4;
 
@@ -99,6 +100,7 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
+        inventory.add(new OBJ_Lantern(gp));
 
 
     }
@@ -508,6 +510,18 @@ public class Player extends Entity {
             if(selectedItem.type == type_shield){
                 currentShield = selectedItem;
                 defense = getDefense();
+            }
+
+            if(selectedItem.type == type_light){
+                if(currentLight == selectedItem){
+                    currentLight = null;
+                } else {
+                    currentLight = selectedItem;
+
+
+                }
+
+                lightUpdated = true;
             }
 
             if(selectedItem.type == type_consumable){
