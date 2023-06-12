@@ -3,6 +3,7 @@ package com.kenzie.game;
 import com.kenzie.game.ai.PathFinder;
 import com.kenzie.game.entity.Entity;
 import com.kenzie.game.entity.Player;
+import com.kenzie.game.environment.EnvironmentManager;
 import com.kenzie.game.tile.TileManger;
 import com.kenzie.game.tile_interactive.InteractiveTile;
 
@@ -54,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable{
     public EventHandler eHandler = new EventHandler(this);
     Config config = new Config(this);
     public PathFinder pFinder = new PathFinder(this);
+    EnvironmentManager eManager = new EnvironmentManager(this);
     Thread gameThread;
 
     // Entity & Objects
@@ -94,8 +96,8 @@ public class GamePanel extends JPanel implements Runnable{
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
-
         aSetter.setInteractiveTile();
+        eManager.setup();
 
         playMusic(0);
         stopMusic();
@@ -412,7 +414,8 @@ public class GamePanel extends JPanel implements Runnable{
 
             entityList.clear();
 
-
+            // Environment
+            eManager.draw(g2);
 
             // UI
             ui.draw(g2);
