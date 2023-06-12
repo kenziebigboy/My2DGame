@@ -91,6 +91,8 @@ public class Entity {
     public int price;
     public int shotAvailableCount = 0;
     public int knockBackPower = 0;
+    public boolean stackable = false;
+    public int amount = 1;
 
     public Entity(GamePanel gp){
         this.gp = gp;

@@ -326,7 +326,7 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_A){
             if(gp.ui.playerSlotCol != 0) {
-                gp.ui.playerSlotRow--;
+                gp.ui.playerSlotCol--;
                 gp.playSE(9);
             }
         }
