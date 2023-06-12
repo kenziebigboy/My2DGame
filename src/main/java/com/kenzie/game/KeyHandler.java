@@ -45,8 +45,6 @@ public class KeyHandler implements KeyListener {
 
     }
 
-
-
     public void titleState(int code){
         if(gp.ui.titleScreenState == 0) {
 

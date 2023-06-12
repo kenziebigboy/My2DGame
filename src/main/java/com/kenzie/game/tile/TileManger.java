@@ -153,9 +153,7 @@ public class TileManger {
                 g2.drawImage(tile[tileNum].image, screenX,screenY,null);
             }
 
-
             worldCol++;
-
 
             if(worldCol == gp.maxWorldCol){
                 worldCol = 0;
