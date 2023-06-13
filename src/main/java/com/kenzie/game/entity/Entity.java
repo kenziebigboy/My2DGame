@@ -14,43 +14,59 @@ import java.util.Random;
 public class Entity {
 
     GamePanel gp;
-    public int worldX, worldY;
+
     public int speed;
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2,
-    attackLeft1, attackLeft2, attackRight1, attackRight2;
-    public String direction = "down";
-
-    public int spriteCounter = 0;
-    public int spriteNum = 1;
-
+    attackLeft1, attackLeft2, attackRight1, attackRight2,
+    guardUp, guardDown, guardLeft, guardRight;
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public Rectangle attackArea = new Rectangle(0,0,0,0);
     public  int solidAreaDefaultX, solidAreaDefaultY;
-    public boolean collisionOn = false;
-    public int actionLockCounter = 0;
-    int knockBackCounter = 0;
 
+    public Entity currentLight;
+
+    // State
+    public int worldX, worldY;
+    public String direction = "down";
+    public int spriteNum = 1;
+    int dialogueIndex = 0;
+    public boolean collisionOn = false;
     public boolean invincible = false;
-    public int invincibleCounter = 0;
     public boolean attacking = false;
     public boolean alive = true;
     public boolean dying = false;
     public boolean hpBarOn = false;
-    public int hpBarCounter = 0;
-    int dyingCounter = 0;
     public boolean onPath = false;
     public boolean knockBack = false;
     public String knockBackDirection;
-    public Entity currentLight;
+    public boolean guarding = false;
+    public boolean transparent = false;
+    public boolean offBalance = false;
+
+    // Counters
+    public int spriteCounter = 0;
+    public int actionLockCounter = 0;
+    public int invincibleCounter = 0;
+    public int shotAvailableCount = 0;
+    int dyingCounter = 0;
+    public int hpBarCounter = 0;
+    int knockBackCounter = 0;
+    public int guardCounter = 0;
+    int offBalanceCounter = 0;
+
+    // Character Attributes
+    public String name;
+    public int defaultSpeed;
+    public int maxLife;
 
     String[] dialogues = new String[20];
-    int dialogueIndex = 0;
+
     public Entity attacker;
 
     public BufferedImage image, image2, image3;
-    public String name;
+
     public boolean collision = false;
 
     // Type
@@ -67,8 +83,7 @@ public class Entity {
     public final int type_light = 9;
 
     // Character Status
-    public int defaultSpeed;
-    public int maxLife;
+
     public int life;
     public int maxMana;
     public int mana;
@@ -96,7 +111,7 @@ public class Entity {
     public String description = "";
     public int useCost;
     public int price;
-    public int shotAvailableCount = 0;
+
     public int knockBackPower = 0;
     public boolean stackable = false;
     public int amount = 1;
@@ -140,7 +155,7 @@ public class Entity {
         return (target.worldY + target.solidArea.y) / gp.tileSize;
     }
 
-    public void  setAction(){
+    public void setAction(){
 
     }
 
@@ -297,6 +312,14 @@ public class Entity {
         if(shotAvailableCount < 30){
             shotAvailableCount++;
         }
+
+        if(offBalance){
+            offBalanceCounter++;
+            if(offBalanceCounter > 60){
+                offBalance = false;
+                offBalanceCounter = 0;
+            }
+        }
     }
 
     public void checkAttackOrNot(int rate, int straight, int horizontal){
@@ -397,6 +420,20 @@ public class Entity {
         }
     }
 
+    public String getOppositeDirection(String direction){
+
+        String oppositeDirection = "";
+
+        switch (direction){
+            case "up" -> {oppositeDirection = "down";}
+            case "down" -> {oppositeDirection = "up";}
+            case "left" -> {oppositeDirection = "right";}
+            case "right" -> {oppositeDirection = "left";}
+        }
+
+        return oppositeDirection;
+    }
+
     public void attacking(){
 
         spriteCounter++;
@@ -463,12 +500,35 @@ public class Entity {
     public void damagePlayer(int attack){
 
         if(!gp.player.invincible){
-            // we can give damage
-            gp.playSE(6);
 
             int damage = attack - gp.player.defense;
-            if(damage < 0){
-                damage =0;
+
+            // Get an opposite direction of this attacker
+            String canGuardDirection = getOppositeDirection(direction);
+            if(gp.player.guarding && gp.player.direction.equals(canGuardDirection)){
+
+                // Parry
+                if(gp.player.guardCounter < 10){
+                    damage = 0;
+                    gp.playSE(16);
+                    setKnockBack(this, gp.player, knockBackPower);
+                    offBalance = true;
+                    spriteCounter =- 60;
+                }
+                // Normal guard
+                damage /= 3;
+                gp.playSE(15);
+            } else {
+                // Not guarding
+                gp.playSE(6);
+                if(damage < 1){
+                    damage = 1;
+                }
+            }
+
+            if(damage != 0){
+                gp.player.transparent = true;
+                setKnockBack(gp.player, this, knockBackPower);
             }
 
             gp.player.life -= damage;
