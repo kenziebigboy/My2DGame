@@ -55,10 +55,10 @@ public class EventHandler {
         }
 
         if(canTouchEvent) {
-            if (hit(0,27, 16, "right")) damagePit( gp.dialogueState);
+            if (hit(0,27, 16, "right")) damagePit( gp.DIALOGUE_STATE);
             else if(hit(0,10,39,"any")){ teleport(1,12,13);}
             else if(hit(1,12,13,"any")){ teleport(0,10,39);}
-            else if (hit(1,12,13, "up")) healingPool(gp.dialogueState);
+            else if (hit(1,12,13, "up")) healingPool(gp.DIALOGUE_STATE);
             else if (hit(1,12,9, "up"))  speak(gp.npc[1][0]);
         }
 
@@ -119,7 +119,7 @@ public class EventHandler {
 
     public void teleport(int map, int col, int row){
 
-        gp.gameState = gp.transitionState;
+        gp.gameState = gp.TRANSITION_STATE;
         tempMap = map;
         tempCol = col;
         tempRow = row;
@@ -131,7 +131,7 @@ public class EventHandler {
     public void speak(Entity entity){
 
         if(gp.keyH.enterPressed){
-            gp.gameState = gp.dialogueState;
+            gp.gameState = gp.DIALOGUE_STATE;
             gp.player.attackCanceled = true;
             entity.speak();
         }

@@ -4,6 +4,7 @@ import com.kenzie.game.ai.PathFinder;
 import com.kenzie.game.entity.Entity;
 import com.kenzie.game.entity.Player;
 import com.kenzie.game.environment.EnvironmentManager;
+import com.kenzie.game.tile.Map;
 import com.kenzie.game.tile.TileManger;
 import com.kenzie.game.tile_interactive.InteractiveTile;
 
@@ -56,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable{
     Config config = new Config(this);
     public PathFinder pFinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
+    Map map = new Map(this);
     Thread gameThread;
 
     // Entity & Objects
@@ -71,16 +73,17 @@ public class GamePanel extends JPanel implements Runnable{
 
     // Game State
     public int gameState;
-    public final int titleState = 0;
-    public final int playState = 1;
-    public final int pauseState = 2;
-    public final int dialogueState = 3;
-    public final int characterState = 4;
-    public final int optionsState = 5;
-    public final int gameOverState = 6;
-    public final int transitionState = 7;
-    public final int tradeState = 8;
-    public final int sleepstate = 9;
+    public final int TITLE_STATE = 0;
+    public final int PLAY_STATE = 1;
+    public final int PAUSE_STATE = 2;
+    public final int DIALOGUE_STATE = 3;
+    public final int CHARACTER_STATE = 4;
+    public final int OPTIONS_STATE = 5;
+    public final int GAME_OVER_STATE = 6;
+    public final int TRANSITION_STATE = 7;
+    public final int TRADE_STATE = 8;
+    public final int SLEEP_STATE = 9;
+    public final int MAP_STATE = 10;
 
     public GamePanel(){
 
@@ -102,7 +105,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         playMusic(0);
         stopMusic();
-        gameState = titleState;
+        gameState = TITLE_STATE;
 
         //tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         //g2 = (Graphics2D) tempScreen.getGraphics();
@@ -189,7 +192,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void update(){
 
-        if(gameState == playState) {
+        if(gameState == PLAY_STATE) {
             player.update();
 
             for(int i = 0; i < npc[1].length; i++){
@@ -244,7 +247,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         eManager.update();
 
-        if (gameState == pauseState){
+        if (gameState == PAUSE_STATE){
             // nother right now
         }
     }
@@ -252,7 +255,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void drawToTempScreen(){
 
         // Title Screen
-        if(gameState == titleState){
+        if(gameState == TITLE_STATE){
 
             ui.draw(g2);
 
@@ -352,10 +355,11 @@ public class GamePanel extends JPanel implements Runnable{
 
 
         // Title Screen
-        if(gameState == titleState){
+        if(gameState == TITLE_STATE) {
 
             ui.draw(g2);
-
+        } else if (gameState == MAP_STATE){
+            map.drawFullMapScreen(g2);
         } else { // Others
 
             // Tile
@@ -418,6 +422,9 @@ public class GamePanel extends JPanel implements Runnable{
 
             // Environment
             eManager.draw(g2);
+
+            // Mini Map
+            map.drawMiniMap(g2);
 
             // UI
             ui.draw(g2);

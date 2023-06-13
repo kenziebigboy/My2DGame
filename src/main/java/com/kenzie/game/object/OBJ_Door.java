@@ -3,10 +3,6 @@ package com.kenzie.game.object;
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.entity.Entity;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.util.Objects;
-
 public class OBJ_Door extends Entity {
 
     GamePanel gp;
@@ -32,7 +28,7 @@ public class OBJ_Door extends Entity {
 
     public void interact(){
 
-        gp.gameState = gp.dialogueState;
+        gp.gameState = gp.DIALOGUE_STATE;
         gp.ui.currentDialouge = "You need a key to open this.";
 
     }

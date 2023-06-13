@@ -21,7 +21,7 @@ public class OBJ_Tent extends Entity {
 
     public boolean use(Entity entity){
 
-        gp.gameState = gp.sleepstate;
+        gp.gameState = gp.SLEEP_STATE;
         gp.playSE(14);
         gp.player.life = gp.player.maxLife;
         gp.player.mana = gp.player.maxMana;

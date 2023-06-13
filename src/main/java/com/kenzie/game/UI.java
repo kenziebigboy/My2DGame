@@ -15,7 +15,7 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    Font maruMonica, purisaB;
+    public Font maruMonica, purisaB;
     BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank, coin;
 
     public boolean messaageOn = false;
@@ -86,13 +86,13 @@ public class UI {
         g2.setColor(Color.WHITE);
 
         // Title State
-        if(gp.gameState == gp.titleState){
+        if(gp.gameState == gp.TITLE_STATE){
             drawTitleScreen();
         }
 
 
         // Play State
-        if(gp.gameState == gp.playState){
+        if(gp.gameState == gp.PLAY_STATE){
             drawPlayerLife();
             drawMessage();
 
@@ -111,46 +111,46 @@ public class UI {
         }
 
         // Pause State
-        if(gp.gameState == gp.pauseState){
+        if(gp.gameState == gp.PAUSE_STATE){
             drawPlayerLife();
             drawPauseScreen();
         }
 
         // Dialogue State
-        if(gp.gameState == gp.dialogueState){
+        if(gp.gameState == gp.DIALOGUE_STATE){
 
             drawDialogueScreen();
         }
 
         // Character State
-        if(gp.gameState == gp.characterState){
+        if(gp.gameState == gp.CHARACTER_STATE){
             drawCharacterScreen();
             drawInventory(gp.player, true);
         }
 
         // Options State
-        if(gp.gameState == gp.optionsState){
+        if(gp.gameState == gp.OPTIONS_STATE){
             drawOptionsScreen();
         }
 
         // Game Over State
-        if(gp.gameState == gp.gameOverState){
+        if(gp.gameState == gp.GAME_OVER_STATE){
             drawGameOverScreen();
         }
 
         // Transition State
-        if(gp.gameState == gp.transitionState){
+        if(gp.gameState == gp.TRANSITION_STATE){
             drawTransition();
         }
 
         // Trade State
         // Transition State
-        if(gp.gameState == gp.tradeState){
+        if(gp.gameState == gp.TRADE_STATE){
             drawTradeScreen();
         }
 
         // Sleep State
-        if(gp.gameState == gp.sleepstate){
+        if(gp.gameState == gp.SLEEP_STATE){
             drawSleepScreen();
         }
     }
@@ -738,7 +738,7 @@ public class UI {
         if(commandNum == 5){
             g2.drawString(">", textX - 25, textY);
             if(gp.keyH.enterPressed){
-                gp.gameState = gp.playState;
+                gp.gameState = gp.PLAY_STATE;
                 commandNum = 0;
             }
         }
@@ -858,7 +858,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if(gp.keyH.enterPressed){
                 subState = 0;
-                gp.gameState = gp.titleState;
+                gp.gameState = gp.TITLE_STATE;
 
             }
         }
@@ -888,7 +888,7 @@ public class UI {
 
         if(counter == 50){
             counter = 0;
-            gp.gameState = gp.playState;
+            gp.gameState = gp.PLAY_STATE;
             gp.currentMap = gp.eHandler.tempMap;
             gp.player.worldX = gp.tileSize * gp.eHandler.tempCol;
             gp.player.worldY = gp.tileSize * gp.eHandler.tempRow;
@@ -947,7 +947,7 @@ public class UI {
             g2.drawString(">", x - 24, y);
             if(gp.keyH.enterPressed){
                 commandNum = 0;
-                gp.gameState = gp.dialogueState;
+                gp.gameState = gp.DIALOGUE_STATE;
                 currentDialouge = "Come again, he he!";
             }
         }
@@ -999,7 +999,7 @@ public class UI {
             if(gp.keyH.enterPressed){
                 if(price > gp.player.coin){
                     subState = 0;
-                    gp.gameState = gp.dialogueState;
+                    gp.gameState = gp.DIALOGUE_STATE;
                     currentDialouge = "You need more coin to by that!";
                     drawDialogueScreen();
                 } else {
@@ -1007,7 +1007,7 @@ public class UI {
                         gp.player.coin -= price;
                     } else {
                         subState = 0;
-                        gp.gameState = gp.dialogueState;
+                        gp.gameState = gp.DIALOGUE_STATE;
                         currentDialouge = "You cannot carry any more!";
                     }
 
@@ -1068,7 +1068,7 @@ public class UI {
 
                     commandNum = 0;
                     subState = 0;
-                    gp.gameState = gp.dialogueState;
+                    gp.gameState = gp.DIALOGUE_STATE;
                     currentDialouge = "You cannot sell an equipped item!";
                 } else {
                     if(gp.player.inventory.get(itemIndex).amount > 1){
@@ -1101,7 +1101,7 @@ public class UI {
                 counter = 0;
                 gp.eManager.lighting.dayState = gp.eManager.lighting.DAY;
                 gp.eManager.lighting.dayCounter = 0;
-                gp.gameState = gp.playState;
+                gp.gameState = gp.PLAY_STATE;
                 gp.player.getPlayerImage();
             }
         }

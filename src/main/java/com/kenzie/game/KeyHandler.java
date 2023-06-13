@@ -24,22 +24,24 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
 
         // Title State
-        if(gp.gameState == gp.titleState){
+        if(gp.gameState == gp.TITLE_STATE){
             titleState(code);
-        } else if(gp.gameState == gp.playState) { // Play State
+        } else if(gp.gameState == gp.PLAY_STATE) { // Play State
             playState(code);
-        } else if(gp.gameState == gp.pauseState){
+        } else if(gp.gameState == gp.PAUSE_STATE){
             pauseState(code);
-        } else if(gp.gameState == gp.dialogueState){
+        } else if(gp.gameState == gp.DIALOGUE_STATE){
             dialogueState(code);
-        } else if (gp.gameState == gp.characterState) {
+        } else if (gp.gameState == gp.CHARACTER_STATE) {
             characterState(code);
-        } else if(gp.gameState == gp.optionsState){
+        } else if(gp.gameState == gp.OPTIONS_STATE){
             optionsState(code);
-        } else if(gp.gameState == gp.gameOverState){
+        } else if(gp.gameState == gp.GAME_OVER_STATE){
             gameOverState(code);
-        } else if(gp.gameState == gp.tradeState){
+        } else if(gp.gameState == gp.TRADE_STATE){
             tradeState(code);
+        } else if(gp.gameState == gp.MAP_STATE){
+            mapState(code);
         }
 
 
@@ -66,7 +68,7 @@ public class KeyHandler implements KeyListener {
 
                 switch (gp.ui.commandNum) {
                     case 0:
-                        gp.gameState = gp.playState;
+                        gp.gameState = gp.PLAY_STATE;
                         gp.playMusic(0);
                         //gp.ui.titleScreenState = 1;
                         break;
@@ -131,11 +133,11 @@ public class KeyHandler implements KeyListener {
         }
 
         if (code == KeyEvent.VK_P) {
-            gp.gameState = gp.pauseState;
+            gp.gameState = gp.PAUSE_STATE;
         }
 
         if(code == KeyEvent.VK_C){
-            gp.gameState = gp.characterState;
+            gp.gameState = gp.CHARACTER_STATE;
         }
 
         if (code == KeyEvent.VK_ENTER) {
@@ -148,27 +150,35 @@ public class KeyHandler implements KeyListener {
         }
 
         if(code == KeyEvent.VK_ESCAPE){
-            gp.gameState = gp.optionsState;
+            gp.gameState = gp.OPTIONS_STATE;
+        }
+
+        if(code == KeyEvent.VK_M){
+            gp.gameState = gp.MAP_STATE;
+        }
+
+        if(code == KeyEvent.VK_X){
+            gp.map.miniMapOn = !gp.map.miniMapOn;
         }
     }
 
     public void pauseState(int code){
         if (code == KeyEvent.VK_P) {
 
-            gp.gameState = gp.playState;
+            gp.gameState = gp.PLAY_STATE;
 
         }
     }
 
     public void dialogueState(int code){
         if(code == KeyEvent.VK_ENTER){
-            gp.gameState = gp.playState;
+            gp.gameState = gp.PLAY_STATE;
         }
     }
 
     public void characterState(int code){
         if(code == KeyEvent.VK_C){
-            gp.gameState = gp.playState;
+            gp.gameState = gp.PLAY_STATE;
         }
 
         if(code == KeyEvent.VK_ENTER){
@@ -181,7 +191,7 @@ public class KeyHandler implements KeyListener {
     public void optionsState(int code){
 
         if(code == KeyEvent.VK_ESCAPE){
-            gp.gameState = gp.playState;
+            gp.gameState = gp.PLAY_STATE;
         }
 
         if(code == KeyEvent.VK_ENTER){
@@ -264,11 +274,11 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_ENTER){
             if(gp.ui.commandNum == 0){
-                gp.gameState = gp.playState;
+                gp.gameState = gp.PLAY_STATE;
                 gp.retry();
                 gp.playSE(0);
             } else {
-                gp.gameState = gp.titleState;
+                gp.gameState = gp.TITLE_STATE;
                 gp.reStart();
             }
         }
@@ -313,6 +323,13 @@ public class KeyHandler implements KeyListener {
             }
         }
 
+    }
+
+    public void mapState(int code){
+
+        if(code == KeyEvent.VK_M){
+            gp.gameState = gp.PLAY_STATE;
+        }
     }
 
     public void playerInventory(int code){

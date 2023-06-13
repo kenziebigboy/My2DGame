@@ -298,7 +298,7 @@ public class Player extends Entity {
             gp.playSE(12);
             gp.ui.commandNum = -1;
             gp.stopMusic();
-            gp.gameState = gp.gameOverState;
+            gp.gameState = gp.GAME_OVER_STATE;
         }
 
     }
@@ -397,7 +397,7 @@ public class Player extends Entity {
 
             if (i != 999) {
                 attackCanceled = true;
-                gp.gameState = gp.dialogueState;
+                gp.gameState = gp.DIALOGUE_STATE;
                 gp.npc[gp.currentMap][i].speak();
 
             }
@@ -504,7 +504,7 @@ public class Player extends Entity {
             attack = getAttack();
             defense = getDefense();
             gp.playSE(8);
-            gp.gameState = gp.dialogueState;
+            gp.gameState = gp.DIALOGUE_STATE;
             gp.ui.currentDialouge = "You are level " + level + " now!\nYou feel stronger!";
         }
     }

@@ -3,10 +3,6 @@ package com.kenzie.game.object;
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.entity.Entity;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.util.Objects;
-
 public class OBJ_Chest extends Entity {
 
     GamePanel gp;
@@ -36,7 +32,7 @@ public class OBJ_Chest extends Entity {
 
     public void interact(){
 
-        gp.gameState = gp.dialogueState;
+        gp.gameState = gp.DIALOGUE_STATE;
 
         if(!opened){
             gp.playSE(3);
