@@ -12,6 +12,14 @@ public class Lighting {
 
     GamePanel gp;
     BufferedImage darknessFilter;
+    public int dayCounter;
+    public float filterAlph;
+
+    public final int DAY = 0;
+    public final int DUSK = 1;
+    public final int NIGHT = 2;
+    public final int DAWN = 3;
+    public int dayState = DAY;
 
     public Lighting(GamePanel gp){
         this.gp = gp;
@@ -84,12 +92,64 @@ public class Lighting {
         if(gp.player.lightUpdated){
             setLightSource();
             gp.player.lightUpdated = false;
+        }
 
+        // Check the state of the day
+        if(dayState == DAY){
+            dayCounter++;
+
+            if(dayCounter > 600){
+                dayState = DUSK;
+                dayCounter = 0;
+            }
+        }
+
+        if(dayState == DUSK){
+            filterAlph += 0.001f;
+
+            if(filterAlph > 1f){
+                filterAlph = 1f;
+                dayState = NIGHT;
+            }
+        }
+
+        if(dayState == NIGHT){
+
+            dayCounter++;
+            if(dayCounter > 600){
+                dayState = DAWN;
+                dayCounter = 0;
+            }
+        }
+
+        if(dayState == DAWN){
+
+            filterAlph -= 0.001f;
+
+            if(filterAlph < 0f){
+                filterAlph = 0;
+                dayState = DAY;
+            }
         }
     }
 
     public void draw(Graphics2D g2){
 
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlph));
         g2.drawImage(darknessFilter, 0, 0, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+        // Debug
+        String situation = "";
+
+        switch (dayState){
+            case DAY -> situation = "Day";
+            case DUSK -> situation = "Dusk";
+            case NIGHT -> situation = "Night";
+            case DAWN -> situation = "Dawn";
+        }
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(50f));
+        g2.drawString(situation, 800, 500);
     }
 }

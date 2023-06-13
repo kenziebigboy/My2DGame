@@ -80,6 +80,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int gameOverState = 6;
     public final int transitionState = 7;
     public final int tradeState = 8;
+    public final int sleepstate = 9;
 
     public GamePanel(){
 
@@ -234,20 +235,14 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             }
 
-
-
             for(int i = 0; i < iTile[1].length; i++){
                 if(iTile[currentMap][i] != null){
                     iTile[currentMap][i].update();
                 }
             }
-            System.out.println("here");
-
         }
 
-        if(gameState == characterState){
-            eManager.update();
-        }
+        eManager.update();
 
         if (gameState == pauseState){
             // nother right now
