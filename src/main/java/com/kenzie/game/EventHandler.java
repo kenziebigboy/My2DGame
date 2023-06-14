@@ -58,7 +58,7 @@ public class EventHandler {
             if (hit(0,27, 16, "right")) damagePit( gp.DIALOGUE_STATE);
             else if(hit(0,10,39,"any")){ teleport(1,12,13);}
             else if(hit(1,12,13,"any")){ teleport(0,10,39);}
-            else if (hit(1,12,13, "up")) healingPool(gp.DIALOGUE_STATE);
+            else if (hit(0,23,12, "any")) healingPool(gp.DIALOGUE_STATE);
             else if (hit(1,12,9, "up"))  speak(gp.npc[1][0]);
         }
 
@@ -75,6 +75,7 @@ public class EventHandler {
             eventRect[map][col][row].y = row * gp.tileSize + eventRect[map][col][row].y;
 
             if (gp.player.solidArea.intersects(eventRect[map][col][row]) && !eventRect[map][col][row].eventDone) {
+
                 if (gp.player.direction.contentEquals(reqDirection) || reqDirection.contentEquals("any")) {
                     hit = true;
 
@@ -109,10 +110,12 @@ public class EventHandler {
             gp.gameState = gameState;
             gp.player.attackCanceled = true;
             gp.playSE(2);
-            gp.ui.currentDialouge = "You drink the water.\nYour life and mana have been recovered.";
+            gp.ui.currentDialouge = "You drink the water.\nYour life and mana have been recovered.\n"
+            + "(The progress had ";
             gp.player.life = gp.player.maxLife;
             gp.player.mana = gp.player.maxMana;
             gp.aSetter.setMonster();
+            gp.saveLoad.save();
         }
 
     }

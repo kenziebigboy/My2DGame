@@ -37,10 +37,7 @@ public class Player extends Entity {
 //        attackArea.height = 36;
 
         setDefaultValues();
-        getImage();
-        getAttackImage();
-        getGuardImage();
-        setItems();
+
 
     }
 
@@ -73,11 +70,16 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         //currentWeapon = new OBJ_Axe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        currentLight = null;
         projectile = new OBJ_Fireball(gp);
         //projectile = new OBJ_Rock(gp);
         attack = getAttack(); // The total attack value is decided by strength and weapon
         defense = getDefense(); // The total defense value is decided by dexterity and shield
 
+        getImage();
+        getAttackImage();
+        getGuardImage();
+        setItems();
 
     }
 
@@ -89,12 +91,16 @@ public class Player extends Entity {
 
     }
 
-    public void  restoreLifeAndMana(){
+    public void restoreStatus(){
 
         life = maxLife;
         mana = maxMana;
         invincible = false;
         transparent = false;
+        attacking = false;
+        guarding = false;
+        knockBack = false;
+        lightUpdated = true;
     }
 
     public void setItems(){
@@ -124,6 +130,26 @@ public class Player extends Entity {
             return dexterity * currentShield.defenseValue;
         }
         return dexterity;
+    }
+
+    public int getCurrentWeaponSlot(){
+        int currentWeaponSlot = 0;
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == currentWeapon){
+                currentWeaponSlot = i;
+            }
+        }
+        return currentWeaponSlot;
+    }
+
+    public int getCurrentShieldSlot(){
+        int currentShieldSlot = 0;
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == currentShield){
+                currentShieldSlot = i;
+            }
+        }
+        return currentShieldSlot;
     }
 
     public void getImage() {

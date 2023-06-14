@@ -1,6 +1,7 @@
 package com.kenzie.game;
 
 import com.kenzie.game.ai.PathFinder;
+import com.kenzie.game.data.SaveLoad;
 import com.kenzie.game.entity.Entity;
 import com.kenzie.game.entity.Player;
 import com.kenzie.game.environment.EnvironmentManager;
@@ -45,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable{
     // FPS
     int FPS = 60;
 
+    // System
     public TileManger tileM = new TileManger(this);
     public KeyHandler keyH = new KeyHandler(this);
     Sound music = new Sound();
@@ -58,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable{
     public PathFinder pFinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
     Map map = new Map(this);
+    SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;
 
     // Entity & Objects
@@ -115,24 +118,19 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    public void retry(){
+    public void resetGame(boolean restart){
 
         player.setDefaultPositions();
-        player.restoreLifeAndMana();
+        player.restoreStatus();
         aSetter.setNPC();
         aSetter.setMonster();
 
-    }
-
-    public void reStart(){
-
-        player.setDefaultValues();
-        player.setDefaultPositions();
-
-        aSetter.setObject();
-        aSetter.setNPC();
-        aSetter.setMonster();
-        aSetter.setInteractiveTile();
+        if(restart) {
+            player.setDefaultValues();
+            aSetter.setObject();
+            aSetter.setInteractiveTile();
+            eManager.lighting.resetDay();
+        }
 
     }
 

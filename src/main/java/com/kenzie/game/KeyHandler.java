@@ -67,16 +67,17 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER) {
 
                 switch (gp.ui.commandNum) {
-                    case 0:
+                    case 0 -> {
                         gp.gameState = gp.PLAY_STATE;
                         gp.playMusic(0);
-                        //gp.ui.titleScreenState = 1;
-                        break;
-                    case 1:
-
-                        break;
-                    case 2:
-                        System.exit(0);
+                    }
+                    //gp.ui.titleScreenState = 1;
+                    case 1 -> {
+                        gp.saveLoad.load();
+                        gp.gameState = gp.PLAY_STATE;
+                        gp.playMusic(0);
+                    }
+                    case 2 -> System.exit(0);
                 }
             }
         } else if(gp.ui.titleScreenState == 1){
@@ -279,11 +280,11 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_ENTER){
             if(gp.ui.commandNum == 0){
                 gp.gameState = gp.PLAY_STATE;
-                gp.retry();
+                gp.resetGame(false);
                 gp.playSE(0);
             } else {
                 gp.gameState = gp.TITLE_STATE;
-                gp.reStart();
+                gp.resetGame(true);
             }
         }
     }

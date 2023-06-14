@@ -859,6 +859,7 @@ public class UI {
             if(gp.keyH.enterPressed){
                 subState = 0;
                 gp.gameState = gp.TITLE_STATE;
+                gp.resetGame(true);
 
             }
         }
