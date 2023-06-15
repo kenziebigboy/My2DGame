@@ -98,18 +98,6 @@ public class UI {
             drawPlayerLife();
             drawMessage();
 
-            // Text
-            g2.setColor(Color.YELLOW);
-            g2.setFont(g2.getFont().deriveFont(24f));
-
-            int textX = gp.tileSize / 2;
-            int textY = gp.tileSize / 2;
-
-
-            g2.drawString("World X: " + gp.player.worldX / gp.tileSize, textX,textY);
-            g2.drawString("World Y: " + gp.player.worldY / gp.tileSize, textX + gp.tileSize * 3,textY);
-
-
         }
 
         // Pause State
