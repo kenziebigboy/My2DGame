@@ -87,7 +87,7 @@ public class EventHandler {
     public boolean hit(int map, int col, int row, String reqDirection){
 
         boolean hit = false;
-        
+
         if(map == gp.currentMap) {
             gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
             gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;

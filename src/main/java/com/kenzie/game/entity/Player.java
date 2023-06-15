@@ -1,6 +1,5 @@
 package com.kenzie.game.entity;
 
-import com.kenzie.game.EntityGenerator;
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.KeyHandler;
 import com.kenzie.game.object.*;
@@ -124,6 +123,7 @@ public class Player extends Entity {
         Entity key1 = new OBJ_Key(gp);
         key1.amount = 1;
         inventory.add(key1);
+        inventory.add(new OBJ_Lantern(gp));
 
 
     }
@@ -193,7 +193,7 @@ public class Player extends Entity {
 
     public void getAttackImage() {
 
-        if(currentWeapon.type == type_sword) {
+        if(currentWeapon.type == TYPE_SWORD) {
             attackUp1 = setup("/player/boy_attack_up_1", gp.tileSize, gp.tileSize * 2);
             attackUp2 = setup("/player/boy_attack_up_2", gp.tileSize, gp.tileSize * 2);
             attackDown1 = setup("/player/boy_attack_down_1", gp.tileSize, gp.tileSize * 2);
@@ -204,7 +204,7 @@ public class Player extends Entity {
             attackRight2 = setup("/player/boy_attack_right_2", gp.tileSize * 2, gp.tileSize);
         }
 
-        if(currentWeapon.type == type_axe) {
+        if(currentWeapon.type == TYPE_AXE) {
             attackUp1 = setup("/player/boy_axe_up_1", gp.tileSize, gp.tileSize * 2);
             attackUp2 = setup("/player/boy_axe_up_2", gp.tileSize, gp.tileSize * 2);
             attackDown1 = setup("/player/boy_axe_down_1", gp.tileSize, gp.tileSize * 2);
@@ -213,6 +213,17 @@ public class Player extends Entity {
             attackLeft2 = setup("/player/boy_axe_left_2", gp.tileSize * 2, gp.tileSize);
             attackRight1 = setup("/player/boy_axe_right_1", gp.tileSize * 2, gp.tileSize);
             attackRight2 = setup("/player/boy_axe_right_2", gp.tileSize * 2, gp.tileSize);
+        }
+
+        if(currentWeapon.type == TYPE_PICKAXE) {
+            attackUp1 = setup("/player/boy_pick_up_1", gp.tileSize, gp.tileSize * 2);
+            attackUp2 = setup("/player/boy_pick_up_2", gp.tileSize, gp.tileSize * 2);
+            attackDown1 = setup("/player/boy_pick_down_1", gp.tileSize, gp.tileSize * 2);
+            attackDown2 = setup("/player/boy_pick_down_2", gp.tileSize, gp.tileSize * 2);
+            attackLeft1 = setup("/player/boy_pick_left_1", gp.tileSize * 2, gp.tileSize);
+            attackLeft2 = setup("/player/boy_pick_left_2", gp.tileSize * 2, gp.tileSize);
+            attackRight1 = setup("/player/boy_pick_right_1", gp.tileSize * 2, gp.tileSize);
+            attackRight2 = setup("/player/boy_pick_right_2", gp.tileSize * 2, gp.tileSize);
         }
 
 
@@ -408,10 +419,10 @@ public class Player extends Entity {
         if (i != 999) {
 
             // Pickup only Items
-            if(gp.obj[gp.currentMap][i].type == type_pickupOnly){
+            if(gp.obj[gp.currentMap][i].type == TYPE_PICKUP_ONLY){
                 gp.obj[gp.currentMap][i].use(this);
                 gp.obj[gp.currentMap][i] = null;
-            } else if(gp.obj[gp.currentMap][i].type == type_obstacle) {
+            } else if(gp.obj[gp.currentMap][i].type == TYPE_OBSTACLE) {
 
                 if(gp.keyH.enterPressed){
                     attackCanceled = true;
@@ -438,13 +449,15 @@ public class Player extends Entity {
 
     public void interactNPC(int i) {
 
-        if (gp.keyH.enterPressed) {
+        if (i != 999) {
 
-            if (i != 999) {
+            if (gp.keyH.enterPressed) {
                 attackCanceled = true;
                 gp.npc[gp.currentMap][i].speak();
 
             }
+
+            gp.npc[gp.currentMap][i].move(direction);
         }
     }
 
@@ -517,6 +530,7 @@ public class Player extends Entity {
             generateParticle(gp.iTile[gp.currentMap][i], gp.iTile[gp.currentMap][i]);
 
             if(gp.iTile[gp.currentMap][i].life == 0) {
+                //gp.iTile[gp.currentMap][i].checkDrop();
                 gp.iTile[gp.currentMap][i] = gp.iTile[gp.currentMap][i].getDestroyedForm();
             }
         }
@@ -557,19 +571,19 @@ public class Player extends Entity {
         if(itemIndex < inventory.size()){
             Entity selectedItem = inventory.get(itemIndex);
 
-            if(selectedItem.type == type_sword || selectedItem.type == type_axe){
+            if(selectedItem.type == TYPE_SWORD || selectedItem.type == TYPE_AXE || selectedItem.type == TYPE_PICKAXE){
 
                 currentWeapon = selectedItem;
                 attack = getAttack();
                 getAttackImage();
             }
 
-            if(selectedItem.type == type_shield){
+            if(selectedItem.type == TYPE_SHIELD){
                 currentShield = selectedItem;
                 defense = getDefense();
             }
 
-            if(selectedItem.type == type_light){
+            if(selectedItem.type == TYPE_LIGHT){
                 if(currentLight == selectedItem){
                     currentLight = null;
                 } else {
@@ -581,7 +595,7 @@ public class Player extends Entity {
                 lightUpdated = true;
             }
 
-            if(selectedItem.type == type_consumable){
+            if(selectedItem.type == TYPE_CONSUMABLE){
                if(selectedItem.use(this)) {
                    if(selectedItem.amount > 1){
                        selectedItem.amount--;

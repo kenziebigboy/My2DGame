@@ -3,18 +3,18 @@ package com.kenzie.game.object;
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.entity.Entity;
 
-public class OBJ_Door extends Entity {
+public class OBJ_Door_Iron extends Entity {
 
     GamePanel gp;
-    public static final String OBJ_NAME = "Door";
+    public static final String OBJ_NAME = "Iron Door";
 
-    public OBJ_Door(GamePanel gp) {
+    public OBJ_Door_Iron(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
         type = TYPE_OBSTACLE;
         name = OBJ_NAME;
-        down1 = setup("/objects/door", gp.tileSize, gp.tileSize);
+        down1 = setup("/objects/door_iron", gp.tileSize, gp.tileSize);
 
         collision = true;
 
@@ -29,7 +29,7 @@ public class OBJ_Door extends Entity {
     }
 
     public void setDialogue(){
-        dialogues[0][0] = "You need a key to open this.";
+        dialogues[0][0] = "It won't budge.";
     }
 
     public void interact(){

@@ -24,6 +24,7 @@ public class Entity {
     public  int solidAreaDefaultX, solidAreaDefaultY;
     public String[][] dialogues = new String[20][20];
     public Entity attacker;
+    public Entity linkedEntity;
 
     // State
     public int worldX, worldY;
@@ -68,16 +69,17 @@ public class Entity {
 
     // Type
     public int type;
-    public final int type_player = 0;
-    public final int type_npc = 1;
-    public final int type_monster = 2;
-    public final int type_sword = 3;
-    public final int type_axe = 4;
-    public final int type_shield = 5;
-    public final int type_consumable = 6;
-    public final int type_pickupOnly = 7;
-    public final int type_obstacle = 8;
-    public final int type_light = 9;
+    public final int TYPE_PLAYER = 0;
+    public final int TYPE_NPC = 1;
+    public final int TYPE_MONSTER = 2;
+    public final int TYPE_SWORD = 3;
+    public final int TYPE_AXE = 4;
+    public final int TYPE_SHIELD = 5;
+    public final int TYPE_CONSUMABLE = 6;
+    public final int TYPE_PICKUP_ONLY = 7;
+    public final int TYPE_OBSTACLE = 8;
+    public final int TYPE_LIGHT = 9;
+    public final int TYPE_PICKAXE = 10;
 
     // Character Status
 
@@ -168,6 +170,10 @@ public class Entity {
     public void setLoot(Entity loot){ }
 
     public void setAction(){
+
+    }
+
+    public void move(String direction){
 
     }
 
@@ -263,7 +269,7 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.iTile);
         boolean contactPlayer =  gp.cChecker.checkPlayer(this);
 
-        if(this.type == type_monster && contactPlayer){
+        if(this.type == TYPE_MONSTER && contactPlayer){
             damagePlayer(attack);
         }
 
@@ -488,7 +494,7 @@ public class Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
 
-            if(type == type_monster){
+            if(type == TYPE_MONSTER){
                 if(gp.cChecker.checkPlayer(this)){
                     damagePlayer(attack);
                 }

@@ -23,7 +23,7 @@ public class IT_DryTree extends InteractiveTile{
 
     public boolean isCorrectItem(Entity entity){
 
-        return entity.currentWeapon.type == type_axe;
+        return entity.currentWeapon.type == TYPE_AXE;
 
     }
 

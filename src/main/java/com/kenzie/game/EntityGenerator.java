@@ -20,12 +20,14 @@ public class EntityGenerator {
             case OBJ_Boots.OBJ_NAME -> obj = new OBJ_Boots(gp);
             case OBJ_Chest.OBJ_NAME -> obj = new OBJ_Chest(gp);
             case OBJ_Coin_Bronze.OBJ_NAME -> obj = new OBJ_Coin_Bronze(gp);
+            case OBJ_Door_Iron.OBJ_NAME -> obj = new OBJ_Door_Iron(gp);
             case OBJ_Door.OBJ_NAME -> obj = new OBJ_Door(gp);
             case OBJ_Fireball.OBJ_NAME -> obj = new OBJ_Fireball(gp);
             case OBJ_Heart.OBJ_NAME -> obj = new OBJ_Heart(gp);
             case OBJ_Key.OBJ_NAME -> obj = new OBJ_Key(gp);
             case OBJ_Lantern.OBJ_NAME -> obj = new OBJ_Lantern(gp);
             case OBJ_ManaCrystal.OBJ_NAME -> obj = new OBJ_ManaCrystal(gp);
+            case OBJ_Pickaxe.OBJ_NAME -> obj = new OBJ_Pickaxe(gp);
             case OBJ_Potion_Red.OBJ_NAME -> obj = new OBJ_Potion_Red(gp);
             case OBJ_Rock.OBJ_NAME -> obj = new OBJ_Rock(gp);
             case OBJ_Shield_Blue.OBJ_NAME -> obj = new OBJ_Shield_Blue(gp);

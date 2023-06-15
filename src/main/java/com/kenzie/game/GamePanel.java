@@ -364,13 +364,13 @@ public class GamePanel extends JPanel implements Runnable{
             if(nextArea == OUTSIDE){
                 playMusic(0);
             }
-            if(nextArea == OUTSIDE){
+            if(nextArea == INDOOR){
                 playMusic(18);
             }
-            if(nextArea == OUTSIDE){
+            if(nextArea == DUNGEON){
                 playMusic(19);
             }
-
+            aSetter.setNPC();
         }
         currentArea = nextArea;
         aSetter.setMonster();

@@ -12,7 +12,7 @@ public class OBJ_Key extends Entity {
         super(gp);
         this.gp = gp;
 
-        type = type_consumable;
+        type = TYPE_CONSUMABLE;
         name = OBJ_NAME;
         down1 = setup("/objects/key", gp.tileSize, gp.tileSize);
         description = "[" + name + "]\nIt opens a door.";

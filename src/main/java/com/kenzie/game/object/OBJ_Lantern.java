@@ -10,7 +10,7 @@ public class OBJ_Lantern extends Entity {
     public OBJ_Lantern(GamePanel gp) {
         super(gp);
 
-        type = type_light;
+        type = TYPE_LIGHT;
         name = OBJ_NAME;
         down1 = setup("/objects/lantern", gp.tileSize, gp.tileSize);
         description = "[" + name + "]\nIlluminates your \nsurroundings.";

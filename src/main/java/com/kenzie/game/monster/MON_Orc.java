@@ -5,7 +5,6 @@ import com.kenzie.game.entity.Entity;
 import com.kenzie.game.object.OBJ_Coin_Bronze;
 import com.kenzie.game.object.OBJ_Heart;
 import com.kenzie.game.object.OBJ_ManaCrystal;
-import com.kenzie.game.object.OBJ_Rock;
 
 import java.util.Random;
 
@@ -18,7 +17,7 @@ public class MON_Orc extends Entity {
         super(gp);
         this.gp = gp;
 
-        type = type_monster;
+        type = TYPE_MONSTER;
         name = "Orc";
         defaultSpeed = 1;
         speed = defaultSpeed;
