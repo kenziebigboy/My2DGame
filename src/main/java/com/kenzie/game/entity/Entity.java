@@ -14,24 +14,23 @@ import java.util.Random;
 public class Entity {
 
     GamePanel gp;
-
-    public int speed;
-
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2,
-    attackLeft1, attackLeft2, attackRight1, attackRight2,
-    guardUp, guardDown, guardLeft, guardRight;
+            attackLeft1, attackLeft2, attackRight1, attackRight2,
+            guardUp, guardDown, guardLeft, guardRight;
+    public BufferedImage image, image2, image3;
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public Rectangle attackArea = new Rectangle(0,0,0,0);
     public  int solidAreaDefaultX, solidAreaDefaultY;
-
-    public Entity currentLight;
+    public String[][] dialogues = new String[20][20];
+    public Entity attacker;
 
     // State
     public int worldX, worldY;
     public String direction = "down";
     public int spriteNum = 1;
-    int dialogueIndex = 0;
+    public int dialogueSet = 0;
+    public int dialogueIndex = 0;
     public boolean collisionOn = false;
     public boolean invincible = false;
     public boolean attacking = false;
@@ -63,12 +62,8 @@ public class Entity {
     public int defaultSpeed;
     public int maxLife;
 
-    String[] dialogues = new String[20];
-
-    public Entity attacker;
-
-    public BufferedImage image, image2, image3;
-
+    public int speed;
+    public Entity currentLight;
     public boolean collision = false;
 
     // Type
@@ -157,6 +152,19 @@ public class Entity {
         return (target.worldY + target.solidArea.y) / gp.tileSize;
     }
 
+    public void resetCounter(){
+
+        spriteCounter = 0;
+        actionLockCounter = 0;
+        invincibleCounter = 0;
+        shotAvailableCount = 0;
+        dyingCounter = 0;
+        hpBarCounter = 0;
+        knockBackCounter = 0;
+        guardCounter = 0;
+        offBalanceCounter = 0;
+    }
+
     public void setLoot(Entity loot){ }
 
     public void setAction(){
@@ -167,12 +175,25 @@ public class Entity {
 
     }
 
-    public void speak(){
-        if(dialogues[dialogueIndex] == null){
-            dialogueIndex = 0;
+    public void speak(){}
+
+    public void startDialogue(Entity entity, int setNum){
+
+
+        gp.gameState = gp.DIALOGUE_STATE;
+        gp.ui.npc = entity;
+        dialogueSet = setNum;
+
+    }
+
+    public void facePlayer(){
+
+        switch (gp.player.direction){
+            case "up" -> direction = "down";
+            case "down" -> direction = "up";
+            case "left" -> direction = "right";
+            case "right" -> direction = "left";
         }
-        gp.ui.currentDialouge = dialogues[dialogueIndex];
-        dialogueIndex++;
     }
 
     public void interact(){

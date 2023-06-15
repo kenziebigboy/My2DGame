@@ -6,6 +6,7 @@ public class EventHandler {
 
     GamePanel gp;
     EventRect eventRect[][][];
+    Entity eventMaster;
 
     int previousEventX, previousEventY;
     boolean canTouchEvent = true;
@@ -15,6 +16,7 @@ public class EventHandler {
     public EventHandler(GamePanel gp) {
         this.gp = gp;
 
+        eventMaster = new Entity(gp);
         eventRect = new EventRect[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         int map = 0;
@@ -39,8 +41,18 @@ public class EventHandler {
                     map++;
                 }
             }
+
+            setDialogue();
         }
 
+
+    }
+
+    public void setDialogue(){
+
+        eventMaster.dialogues[0][0] = "You fail into a pit!";
+        eventMaster.dialogues[1][0] = "You drink the water.\nYour life and mana have been recovered.\n"
+                + "(The progress had ";
 
     }
 
@@ -97,7 +109,8 @@ public class EventHandler {
 
         gp.gameState = gameState;
         gp.playSE(6);
-        gp.ui.currentDialouge = "You fail into a pit!";
+
+        eventMaster.startDialogue(eventMaster, 0);
         gp.player.life -= 1;
 
 
@@ -110,8 +123,7 @@ public class EventHandler {
             gp.gameState = gameState;
             gp.player.attackCanceled = true;
             gp.playSE(2);
-            gp.ui.currentDialouge = "You drink the water.\nYour life and mana have been recovered.\n"
-            + "(The progress had ";
+            eventMaster.startDialogue(eventMaster, 1);
             gp.player.life = gp.player.maxLife;
             gp.player.mana = gp.player.maxMana;
             gp.aSetter.setMonster();

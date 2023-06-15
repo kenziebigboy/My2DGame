@@ -45,8 +45,14 @@ public class Player extends Entity {
         //worldX = gp.tileSize * 23;
         //worldY = gp.tileSize * 21;
 
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        // center of worldmap
+        //worldX = gp.tileSize * 23;
+        //worldY = gp.tileSize * 21;
+
+        // in house interior01
+        worldX = gp.tileSize * 11;
+        worldY = gp.tileSize * 11;
+
 
         defaultSpeed = 4;
 
@@ -55,7 +61,7 @@ public class Player extends Entity {
 
         // Player Status
         level = 1;
-        maxLife = 6;
+        maxLife = 10;
         life = maxLife;
 
         maxMana = 4;
@@ -80,6 +86,7 @@ public class Player extends Entity {
         getAttackImage();
         getGuardImage();
         setItems();
+        setDialogue();
 
     }
 
@@ -91,10 +98,15 @@ public class Player extends Entity {
 
     }
 
+    public void setDialogue(){
+        dialogues[0][0] = "You are level " + level + " now!\nYou feel stronger!";
+    }
+
     public void restoreStatus(){
 
         life = maxLife;
         mana = maxMana;
+        speed = defaultSpeed;
         invincible = false;
         transparent = false;
         attacking = false;
@@ -429,7 +441,6 @@ public class Player extends Entity {
 
             if (i != 999) {
                 attackCanceled = true;
-                gp.gameState = gp.DIALOGUE_STATE;
                 gp.npc[gp.currentMap][i].speak();
 
             }
@@ -534,7 +545,8 @@ public class Player extends Entity {
             defense = getDefense();
             gp.playSE(8);
             gp.gameState = gp.DIALOGUE_STATE;
-            gp.ui.currentDialouge = "You are level " + level + " now!\nYou feel stronger!";
+
+            startDialogue(this, 0);
         }
     }
 
