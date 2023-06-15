@@ -140,8 +140,14 @@ public class Lighting {
 
     public void draw(Graphics2D g2){
 
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlph));
-        g2.drawImage(darknessFilter, 0, 0, null);
+        if(gp.currentArea == gp.OUTSIDE){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlph));
+        }
+        if(gp.currentArea == gp.OUTSIDE || gp.currentArea == gp.DUNGEON){
+            g2.drawImage(darknessFilter, 0, 0, null);
+        }
+
+
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         // Debug
