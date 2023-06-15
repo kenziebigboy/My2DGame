@@ -5,6 +5,8 @@ import com.kenzie.game.entity.Entity;
 
 public class OBJ_Chest extends Entity {
 
+    public static final String OBJ_NAME = "Chest";
+
     GamePanel gp;
 
 
@@ -14,7 +16,7 @@ public class OBJ_Chest extends Entity {
 
 
         type = type_obstacle;
-        name = "Chest";
+        name = OBJ_NAME;
         image = setup("/objects/chest", gp.tileSize, gp.tileSize);
         image2 = setup("/objects/chest_opened", gp.tileSize, gp.tileSize);
         down1 = image;

@@ -3,20 +3,17 @@ package com.kenzie.game.object;
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.entity.Entity;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.util.Objects;
-
 public class OBJ_Heart extends Entity {
 
     GamePanel gp;
+    public static final String OBJ_NAME = "Heart";
 
     public OBJ_Heart(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
         type = type_pickupOnly;
-        name = "Heart";
+        name = OBJ_NAME;
         value = 2;
         image = setup("/objects/heart_full", gp.tileSize, gp.tileSize);
         image2 = setup("/objects/heart_half", gp.tileSize, gp.tileSize);

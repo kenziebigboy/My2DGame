@@ -5,12 +5,13 @@ import com.kenzie.game.entity.Entity;
 
 public class OBJ_Axe extends Entity {
 
+    public static final String OBJ_NAME = "Woodcutter's Axe";
 
     public OBJ_Axe(GamePanel gp) {
         super(gp);
 
         type = type_axe;
-        name = "Woodcutter's Axe";
+        name = OBJ_NAME;
         down1 = setup("/objects/axe", gp.tileSize, gp.tileSize);
         attackValue = 2;
         attackArea.width = 36;

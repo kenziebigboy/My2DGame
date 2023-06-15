@@ -1,5 +1,6 @@
 package com.kenzie.game.entity;
 
+import com.kenzie.game.EntityGenerator;
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.KeyHandler;
 import com.kenzie.game.object.*;
@@ -545,7 +546,7 @@ public class Player extends Entity {
             defense = getDefense();
             gp.playSE(8);
             gp.gameState = gp.DIALOGUE_STATE;
-
+            setDialogue();
             startDialogue(this, 0);
         }
     }
@@ -610,24 +611,26 @@ public class Player extends Entity {
 
         boolean canObtain = false;
 
-        // Check if stackable
-        if(item.stackable){
+        Entity netItem = gp.eGenerator.getOject(item.name);
 
-            int index = searchItemInInventory(item.name);
+        // Check if stackable
+        if(netItem.stackable){
+
+            int index = searchItemInInventory(netItem.name);
 
             if(index != 999){
                 inventory.get(index).amount++;
                 canObtain = true;
             } else {
                 if(inventory.size() != maxInventorySize){
-                    inventory.add(item);
+                    inventory.add(netItem);
                     canObtain = true;
                 }
             }
 
         } else {
             if(inventory.size() != maxInventorySize){
-                inventory.add(item);
+                inventory.add(netItem);
                 canObtain = true;
             }
         }
