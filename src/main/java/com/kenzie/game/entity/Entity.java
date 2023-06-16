@@ -101,6 +101,7 @@ public class Entity {
     public Entity currentWeapon;
     public Entity currentShield;
     public Projectile projectile;
+    public boolean boss;
 
     // Item Attributes
     public ArrayList<Entity> inventory = new ArrayList<>();
@@ -119,6 +120,14 @@ public class Entity {
 
     public Entity(GamePanel gp){
         this.gp = gp;
+    }
+
+    public int getScreenX(){
+        return worldX - gp.player.worldX + gp.player.screenX;
+    }
+
+    public int getScreenY(){
+        return worldY - gp.player.worldY + gp.player.screenY;
     }
 
     public int getLeftX(){
@@ -609,20 +618,23 @@ public class Entity {
 
     }
 
+    public boolean inCamera(){
+
+        return worldX + gp.tileSize * 5 > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize * 5 > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY;
+    }
+
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        if(worldX + gp.tileSize * 5 > gp.player.worldX - gp.player.screenX &&
-                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                worldY + gp.tileSize * 5 > gp.player.worldY - gp.player.screenY &&
-                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
+        if(inCamera()){
 
 
-            int tempScreenX = screenX;
-            int tempScreenY = screenY;
+            int tempScreenX = getScreenX();
+            int tempScreenY = getScreenY();
 
             switch (direction) {
                 case "up" -> {
@@ -630,7 +642,7 @@ public class Entity {
                         if (spriteNum == 1) {image = up1;}
                         if (spriteNum == 2) {image = up2;}
                     } else {
-                        tempScreenY = screenY  - up1.getHeight();
+                        tempScreenY = getScreenY()  - up1.getHeight();
                         if (spriteNum == 1) {image = attackUp1;}
                         if (spriteNum == 2) {image = attackUp2;}
                     }
@@ -649,7 +661,7 @@ public class Entity {
                         if (spriteNum == 1) {image = left1;}
                         if (spriteNum == 2) {image = left2;}
                     } else {
-                        tempScreenX = screenX - left1.getWidth();
+                        tempScreenX = getScreenX() - left1.getWidth();
                         if (spriteNum == 1) {image = attackLeft1;}
                         if (spriteNum == 2) {image = attackLeft2;}
                     }
@@ -665,24 +677,7 @@ public class Entity {
                 }
             }
 
-            // Monster HP bar
-            if(type == 2 && hpBarOn){
 
-                double oneScale = (double) gp.tileSize / maxLife;
-                double hpBarValue = oneScale * life;
-
-                g2.setColor(new Color(35,35,35));
-                g2.fillRect(screenX - 1,screenY - 16, gp.tileSize + 2, 12);
-
-                g2.setColor(new Color(255,0,30));
-                g2.fillRect(screenX,screenY - 15, (int) hpBarValue, 10);
-
-                hpBarCounter++;
-                if(hpBarCounter > 600){
-                    hpBarCounter = 0;
-                    hpBarOn = false;
-                }
-            }
 
             if (invincible) {
                 hpBarOn = true;
