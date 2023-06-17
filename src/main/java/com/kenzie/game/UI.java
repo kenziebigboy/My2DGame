@@ -261,7 +261,7 @@ public class UI {
 
     public void drawMonsterLife(){
 
-        for(int i = 0; i < gp.monster[i].length; i++){
+        for(int i = 0; i < gp.monster[1].length; i++){
 
             Entity monster = gp.monster[gp.currentMap][i];
 
@@ -497,7 +497,7 @@ public class UI {
             if(gp.keyH.enterPressed){
                 charIndex = 0;
                 combinedText = "";
-                if(gp.gameState == gp.DIALOGUE_STATE) {
+                if(gp.gameState == gp.DIALOGUE_STATE || gp.gameState == gp.CUT_SCENE_STATE) {
                     npc.dialogueIndex++;
                     gp.keyH.enterPressed = false;
                 }
@@ -506,6 +506,10 @@ public class UI {
             npc.dialogueIndex = 0;
             if(gp.gameState == gp.DIALOGUE_STATE){
                 gp.gameState = gp.PLAY_STATE;
+            }
+
+            if(gp.gameState == gp.CUT_SCENE_STATE){
+                gp.csManager.scenePhase++;
             }
         }
 

@@ -1,5 +1,6 @@
 package com.kenzie.game;
 
+import com.kenzie.game.data.Progress;
 import com.kenzie.game.entity.Entity;
 
 public class EventHandler {
@@ -80,6 +81,8 @@ public class EventHandler {
 
             else if(hit(2,8,7,"any")){ teleport(3,26,41, gp.DUNGEON);} // to B2
             else if(hit(3,26,41,"any")){ teleport(2,8,7, gp.DUNGEON);} // to B1
+
+            else if(hit(3,25,27,"any")){ skeletonLord();} // Boss
         }
 
     }
@@ -160,5 +163,14 @@ public class EventHandler {
             entity.speak();
         }
 
+    }
+
+    public void skeletonLord(){
+
+        if(!gp.bossBattleOn && !Progress.skeletionLordDefated){
+            gp.gameState = gp.CUT_SCENE_STATE;
+            gp.csManager.sceneNum = gp.csManager.SKELETON_LORD;
+
+        }
     }
 }

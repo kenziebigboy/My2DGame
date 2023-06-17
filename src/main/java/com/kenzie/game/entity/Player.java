@@ -82,9 +82,13 @@ public class Player extends Entity {
 
     public void setDefaultPositions(){
 
-        gp.currentMap = 0;
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+//        gp.currentMap = 1;
+//        worldX = gp.tileSize * 23;
+//        worldY = gp.tileSize * 21;
+
+        gp.currentMap = 3;
+        worldX = gp.tileSize * 26;
+        worldY = gp.tileSize * 39;
         direction = "down";
 
     }
@@ -700,7 +704,9 @@ public class Player extends Entity {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
 
-        g2.drawImage(image, tempScreenX, tempScreenY, null);
+        if(drawing) {
+            g2.drawImage(image, tempScreenX, tempScreenY, null);
+        }
 
         // Reset alpha
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

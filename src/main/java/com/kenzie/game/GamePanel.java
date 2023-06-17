@@ -62,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable{
     Map map = new Map(this);
     SaveLoad saveLoad = new SaveLoad(this);
     public EntityGenerator eGenerator = new EntityGenerator(this);
+    public CutsceneManager csManager = new CutsceneManager(this);
     Thread gameThread;
 
     // Entity & Objects
@@ -88,6 +89,10 @@ public class GamePanel extends JPanel implements Runnable{
     public final int TRADE_STATE = 8;
     public final int SLEEP_STATE = 9;
     public final int MAP_STATE = 10;
+    public final int CUT_SCENE_STATE = 11;
+
+    // Others
+    public  boolean bossBattleOn = false;
 
     // Area
     public int currentArea;
@@ -130,6 +135,8 @@ public class GamePanel extends JPanel implements Runnable{
     public void resetGame(boolean restart){
 
         currentArea = OUTSIDE;
+        removeTempEntity();
+        bossBattleOn = false;
         player.setDefaultPositions();
         player.restoreStatus();
         player.resetCounter();
@@ -458,6 +465,9 @@ public class GamePanel extends JPanel implements Runnable{
             // UI
             ui.draw(g2);
 
+            // Cutscene
+            csManager.draw(g2);
+
             // Debug
             if(keyH.showDebugText){
                 long drawEnd = System.nanoTime();
@@ -481,5 +491,17 @@ public class GamePanel extends JPanel implements Runnable{
         }
         g2.dispose();
 
+    }
+
+    public void removeTempEntity(){
+
+        for(int mapNum = 0; mapNum < maxMap; mapNum++){
+
+            for(int i = 0; i < obj[1].length; i++){
+                if(obj[mapNum][i] != null && obj[mapNum][i].temp){
+                    obj[mapNum][i] = null;
+                }
+            }
+        }
     }
 }
