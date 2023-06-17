@@ -3,6 +3,7 @@ package com.kenzie.game;
 import com.kenzie.game.entity.Particle;
 import com.kenzie.game.entity.PlayerDummy;
 import com.kenzie.game.monster.MON_SkeletonLord;
+import com.kenzie.game.object.OBJ_BlueHeart;
 import com.kenzie.game.object.OBJ_Door_Iron;
 
 import java.awt.*;
@@ -13,13 +14,28 @@ public class CutsceneManager {
     Graphics2D g2;
     public int sceneNum;
     public int scenePhase;
+    int counter = 0;
+    float alpha = 0f;
+    int y;
+    String endCredit;
 
     // Scene Number
     public final int NA = 0;
     public final int SKELETON_LORD = 1;
+    public final int ENDING = 2;
 
     public CutsceneManager(GamePanel gp) {
         this.gp = gp;
+
+        endCredit = "Program/Music/Art\n"
+                + "RyiSnow"
+                + "\n\n\n\n\n\n\n\n\n"
+                + "Special Thanks\n"
+                + "Term 1: Clara\n\n\n\n\n"
+                + "Term 2: Chi\n\n\n\n\n"
+                + "Term 3: Peter & Nathan\n\n\n\n\n"
+                + "+ all our cohorts!\n\n\n\n\n"
+                + "Thanks you for playing!";
     }
 
     public void draw(Graphics2D g2){
@@ -27,6 +43,7 @@ public class CutsceneManager {
 
         switch (sceneNum){
             case SKELETON_LORD -> scene_skeletonLord();
+            case ENDING -> scene_ending();
         }
 
     }
@@ -116,5 +133,135 @@ public class CutsceneManager {
             gp.playMusic(22);
         }
 
+    }
+
+    public void scene_ending(){
+
+        if(scenePhase == 0){
+            gp.stopMusic();
+            gp.ui.npc = new OBJ_BlueHeart(gp);
+            scenePhase++;
+        }
+
+        if(scenePhase == 1){
+
+            // Display dialogues
+            gp.ui.drawDialogueScreen();
+
+        }
+
+        if(scenePhase == 2){
+            // Play the fanfare
+            gp.playSE(4);
+            scenePhase++;
+        }
+
+        if(scenePhase == 3){
+
+            // Wait until the sound effect ends
+            if(counterReached(300)){
+                scenePhase++;
+            }
+        }
+
+        if(scenePhase == 4){
+
+            // The screen gets darker
+            alpha += 0.005f;
+            if(alpha > 1f){ alpha = 1f;}
+
+            drawBlackBackground(alpha);
+
+            if(alpha == 1f) {
+                alpha = 0f;
+                scenePhase++;
+            }
+        }
+
+        if(scenePhase == 5){
+            drawBlackBackground(1f);
+            alpha += 0.005f;
+            if(alpha > 1f){ alpha = 1f;}
+
+            String text = "After the fierce battle with the Skeleton Lord,\n"
+                    + "the Blue Boy finally found the legendary treasure.\n"
+                    + "But this is not the end of his journey.\n"
+                    + "The Blue Boy's adventure has just begun.";
+
+            drawString(alpha, 38f, 200, text, 70);
+
+            if(counterReached(600)){
+                gp.playMusic(0);
+                scenePhase++;
+            }
+        }
+
+        if(scenePhase == 6){
+
+            drawBlackBackground(1f);
+
+            drawString(1f, 120f, gp.screenHeight / 2, "Blue Boy Adventure", 40);
+
+            if(counterReached(480)){ scenePhase++; }
+        }
+
+        if(scenePhase == 7){
+
+            drawBlackBackground(1f);
+            y = gp.screenHeight / 2;
+            drawString(1f, 38f, y, endCredit, 40);
+            if(counterReached(480)){ scenePhase++; }
+        }
+
+        if(scenePhase == 8){
+            drawBlackBackground(1f);
+            y--;
+            drawString(1f, 38f, y, endCredit, 40);
+
+            if(counterReached(1200)){
+
+                sceneNum = NA;
+                scenePhase = 0;
+                gp.ui.commandNum = -1;
+                gp.stopMusic();
+                gp.gameState = gp.GAME_OVER_STATE;
+            }
+        }
+
+    }
+
+    public boolean counterReached(int target){
+        boolean counterReached = false;
+
+        counter++;
+        if(counter > target){
+            counterReached = true;
+            counter = 0;
+        }
+
+        return counterReached;
+    }
+
+    public void drawBlackBackground(float alpha){
+
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+    }
+
+    public void drawString(float alpha, float fontSize, int y, String text, int lineHeight){
+
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(fontSize));
+
+        for(String line : text.split("\n")){
+            int x = gp.ui.getXforCenteredText(line);
+            g2.drawString(line, x, y);
+            y += lineHeight;
+        }
+
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 }

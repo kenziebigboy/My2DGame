@@ -230,7 +230,7 @@ public class UI {
             x += iconSize;
             manaStartY = y + 32;
 
-            if(i % 8 == 0){
+            if(i % 16 == 0){
                 x = gp.tileSize / 2;
                 y += iconSize;
             }
@@ -238,7 +238,7 @@ public class UI {
 
         // Draw Max Mana
         x = gp.tileSize / 2 - 5;
-        y = (int) (gp.tileSize * 1.5);
+        y = (int) (gp.tileSize * 2);
         i = 0;
         while (i < gp.player.maxMana){
             g2.drawImage(crystal_blank, x, y , null);
@@ -248,7 +248,7 @@ public class UI {
 
         // Draw Mana
         x = gp.tileSize / 2 - 5;
-        y = (int) (gp.tileSize * 1.5);
+        y = (int) (gp.tileSize * 2);
         i = 0;
 
         while (i < gp.player.mana){
@@ -267,9 +267,8 @@ public class UI {
 
             if(monster != null && monster.inCamera()){
 
-                // Monster HP bar
                 if(monster.hpBarOn && !monster.boss){
-
+                    System.out.println("yes");
                     double oneScale = (double) gp.tileSize / monster.maxLife;
                     double hpBarValue = oneScale * monster.life;
 
@@ -284,7 +283,9 @@ public class UI {
                         monster.hpBarCounter = 0;
                         monster.hpBarOn = false;
                     }
-                } else {
+                }
+
+                if(monster.boss) {
 
                     double oneScale = (double) gp.tileSize * 8 / monster.maxLife;
                     double hpBarValue = oneScale * monster.life;
@@ -294,6 +295,7 @@ public class UI {
 
                     g2.setColor(new Color(35,35,35));
                     g2.fillRect(x - 1,y - 1, gp.tileSize * 8  + 2, 12);
+
 
                     g2.setColor(new Color(255,0,30));
                     g2.fillRect(x, y, (int) hpBarValue, 20);

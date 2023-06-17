@@ -2,6 +2,7 @@ package com.kenzie.game.entity;
 
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.KeyHandler;
+import com.kenzie.game.data.Progress;
 import com.kenzie.game.object.*;
 
 import java.awt.*;
@@ -51,7 +52,7 @@ public class Player extends Entity {
 
         // Player Status
         level = 1;
-        maxLife = 18;
+        maxLife = 32;
         life = maxLife;
 
         maxMana = 4;
@@ -82,14 +83,11 @@ public class Player extends Entity {
 
     public void setDefaultPositions(){
 
-//        gp.currentMap = 1;
-//        worldX = gp.tileSize * 23;
-//        worldY = gp.tileSize * 21;
-
-        gp.currentMap = 3;
-        worldX = gp.tileSize * 26;
-        worldY = gp.tileSize * 39;
+        gp.currentMap = 0;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
         direction = "down";
+
 
     }
 

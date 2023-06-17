@@ -3,9 +3,6 @@ package com.kenzie.game.environment;
 import com.kenzie.game.GamePanel;
 
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 public class Lighting {
