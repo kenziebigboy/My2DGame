@@ -1,8 +1,6 @@
 package com.kenzie.game.data;
 
 import com.kenzie.game.GamePanel;
-import com.kenzie.game.entity.Entity;
-import com.kenzie.game.object.*;
 
 import java.io.*;
 
@@ -101,7 +99,7 @@ public class SaveLoad {
            // Player Inventory
             gp.player.inventory.clear();
             for(int i = 0; i < ds.itemNames.size(); i++){
-                gp.player.inventory.add(gp.eGenerator.getOject(ds.itemNames.get(i)));
+                gp.player.inventory.add(gp.eGenerator.getObject(ds.itemNames.get(i)));
                 gp.player.inventory.get(i).amount = ds.itemAmounts.get(i);
             }
 
@@ -119,11 +117,11 @@ public class SaveLoad {
                         gp.obj[mapNum][i] = null;
                     } else {
 
-                        gp.obj[mapNum][i] = gp.eGenerator.getOject(ds.mapObjectNames[mapNum][i]);
+                        gp.obj[mapNum][i] = gp.eGenerator.getObject(ds.mapObjectNames[mapNum][i]);
                         gp.obj[mapNum][i].worldX = ds.mapObjectWorldX[mapNum][i];
                         gp.obj[mapNum][i].worldY = ds.mapObjectWorldY[mapNum][i];
                         if(ds.mapObjectLootName[mapNum][i] != null){
-                            gp.obj[mapNum][i].setLoot(gp.eGenerator.getOject(ds.mapObjectLootName[mapNum][i]));
+                            gp.obj[mapNum][i].setLoot(gp.eGenerator.getObject(ds.mapObjectLootName[mapNum][i]));
                         }
                         gp.obj[mapNum][i].opened = ds.mapObjectOpened[mapNum][i];
                         if(gp.obj[mapNum][i].opened){

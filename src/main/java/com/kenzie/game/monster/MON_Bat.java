@@ -12,13 +12,14 @@ import java.util.Random;
 public class MON_Bat extends Entity {
 
     GamePanel gp;
+    public static final String MONSTER_NAME = "Bat";
 
     public MON_Bat(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
         type = TYPE_MONSTER;
-        name = "Bat";
+        name = MONSTER_NAME;
         defaultSpeed = 4;
         speed = defaultSpeed;
         maxLife = 4;

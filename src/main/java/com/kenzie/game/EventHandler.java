@@ -74,7 +74,7 @@ public class EventHandler {
             else if(hit(1,12,13,"any")){ teleport(0,10,39, gp.OUTSIDE);}
 
             else if (hit(0,23,12, "any")) healingPool(gp.DIALOGUE_STATE);
-            else if (hit(1,12,9, "up"))  speak(gp.npc[1][0]);
+            else if (hit(1,12,9, "up"))  speak(gp.npc[1][2]);
 
             else if(hit(0,12,9,"any")){ teleport(2,9,41, gp.DUNGEON);} // to the dungeon
             else if(hit(2,9,41,"any")){ teleport(0,12,9, gp.OUTSIDE);} // to outside

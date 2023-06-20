@@ -9,7 +9,7 @@ import com.kenzie.game.object.OBJ_Door_Iron;
 public class MON_SkeletonLord extends Entity {
 
     GamePanel gp;
-    public static final String MON_NAME = "Skeleton Lord";
+    public static final String MONSTER_NAME = "Skeleton Lord";
 
     public MON_SkeletonLord(GamePanel gp) {
         super(gp);
@@ -17,7 +17,7 @@ public class MON_SkeletonLord extends Entity {
 
         type = TYPE_MONSTER;
         boss = true;
-        name = MON_NAME;
+        name = MONSTER_NAME;
         defaultSpeed = 1;
         speed = defaultSpeed;
         maxLife = 50;

@@ -2,7 +2,6 @@ package com.kenzie.game.entity;
 
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.KeyHandler;
-import com.kenzie.game.data.Progress;
 import com.kenzie.game.object.*;
 
 import java.awt.*;
@@ -83,7 +82,7 @@ public class Player extends Entity {
 
     public void setDefaultPositions(){
 
-        gp.currentMap = 0;
+        gp.currentMap = 3;
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         direction = "down";
@@ -618,7 +617,7 @@ public class Player extends Entity {
 
         boolean canObtain = false;
 
-        Entity netItem = gp.eGenerator.getOject(item.name);
+        Entity netItem = gp.eGenerator.getObject(item.name);
 
         // Check if stackable
         if(netItem.stackable){

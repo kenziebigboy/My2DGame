@@ -1,14 +1,7 @@
 package com.kenzie.game;
 
 import com.kenzie.game.data.Progress;
-import com.kenzie.game.entity.NPC_BigRock;
-import com.kenzie.game.entity.NPC_Merchant;
-import com.kenzie.game.entity.NPC_OldMan;
-import com.kenzie.game.monster.MON_Bat;
-import com.kenzie.game.monster.MON_GreenSlime;
-import com.kenzie.game.monster.MON_Orc;
-import com.kenzie.game.monster.MON_SkeletonLord;
-import com.kenzie.game.object.*;
+
 import com.kenzie.game.tile_interactive.IT_DestructibleWall;
 import com.kenzie.game.tile_interactive.IT_DryTree;
 import com.kenzie.game.tile_interactive.IT_MetalPlate;
@@ -23,200 +16,71 @@ public class AssetSetter {
 
     public void setObject(){
 
-        int mapNum = 0;
-        int i = 0;
-        gp.obj[mapNum][i] = new OBJ_Coin_Bronze(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 25;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 23;
 
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Lantern(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 18;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
+        addObjects("Bronze Coin", 0, 25, 23, null);
+        addObjects("Lantern", 0, 18, 20, null);
+        addObjects("Tent", 0, 19, 20, null);
+        addObjects("Woodcutter's Axe", 0, 26, 21, null);
+        addObjects("Blue Shield", 0, 35, 21, null);
 
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Tent(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 19;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
+        for(int i = 9; i < 13; i++) {
+            addObjects("Red Potion", 1, 10, 1, null);
+        }
 
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Axe(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 26;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 21;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Shield_Blue(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 35;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 21;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Potion_Red(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 10;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 8;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Potion_Red(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 10;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 9;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Potion_Red(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 10;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 10;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Door(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 14;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 28;
-
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Key(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 12;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 8;
-
-        mapNum = 2;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Pickaxe(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 40;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 41;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Potion_Red(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 13;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 16;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Potion_Red(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 26;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 34;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Potion_Red(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 27;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 15;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Door_Iron(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 18;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 23;
-
-        mapNum = 3;
-        i = 0;
-//        gp.obj[mapNum][i] = new OBJ_Door_Iron(gp);
-//        gp.obj[mapNum][i].worldX = gp.tileSize * 25;
-//        gp.obj[mapNum][i].worldY = gp.tileSize * 15;
-
-        i++;
-        gp.obj[mapNum][i] = new OBJ_BlueHeart(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 25;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 8;
+        addObjects("Door", 0, 14, 28, null);
+        addObjects("Chest", 0, 14, 21, "Tent");
+        addObjects("Chest", 2, 40, 41, "Pickaxe");
+        addObjects("Chest", 2, 13, 16, "Red Potion");
+        addObjects("Chest", 2, 26, 34, "Red Potion");
+        addObjects("Chest", 2, 27, 15, "Red Potion");
+        addObjects("Iron Door", 2, 18, 23, null);
+        addObjects("Iron Door", 3, 25, 15, null);
+        addObjects("Blue Heart", 3, 25, 8, null);
 
     }
 
     public void setNPC(){
 
-        int mapNum = 0;
-        int i = 0;
+        addNPC("Old Man", 0, 25, 26);
+        //addNPC("Old Man", 0, 17, 21);
 
-        gp.npc[mapNum][i] = new NPC_OldMan(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize * 25;
-        gp.npc[mapNum][i].worldY = gp.tileSize * 10;
+        addNPC("Merchant", 1, 12, 7);
+        addNPC("Old Man", 1, 10, 11);
 
-        i++;
-        gp.npc[mapNum][i] = new NPC_OldMan(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize * 17;
-        gp.npc[mapNum][i].worldY = gp.tileSize * 21;
-
-        mapNum = 1;
-        i = 0;
-        gp.npc[mapNum][i] = new NPC_Merchant(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize * 12;
-        gp.npc[mapNum][i].worldY = gp.tileSize * 7;
-
-        mapNum = 1;
-        i = 0;
-        gp.npc[mapNum][i] = new NPC_OldMan(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize * 10;
-        gp.npc[mapNum][i].worldY = gp.tileSize * 11;
-
-        mapNum = 2;
-        i = 0;
-        gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize * 20;
-        gp.npc[mapNum][i].worldY = gp.tileSize * 25;
-
-        i++;
-        gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize * 11;
-        gp.npc[mapNum][i].worldY = gp.tileSize * 18;
-
-        i++;
-        gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize * 23;
-        gp.npc[mapNum][i].worldY = gp.tileSize * 14;
+        addNPC("Big Rock", 2, 20, 25);
+        addNPC("Big Rock", 2, 11, 18);
+        addNPC("Big Rock", 2, 11, 10);
 
     }
 
     public void setMonster(){
 
-        int mapNum = 0;
-        int i = 0;
-        gp.monster[mapNum][i] = new MON_GreenSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 28;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 21;
+        int x = 0;
+        int y = 0;
 
-        i++;
-        gp.monster[mapNum][i] = new MON_GreenSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 23;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 37;
+        // Random put them in screen each time you play
+        for(int i = 0; i < 3; i++){
 
-        i++;
-        gp.monster[mapNum][i] = new MON_GreenSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 23;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 42;
+            x = gp.ut.getRandomBetween(20, 25);
+            y = gp.ut.getRandomBetween(36, 42);
+            addMonster("Green Slime",0, x, y);
 
-        i++;
-        gp.monster[mapNum][i] = new MON_Orc(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 12;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 33;
+        }
 
-        mapNum = 2;
-        i++;
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 34;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 39;
-        i++;
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 36;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 25;
+        x = gp.ut.getRandomBetween(10, 15);
+        y = gp.ut.getRandomBetween(29, 34);
+        addMonster("Orc",0, x, y);
 
-        i++;
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 39;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 26;
+        addMonster("Bat",2, 34, 39);
+        addMonster("Bat",2, 34, 25);
+        addMonster("Bat",2, 39, 26);
+        addMonster("Bat",2, 28, 28);
+        addMonster("Bat",2, 28, 11);
+        addMonster("Bat",2, 10, 19);
 
-        i++;
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 28;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 11;
-
-        i++;
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize * 10;
-        gp.monster[mapNum][i].worldY = gp.tileSize * 19;
-
-        mapNum = 3;
-        i++;
 
         if(!Progress.skeletionLordDefated) {
-            gp.monster[mapNum][i] = new MON_SkeletonLord(gp);
-            gp.monster[mapNum][i].worldX = gp.tileSize * 23;
-            gp.monster[mapNum][i].worldY = gp.tileSize * 16;
+            addMonster("Skeleton Lord",3, 23, 16);
         }
     }
 
@@ -270,5 +134,40 @@ public class AssetSetter {
         gp.iTile[mapNum][i] = new IT_MetalPlate(gp,  39, 31); i++;
 
 
+    }
+
+    public void addObjects(String name, int mapNum, int x, int y, String  loot){
+
+        System.out.println(name);
+        int i = GamePanel.obj_List_Counter;
+        gp.obj[mapNum][i] = gp.eGenerator.getObject(name);
+        gp.obj[mapNum][i].worldX = gp.tileSize * x;
+        gp.obj[mapNum][i].worldY = gp.tileSize * y;
+
+        if(loot != null){
+            gp.obj[mapNum][i].setLoot(gp.eGenerator.getObject(loot));
+        }
+        GamePanel.obj_List_Counter++;
+
+    }
+
+    public void addNPC(String name, int mapNum, int x, int y){
+
+        int i = GamePanel.npc_List_Counter;
+        gp.npc[mapNum][i] = gp.eGenerator.getNPC(name);
+        gp.npc[mapNum][i].worldX = gp.tileSize * x;
+        gp.npc[mapNum][i].worldY = gp.tileSize * y;
+
+        GamePanel.npc_List_Counter++;
+    }
+
+    public void addMonster(String name, int mapNum, int x, int y){
+
+        int i = GamePanel.monster_List_Counter;
+        gp.monster[mapNum][i] = gp.eGenerator.getMonster(name);
+        gp.monster[mapNum][i].worldX = gp.tileSize * x;
+        gp.monster[mapNum][i].worldY = gp.tileSize * y;
+
+        GamePanel.monster_List_Counter++;
     }
 }

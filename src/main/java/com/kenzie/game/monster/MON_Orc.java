@@ -12,13 +12,14 @@ public class MON_Orc extends Entity {
 
 
     GamePanel gp;
+    public static final String MONSTER_NAME = "Orc";
 
     public MON_Orc(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
         type = TYPE_MONSTER;
-        name = "Orc";
+        name = MONSTER_NAME;
         defaultSpeed = 1;
         speed = defaultSpeed;
         maxLife = 10;

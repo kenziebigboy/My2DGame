@@ -91,7 +91,7 @@ public class CutsceneManager {
             // Search the boss
             for(int i = 0; i < gp.monster[1].length; i++){
                 if(gp.monster[gp.currentMap][i] != null &&
-                    gp.monster[gp.currentMap][i].name == MON_SkeletonLord.MON_NAME){
+                    gp.monster[gp.currentMap][i].name == MON_SkeletonLord.MONSTER_NAME){
 
                     gp.monster[gp.currentMap][i].sleep = false;
                     gp.ui.npc = gp.monster[gp.currentMap][i];

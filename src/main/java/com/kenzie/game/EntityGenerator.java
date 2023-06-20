@@ -2,6 +2,8 @@ package com.kenzie.game;
 
 import com.kenzie.game.entity.Entity;
 import com.kenzie.game.object.*;
+import com.kenzie.game.entity.*;
+import com.kenzie.game.monster.*;
 
 public class EntityGenerator {
 
@@ -11,7 +13,7 @@ public class EntityGenerator {
         this.gp = gp;
     }
 
-    public Entity getOject(String itemName){
+    public Entity getObject(String itemName){
 
         Entity obj = null;
 
@@ -34,10 +36,39 @@ public class EntityGenerator {
             case OBJ_Shield_Wood.OBJ_NAME -> obj = new OBJ_Shield_Wood(gp);
             case OBJ_Sword_Normal.OBJ_NAME -> obj = new OBJ_Sword_Normal(gp);
             case OBJ_Tent.OBJ_NAME -> obj = new OBJ_Tent(gp);
+            case OBJ_BlueHeart.OBJ_NAME -> obj = new OBJ_BlueHeart(gp);
 
 
 
         }
         return  obj;
+    }
+
+    public Entity getNPC(String npc_Name){
+
+        Entity npc = null;
+
+        switch (npc_Name){
+            case NPC_BigRock.NPC_NAME -> npc = new NPC_BigRock(gp);
+            case NPC_OldMan.NPC_NAME -> npc = new NPC_OldMan(gp);
+            case NPC_Merchant.NPC_NAME -> npc = new NPC_Merchant(gp);
+
+        }
+
+        return npc;
+    }
+
+    public Entity getMonster(String monster_name){
+
+        Entity mon = null;
+
+        switch (monster_name){
+            case MON_Bat.MONSTER_NAME -> mon = new MON_Bat(gp);
+            case MON_GreenSlime.MONSTER_NAME -> mon = new MON_GreenSlime(gp);
+            case MON_Orc.MONSTER_NAME -> mon = new MON_Orc(gp);
+            case MON_SkeletonLord.MONSTER_NAME -> mon = new MON_SkeletonLord(gp);
+        }
+
+        return mon;
     }
 }

@@ -5,9 +5,12 @@ import com.kenzie.game.object.*;
 
 public class NPC_Merchant extends Entity{
 
+    public static final String NPC_NAME = "Merchant";
+
     public NPC_Merchant(GamePanel gp) {
         super(gp);
 
+        name = NPC_NAME;
         direction = "down";
         speed = 1;
 

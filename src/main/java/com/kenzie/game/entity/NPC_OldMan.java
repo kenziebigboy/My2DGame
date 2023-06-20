@@ -7,9 +7,12 @@ import java.util.Random;
 
 public class NPC_OldMan extends Entity {
 
+    public static final String NPC_NAME = "Old Man";
+
     public NPC_OldMan(GamePanel gp) {
         super(gp);
 
+        name = NPC_NAME;
         direction = "down";
         speed = 2;
 

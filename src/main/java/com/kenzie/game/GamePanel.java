@@ -63,13 +63,17 @@ public class GamePanel extends JPanel implements Runnable{
     SaveLoad saveLoad = new SaveLoad(this);
     public EntityGenerator eGenerator = new EntityGenerator(this);
     public CutsceneManager csManager = new CutsceneManager(this);
+    public UtilityTool ut = new UtilityTool();
     Thread gameThread;
 
     // Entity & Objects
     public Player player = new Player(this, keyH);
     public Entity[][] obj =  new Entity[maxMap][20];
+    public static int obj_List_Counter = 0;
     public Entity[][] npc = new Entity[maxMap][10];
+    public static int npc_List_Counter = 0;
     public Entity[][] monster = new Entity[maxMap][20];
+    public static int monster_List_Counter = 0;
     public InteractiveTile[][] iTile = new InteractiveTile[maxMap][50];
     public Entity[][] projectile = new Entity[maxMap][20];
     //public ArrayList<Entity> projectileList = new ArrayList<>();
@@ -143,6 +147,10 @@ public class GamePanel extends JPanel implements Runnable{
         player.resetCounter();
         aSetter.setNPC();
         aSetter.setMonster();
+
+        obj_List_Counter = 0;
+        npc_List_Counter = 0;
+        monster_List_Counter = 0;
 
         if(restart) {
             player.setDefaultValues();
@@ -379,6 +387,7 @@ public class GamePanel extends JPanel implements Runnable{
             if(nextArea == DUNGEON){
                 playMusic(19);
             }
+            npc_List_Counter = 0;
             aSetter.setNPC();
         }
         currentArea = nextArea;
@@ -484,7 +493,7 @@ public class GamePanel extends JPanel implements Runnable{
                 g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
                 g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
                 g2.drawString("Col: " + (player.worldX + player.solidArea.x) / tileSize, x, y); y+= lineHeight;
-                g2.drawString("Row: " + (player.worldX + player.solidArea.x) / tileSize, x, y); y+= lineHeight;
+                g2.drawString("Row: " + (player.worldY + player.solidArea.y) / tileSize, x, y); y+= lineHeight;
                 g2.drawString("Draw Time: " + passed, x, y); y+= lineHeight;
                 g2.drawString("God Mode: " + (keyH.godModeOn ? "Yes" : "No"), x , y);
 
