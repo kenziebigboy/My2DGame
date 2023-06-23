@@ -10,6 +10,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Tile_Data_Manage" />
+            <option value="$PROJECT_DIR$/Tile_Data_Manger" />
           </set>
         </option>
       </GradleProjectSettings>
