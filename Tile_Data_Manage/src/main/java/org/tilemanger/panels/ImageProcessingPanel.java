@@ -9,6 +9,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -18,16 +19,32 @@ public class ImageProcessingPanel extends JPanel {
     public Color borderColor = Reference.borderColor;
     public Font panelFont = Reference.panelFont;
     public Font smallFont = Reference.smallFont;
+    public String statusText = "";
+    public Image image;
+    public Graphics2D g2;
+    public BufferedImage bufferedImage;
+    public int scale = 2;
+    int screenX;
+    int screenY;
+
 
     static boolean packageEdit = false;
     static int packageEdit_ID = -1;
 
+    public ImageProcessingPanel(){
+        bufferedImage = new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D) bufferedImage.getGraphics();
+    }
+
     public void displayImageProcessingPanel(int graphicePackageID, File filePath){
 
-        int panelX = 200;
-        int panelY = 25;
-        int panelWidth = 500;
-        int panelHeight = 600;
+
+        int panelWidth = 800;
+        int panelHeight = 650;
+        int panelX = (getParent().getWidth() - panelWidth) / 2 ;
+        int panelY = (getParent().getHeight() - panelHeight) / 2  ;
+
+        System.out.println(getParent().getWidth() + " " + getParent().getHeight() );
 
         setBounds(panelX, panelY, panelWidth, panelHeight);
         setLayout(null);
@@ -41,19 +58,19 @@ public class ImageProcessingPanel extends JPanel {
                         borderFont, borderColor);
         setBorder(titledBorder);
 
-        int x = 20;  int heightSpace   = 5;
-        int y = 40;  int widthSpace    = 5;
+        int x = 25;  int heightSpace   = 5;
+        int y = 50;  int widthSpace    = 5;
 
-        int col_1_componentsWidth = 100;      // how width the column one will be
-        int col_2_componentsWidth = 160;      // how width the column two will be
+        int col_1_componentsWidth = 512;      // how width the column one will be
+        int col_2_componentsWidth = 210;      // how width the column two will be
 
         int col_1_x_start = x;                                                   // column 1 starting point
-        int col_2_x_start = x + col_1_componentsWidth + widthSpace;;               // column 2 starting point
+        int col_2_x_start = x + col_1_componentsWidth + widthSpace * 3;               // column 2 starting point
         int col_1_y_start = y;
         int col_2_y_start = y;
 
         int componentHeight = 20;
-        int displayImageSize = 450;
+        int displayImageSize = 512;
 
         // Setup x & y for column 1
         x = col_1_x_start; y = col_1_y_start;
@@ -62,62 +79,70 @@ public class ImageProcessingPanel extends JPanel {
         int buttonHeight        = 30;
         int buttonSpace         = 10;
 
-        int x_buttonStart       = (panelWidth - Reference.totalButtonWidth(3,buttonWidth,buttonSpace)) / 2;
+        int x_buttonStart       = col_2_x_start + widthSpace +
+                (col_2_componentsWidth - Reference.totalButtonWidth(2,buttonWidth,buttonSpace)) / 2;
 
         // ***************************************************************************************
         // Create components column 1
         // ***************************************************************************************
 
-        ImageIcon imageIcon_II = new ImageIcon();
+        JLabel iconFileName_LBL = new JLabel("");
         JLabel displayIcon_LBL = new JLabel("");
 
         Border imageBorder = BorderFactory.createLineBorder(Color.gray,1);
         displayIcon_LBL.setBorder(imageBorder);
 
-        JLabel iconFileName_LBL = new JLabel("");
-        JLabel note_LBL = new JLabel("Is this the right file?");
-
         // ***************************************************************************************
         // Setup components column 1
         // ***************************************************************************************
+
+        iconFileName_LBL.setBounds(x,y,col_1_componentsWidth,componentHeight);
+        iconFileName_LBL.setFont(borderFont);
+        iconFileName_LBL.setHorizontalAlignment(JLabel.LEFT);
+
+        y += componentHeight + heightSpace * 2;
+
+        screenX = x;
+        screenY = y;
 
         displayIcon_LBL.setBounds(x,y,displayImageSize, displayImageSize);
         displayIcon_LBL.setFont(panelFont);
         displayIcon_LBL.setHorizontalAlignment(JLabel.CENTER);
 
-        y += displayImageSize + heightSpace;
-
-        iconFileName_LBL.setBounds(x,y,400,20);
-        iconFileName_LBL.setFont(borderFont);
-        iconFileName_LBL.setHorizontalAlignment(JLabel.LEFT);
-
-        y += 20 + heightSpace;
-
-        note_LBL.setBounds(x + 5, y, 400, 25);
-        note_LBL.setFont(borderFont);
-        note_LBL.setForeground(Color.GREEN);
-        note_LBL.setHorizontalAlignment(JLabel.CENTER);
-
-        add(displayIcon_LBL);
-        add(iconFileName_LBL);
-        add(note_LBL);
-
         File openedFile = filePath;
         iconFileName_LBL.setText("File Name: " + openedFile.getName());
         try {
 
-            Image image = ImageIO.read(openedFile.getAbsoluteFile());
+            bufferedImage = ImageIO.read(openedFile.getAbsoluteFile());
 
-            Image dimg = image.getScaledInstance(displayIcon_LBL.getWidth(), displayIcon_LBL.getHeight(),
-                    Image.SCALE_SMOOTH);
-            imageIcon_II.setImage(dimg);
-
-            displayIcon_LBL.setIcon(imageIcon_II);
             repaint();
 
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
+
+
+
+        // ***************************************************************************************
+        // Create components column 2
+        // ***************************************************************************************
+
+        JLabel processStatus_LBL = new JLabel("Status");
+        JTextArea processText_TXA = new JTextArea("Is this the right file\nYes / No");
+
+        x = col_2_x_start; y = col_2_y_start;
+
+        processStatus_LBL.setBounds(x + 5, y + 5, col_2_componentsWidth, heightSpace + 10);
+        processStatus_LBL.setFont(borderFont);
+        processStatus_LBL.setHorizontalAlignment(JLabel.CENTER);
+
+        y += heightSpace * 6;
+
+        processText_TXA.setBounds(x, y, col_2_componentsWidth + 10, 475);
+        processText_TXA.setFont(panelFont);
+        processText_TXA.setBackground(Color.BLACK);
+        processText_TXA.setForeground(Color.WHITE);
+        processText_TXA.setMargin(new Insets(5,5,5,5));
 
         // ***************************************************************************************
         // Create buttons
@@ -132,8 +157,7 @@ public class ImageProcessingPanel extends JPanel {
         // Button Setup
         // ***************************************************************************************
 
-
-        y = 550 + heightSpace;
+        y += processText_TXA.getHeight() + heightSpace;
         x = x_buttonStart;
 
         yesGoodTileSheet_BTN.setBounds(x, y, buttonWidth, buttonHeight);
@@ -144,12 +168,14 @@ public class ImageProcessingPanel extends JPanel {
         noGoodTileSheet_BTN.setBounds(x, y, buttonWidth, buttonHeight);
         noGoodTileSheet_BTN.setFont(panelFont);
 
-        x += buttonWidth + buttonSpace;
 
-
+        add(displayIcon_LBL);
+        add(iconFileName_LBL);
 
         add(yesGoodTileSheet_BTN);
         add(noGoodTileSheet_BTN);
+        add(processStatus_LBL);
+        add(processText_TXA);
 
         // ***************************************************************************************
         // Button Actions
@@ -159,11 +185,26 @@ public class ImageProcessingPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                removeAll();
-                setVisible(false);
+                statusText = "Analyzing Image";
+                processText_TXA.setText(statusText);
+                int width = bufferedImage.getWidth(null);
+                int height = bufferedImage.getHeight(null);
+
+                statusText += "\nWidth: " + width;
+                statusText += "\nHeight: " + height;
+
+                processText_TXA.setText(statusText);
+
+                statusText += "\n\nCutting Image Into";
+                statusText += "\n" + width / 16 + " X " + height / 16 + "Tiles";
+
+                processText_TXA.setText(statusText);
+
                 repaint();
-                Main.packageManagerPanel.setGoodTileSheet(true);
-                Main.packageManagerPanel.setVisible(true);
+
+
+
+
             }
         });
 
@@ -181,5 +222,22 @@ public class ImageProcessingPanel extends JPanel {
 
 
 
+    }
+
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g2 = (Graphics2D) g;
+
+
+
+//        BufferedImage scaledImage = new BufferedImage(512,512,bufferedImage.getType());
+//        g2 = scaledImage.createGraphics();
+//        g2.drawImage(bufferedImage,screenX,screenY,null);
+
+        g2.drawImage(bufferedImage, screenX, screenY, 512,512,null);
+
+
+        g2.setColor(Color.RED);
+        g2.drawLine(screenX,screenY,100 + screenX, 100 + screenY);
     }
 }
