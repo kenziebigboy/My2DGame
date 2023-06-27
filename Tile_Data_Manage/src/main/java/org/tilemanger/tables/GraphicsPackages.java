@@ -1,11 +1,20 @@
 package org.tilemanger.tables;
 
+import org.tilemanger.Main;
 import org.tilemanger.Reference;
 
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GraphicsPackages implements Serializable{
 
@@ -19,6 +28,7 @@ public class GraphicsPackages implements Serializable{
     private static int nextGraphicsPackageID = 0;
 
     static String path = Reference.FILEPATH + "/" + Reference.GRAPHICS_PACKAGE_FILE_NAME;
+
     @Serial
     private static final long serialVersionUID = 6529685098267757690L;
 
@@ -26,14 +36,10 @@ public class GraphicsPackages implements Serializable{
 
         readDataFromDisk();
 
-
         this.packageID = nextGraphicsPackageID;
         this.name = name;
-
         nextGraphicsPackageID++;
-
         graphicsPackagesList.add(this);
-
         writeDataToDisk();
 
     }
@@ -41,6 +47,16 @@ public class GraphicsPackages implements Serializable{
     // Get the Last ID Added
     public static int getLastAddedID(){
         return nextGraphicsPackageID -1;
+    }
+
+    // Reset TileSheetData = null
+    public static void resetTileSheetData(int packageID){
+        readDataFromDisk();
+
+        graphicsPackagesList.get(packageID).tileSheetIDList = null;
+
+        writeDataToDisk();
+
     }
 
     // Get the Package Name
@@ -81,12 +97,17 @@ public class GraphicsPackages implements Serializable{
     }
 
     // Add TileSheet Data
-    public static boolean  addTileSheetData(int id, String fileName){
+    public static boolean  addTileSheetData(int id, int tileSheetDataID){
 
         readDataFromDisk();
 
         // Check to see if tile sheet is in list
+        if(!checkForTileSheetData(id, tileSheetDataID)){
+            graphicsPackagesList.get(id).tileSheetIDList.add(tileSheetDataID);
 
+            writeDataToDisk();
+            return true;
+        }
 
         return false;
     }
@@ -106,6 +127,7 @@ public class GraphicsPackages implements Serializable{
         return -1;
     }
 
+    // Get Table of all the Graphics Packages
     public static DefaultTableModel getTableModel(){
 
         return new DefaultTableModel(makeTableRows(), COL_HEADERS){
@@ -120,6 +142,31 @@ public class GraphicsPackages implements Serializable{
             }
         };
 
+    }
+
+    // Get Table of all the TileSheetData for a given Graphics Package
+    public static DefaultTableModel getTableModelforTileSheetData(int packageID) throws IOException {
+
+        return new DefaultTableModel(makeTableRowsForTileSheetData(packageID), COL_HEADERS){
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return Integer.class;
+                    case 1:
+                        return Icon.class;
+                    default:
+                        return String.class;
+                }
+            }
+        };
+
+    }
+
+    // Get all Graphics Packages
+    public static ArrayList<GraphicsPackages> getGraphicsPackagesList(){
+        readDataFromDisk();
+        return graphicsPackagesList;
     }
 
     // Read data from disk
@@ -174,7 +221,7 @@ public class GraphicsPackages implements Serializable{
         graphicsPackagesList.clear();
 
         readDataFromDisk();
-        System.out.println(graphicsPackagesList.size());
+
         Object[][] rows = new Object[graphicsPackagesList.size()][COL_HEADERS.length];
 
         for(int i = 0; i < graphicsPackagesList.size(); i++){
@@ -182,6 +229,32 @@ public class GraphicsPackages implements Serializable{
             rows[i][0] = graphicsPackagesList.get(i).packageID;
             rows[i][1] = graphicsPackagesList.get(i).name;
 
+        }
+
+        return rows;
+    }
+
+    private static Object[][] makeTableRowsForTileSheetData(int packageID) {
+
+        graphicsPackagesList.clear();
+
+        readDataFromDisk();
+
+        GraphicsPackages graphicsPackage = graphicsPackagesList.get(packageID);
+
+        Object[][] rows = new Object[graphicsPackage.tileSheetIDList.size()][COL_HEADERS.length];
+
+        for(int i = 0; i < graphicsPackage.tileSheetIDList.size(); i++){
+
+            int index = graphicsPackage.tileSheetIDList.get(i);
+
+            TileSheetData tileSheetData = TileSheetData.getById(index);
+
+            File directory = new File("./resources/graphics_packages/Abandoned Mines/tilesets/SI_Abandoned_Mines_A5.png");
+
+            rows[i][0] = tileSheetData.tileSheet_ID;
+            rows[i][1] = new ImageIcon( directory.toString());
+//
         }
 
         return rows;
@@ -207,4 +280,26 @@ public class GraphicsPackages implements Serializable{
 //
 //
 //    }
+
+    private static boolean checkForTileSheetData(int gpaphicsPackageID,  int tileSheetDataID){
+
+        for(int i = 0; i < graphicsPackagesList.get(gpaphicsPackageID).tileSheetIDList.size(); i++){
+            if(graphicsPackagesList.get(gpaphicsPackageID).tileSheetIDList.get(i) == tileSheetDataID){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "GraphicsPackages{" +
+                "packageID=" + packageID +
+                ", name='" + name + '\'' +
+                ", tileSheetIDList=" + tileSheetIDList +
+                "}\n";
+    }
+
+
 }

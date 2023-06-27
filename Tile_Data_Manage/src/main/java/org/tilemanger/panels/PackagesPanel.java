@@ -12,10 +12,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class PackagesPanel extends JPanel{
 
-
+    public Main main;
     public static JTable packagesTable;
     
     public Font borderFont = Reference.borderFont;
@@ -28,13 +29,16 @@ public class PackagesPanel extends JPanel{
 
    //PackageManagerPanel packageManagerPanel = new PackageManagerPanel();
 
+    public PackagesPanel(Main main){
+        this.main = main;
+    }
 
     public void displayPackagePanel() {
 
-        int panelX = 200;
-        int panelY = 25;
-        int panelWidth = 360;
+        int panelWidth = 500;
         int panelHeight = 325;
+        int panelX = main.getStartX(panelWidth);
+        int panelY = main.getStartY(panelHeight);
 
         setBounds(panelX, panelY, panelWidth, panelHeight);
         setLayout(null);
@@ -54,7 +58,7 @@ public class PackagesPanel extends JPanel{
         int widthSpace = 5;
 
         int col_1_componentsWidth = 100;      // how width the column one will be
-        int col_2_componentsWidth = 160;      // how width the column two will be
+        int col_2_componentsWidth = 275;      // how width the column two will be
 
         int col_1_x_start = x;                                                   // column 1 starting point
         int col_2_x_start = x + col_1_componentsWidth + widthSpace;
@@ -118,7 +122,7 @@ public class PackagesPanel extends JPanel{
         packagesTable.getTableHeader().setReorderingAllowed(false);
         packagesTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
 
-        int[] columnWidths = {60, 100};
+        int[] columnWidths = {30, 245};
 
         TableColumnModel packagesColumnModel = packagesTable.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -144,7 +148,7 @@ public class PackagesPanel extends JPanel{
 
         y += componentHeight + heightSpace;
 
-        packagesTableScroll.setBounds(x, y, 160, 200);
+        packagesTableScroll.setBounds(x, y, col_2_componentsWidth, 200);
         packagesTableScroll.setFont(panelFont);
         packagesTableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         packagesTableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -180,7 +184,7 @@ public class PackagesPanel extends JPanel{
         closePackagePanel_BTN.setBounds(x, y, buttonWidth, buttonHeight);
         closePackagePanel_BTN.setFont(panelFont);
 
-        clearPackage_BTN.setBounds(290, 43, 60, 14);
+        clearPackage_BTN.setBounds(col_1_x_start + col_1_componentsWidth + col_2_componentsWidth + (widthSpace *3), 43, 60, 14);
         clearPackage_BTN.setFont(smallFont);
 
         // ***************************************************************************************
@@ -284,7 +288,11 @@ public class PackagesPanel extends JPanel{
                 setVisible(false);
                 repaint();
 
-               Main.packageManagerPanel.displayPackageManager(packageEdit_ID, null, false);
+                try {
+                    Main.packageManagerPanel.displayPackageManager(packageEdit_ID, null, false);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
 
             }
         });

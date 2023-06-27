@@ -24,11 +24,23 @@ public class TileData implements Serializable {
 
     public TileData(int tileSheet_ID, int tile_ID, int cellX, int cellY, int solidAll) {
 
+        readDataFromDisk();
+
         this.tileSheet_ID = tileSheet_ID;
         this.tile_ID = tile_ID;
         this.cellX = cellX;
         this.cellY = cellY;
         this.solidAll = solidAll;
+
+        tileDataList.add(this);
+
+        writeDataToDisk();
+    }
+
+    // Get a all Tile Data
+    public static ArrayList<TileData> getTileDataList(){
+        readDataFromDisk();
+        return tileDataList;
     }
 
     // Read data from disk
@@ -71,5 +83,16 @@ public class TileData implements Serializable {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "TileData{" +
+                "tileSheet_ID=" + tileSheet_ID +
+                ", tile_ID=" + tile_ID +
+                ", cellX=" + cellX +
+                ", cellY=" + cellY +
+                ", solidAll=" + solidAll +
+                "}\n";
     }
 }
