@@ -1,7 +1,6 @@
 package org.tilemanger.tables;
 
 import org.tilemanger.Reference;
-
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class TileSheetData implements Serializable{
     public int lastElement;
 
     public boolean active;
-    public ArrayList<TileData> tileData = new ArrayList<>();
+    public ArrayList<TileData> tileDataList = new ArrayList<>();
 
     private static ArrayList<TileSheetData> tileSheetDataList = new ArrayList<>();
     private static final String[] COL_HEADERS = {"ID", "Active", "Image"};
@@ -24,27 +23,91 @@ public class TileSheetData implements Serializable{
     private static int nextTileSheetID = 0;
     private static int nextTileDataID = 0;
 
-    public static String saveFilePath = Reference.FILEPATH + "/" + Reference.TILE_SHEET_DATA_FILE_NAME;
+    public static String saveFilePath = Reference.TILE_SHEET_DATA_FILE_NAME;
+    @Serial
+    private static final long serialVersionUID = -2887215203747855321L;
 
-    public TileSheetData(int packageId, String tileSheetName, String path, boolean active) {
+    public TileSheetData(int tileSheet_ID, int packageId, String tileSheetName, String path, boolean active, ArrayList<TileData> tileDataList) {
 
         readDataFromDisk();
 
-        this.tileSheet_ID = nextTileSheetID;
+        //this.tileSheet_ID = nextTileSheetID;
+        this.tileSheet_ID = tileSheet_ID;
         this.tileSheetName = tileSheetName;
         this.packageID = packageId;
         this.path = path;
         this.active = active;
+        this.tileDataList = tileDataList;
+        tileSheetDataList.add(this);
         nextTileSheetID++;
 
         writeDataToDisk();
 
     }
 
-    public void create_TileData(){
+    // Get the Last ID Added
+    public static int getLastAddedID(){
+        return nextTileSheetID -1;
+    }
 
-        // make tile data
+    public void add_TileData(ArrayList<Integer> tileDataID){
 
+        //this.tileDataID = tileDataID;
+
+        writeDataToDisk();
+
+    }
+
+    // Get the next TileDataId to start a new tile set
+    public int getNextTileDataID(){
+        return nextTileDataID;
+    }
+
+    // Update the first, last, and tileDataIDList tileData Elements
+    public void updateTileDataElements(int tileSheet_ID, int firstElement, int lastElement, ArrayList<Integer> tileDataIDList){
+
+        readDataFromDisk();
+
+        tileSheetDataList.get(tileSheet_ID).firstElement = firstElement;
+        tileSheetDataList.get(tileSheet_ID).lastElement = lastElement;
+        //tileSheetDataList.get(tileSheet_ID).tileDataID = tileDataIDList;
+
+        writeDataToDisk();
+
+    }
+
+    // Set the next TileDataId
+    public static void setNextTileDataID(int setNextTileDataID){
+        readDataFromDisk();
+
+        nextTileDataID = setNextTileDataID;
+
+        writeDataToDisk();
+    }
+
+    // Check to see if TileSheetData in list
+    public static boolean checkInList(int graphicsPackageID, String tileSheetName){
+
+        readDataFromDisk();
+
+        if(findInList(graphicsPackageID, tileSheetName)){
+            return true;
+        }
+
+        return false;
+    }
+
+    // Get Tile Sheet Data by id
+    public static TileSheetData getById(int tileSheet_ID){
+        readDataFromDisk();
+        return tileSheetDataList.get(tileSheet_ID);
+    }
+
+    // Get all Tile Sheet Data
+    public static ArrayList<TileSheetData> getTileSheetDataList(){
+        readDataFromDisk();
+
+        return tileSheetDataList;
     }
 
     public static DefaultTableModel getTableModel(){
@@ -124,5 +187,31 @@ public class TileSheetData implements Serializable{
         }
 
         return rows;
+    }
+
+    // Check to see if in list
+    private static boolean findInList(int packageID, String tileSheetName){
+
+        for(int i = 0; i < tileSheetDataList.size(); i++){
+            if(tileSheetDataList.get(i).packageID == packageID && tileSheetDataList.get(i).tileSheetName.equals(tileSheetName)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "TileSheetData{" +
+                "tileSheet_ID: " + tileSheet_ID +
+                ", packageID: " + packageID +
+                ", tileSheetName: '" + tileSheetName + '\'' + "\n" +
+                ", path: '" + path + '\'' +
+                ", firstElement: " + firstElement +
+                ", lastElement: " + lastElement +
+                ", active: " + active +  "\n" +
+                ", tileDataList: " + tileDataList +
+                '}';
     }
 }
