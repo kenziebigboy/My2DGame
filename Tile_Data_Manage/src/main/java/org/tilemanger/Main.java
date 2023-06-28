@@ -4,12 +4,11 @@ import org.tilemanger.panels.DisplayRawData;
 import org.tilemanger.panels.ImageProcessingPanel;
 import org.tilemanger.panels.PackageManagerPanel;
 import org.tilemanger.panels.PackagesPanel;
-import org.tilemanger.tables.GraphicsPackages;
-import org.tilemanger.tables.TileData;
-import org.tilemanger.tables.TileSheetData;
+import org.tilemanger.tables.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Main extends JFrame {
 
@@ -58,10 +57,54 @@ public class Main extends JFrame {
         Dimension mainScreenDim = new Dimension(1000,800);
         main.setPreferredSize(mainScreenDim);
 
+        //ArrayList<TileData> td = TileData.getTileDataList();
+        //ArrayList<TileData2> td2 = TileData2.getTileDataList();
+        //System.out.println(td.size());
+
+     /* ArrayList<TileSheetData2> tsd2 = TileSheetData2.getTileSheetDataList();
+
+      for(int i = 0; i < tsd2.size(); i++){
+
+          ArrayList<TileData> tileDataNewList = new ArrayList<>();
+
+          // Make TileData Objests to all to list
+          for(int j = 0; j < tsd2.get(i).tileDataID.size(); j++){
+              int index = tsd2.get(i).tileDataID.get(j);
+
+              TileData td = new TileData(td2.get(index).tile_ID,
+                                         td2.get(index).cellX,
+                                         td2.get(index).cellY,
+                                          true);
+
+              tileDataNewList.add(td);
+
+          }
+
+          // Now we can make new TileSheetData
+
+          TileSheetData tsd = new TileSheetData(tsd2.get(i).tileSheet_ID,
+                                                tsd2.get(i).packageID,
+                                                tsd2.get(i).tileSheetName,
+                                                tsd2.get(i).path,
+                                                true,
+                                                tileDataNewList);
+
+          if(i % 50 == 0){
+              System.out.println("Index: " + i);
+          }
+
+      }
+
+
+        System.exit(0);*/
+
     }
 
     public int getStartX(int panelWidth){
         return (getWidth() - panelWidth) / 2;
+
+
+
     }
 
     public int getStartY(int panelHeight){
@@ -114,7 +157,7 @@ public class Main extends JFrame {
         });
 
         displayRawTileData.addActionListener(e -> {
-            displayRawData.displayRawTileData(TileData.getTileDataList());
+            //displayRawData.displayRawTileData(TileData.getTileDataList());
         });
 
 

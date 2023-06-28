@@ -1,20 +1,10 @@
 package org.tilemanger.tables;
 
-import org.tilemanger.Main;
 import org.tilemanger.Reference;
-
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class GraphicsPackages implements Serializable{
 
@@ -27,7 +17,7 @@ public class GraphicsPackages implements Serializable{
     private static final String[] COL_HEADERS = {"ID", "Name"};
     private static int nextGraphicsPackageID = 0;
 
-    static String path = Reference.FILEPATH + "/" + Reference.GRAPHICS_PACKAGE_FILE_NAME;
+    static String path = Reference.GRAPHICS_PACKAGE_FILE_NAME;
 
     @Serial
     private static final long serialVersionUID = 6529685098267757690L;
@@ -250,8 +240,8 @@ public class GraphicsPackages implements Serializable{
 
             TileSheetData tileSheetData = TileSheetData.getById(index);
 
-            File directory = new File("./resources/graphics_packages/Abandoned Mines/tilesets/SI_Abandoned_Mines_A5.png");
-
+            File directory = new File("./resources/graphics_packages/" + tileSheetData.path + tileSheetData.tileSheetName );
+            System.out.println(directory.toString());
             rows[i][0] = tileSheetData.tileSheet_ID;
             rows[i][1] = new ImageIcon( directory.toString());
 //

@@ -3,8 +3,6 @@ package org.tilemanger.panels;
 import org.tilemanger.Main;
 import org.tilemanger.Reference;
 import org.tilemanger.tables.GraphicsPackages;
-import org.tilemanger.tables.TileSheetData;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -12,8 +10,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -64,8 +60,9 @@ public class PackageManagerPanel extends JPanel {
         // Display the Graphics Package working with
         JLabel graphicsPackage_LBL = new JLabel("Package: " +  currentPackage.getName());
         graphicsPackage_LBL.setFont(borderFont);
-        graphicsPackage_LBL.setBounds(50, 150, 200,50);
+        graphicsPackage_LBL.setBounds(50, 150, 400,50);
         graphicsPackage_LBL.setVisible(true);
+        graphicsPackage_LBL.setForeground(Color.BLUE);
         add(graphicsPackage_LBL);
 
         // ***************************************************************************************
@@ -170,8 +167,9 @@ public class PackageManagerPanel extends JPanel {
                 setVisible(false);
                 // Try to add tile sheet to Graphic Package
                Main.imagePerViewPanel.displayImageProcessingPanel(id, jFileChooser.getSelectedFile());
-
-                System.out.println(good);
+                removeAll();
+                setVisible(false);
+                repaint();
 
             }
         });

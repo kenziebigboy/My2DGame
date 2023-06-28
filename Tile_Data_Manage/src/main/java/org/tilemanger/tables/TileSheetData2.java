@@ -1,11 +1,12 @@
 package org.tilemanger.tables;
 
 import org.tilemanger.Reference;
+
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.util.ArrayList;
 
-public class TileSheetData implements Serializable{
+public class TileSheetData2 implements Serializable{
 
     public int tileSheet_ID;
     public int packageID;
@@ -15,29 +16,28 @@ public class TileSheetData implements Serializable{
     public int lastElement;
 
     public boolean active;
-    public ArrayList<TileData> tileDataList = new ArrayList<>();
+    public ArrayList<Integer> tileDataID = new ArrayList<>();
 
-    private static ArrayList<TileSheetData> tileSheetDataList = new ArrayList<>();
+    private static ArrayList<TileSheetData2> tileSheetDataList = new ArrayList<>();
     private static final String[] COL_HEADERS = {"ID", "Active", "Image"};
 
     private static int nextTileSheetID = 0;
     private static int nextTileDataID = 0;
 
-    public static String saveFilePath = Reference.TILE_SHEET_DATA_FILE_NAME;
+    public static String saveFilePath = Reference.TILE_SHEET_DATA_FILE_NAME_TEMP;
     @Serial
     private static final long serialVersionUID = -2887215203747855321L;
 
-    public TileSheetData(int tileSheet_ID, int packageId, String tileSheetName, String path, boolean active, ArrayList<TileData> tileDataList) {
+    public TileSheetData2(int tileSheet_ID, int packageId, String tileSheetName, String path, boolean active, ArrayList<Integer> tileDataID) {
 
         readDataFromDisk();
 
-        //this.tileSheet_ID = nextTileSheetID;
         this.tileSheet_ID = tileSheet_ID;
         this.tileSheetName = tileSheetName;
         this.packageID = packageId;
         this.path = path;
         this.active = active;
-        this.tileDataList = tileDataList;
+        this.tileDataID = tileDataID;
         tileSheetDataList.add(this);
         nextTileSheetID++;
 
@@ -52,7 +52,7 @@ public class TileSheetData implements Serializable{
 
     public void add_TileData(ArrayList<Integer> tileDataID){
 
-        //this.tileDataID = tileDataID;
+        this.tileDataID = tileDataID;
 
         writeDataToDisk();
 
@@ -70,7 +70,7 @@ public class TileSheetData implements Serializable{
 
         tileSheetDataList.get(tileSheet_ID).firstElement = firstElement;
         tileSheetDataList.get(tileSheet_ID).lastElement = lastElement;
-        //tileSheetDataList.get(tileSheet_ID).tileDataID = tileDataIDList;
+        tileSheetDataList.get(tileSheet_ID).tileDataID = tileDataIDList;
 
         writeDataToDisk();
 
@@ -98,13 +98,13 @@ public class TileSheetData implements Serializable{
     }
 
     // Get Tile Sheet Data by id
-    public static TileSheetData getById(int tileSheet_ID){
+    public static TileSheetData2 getById(int tileSheet_ID){
         readDataFromDisk();
         return tileSheetDataList.get(tileSheet_ID);
     }
 
     // Get all Tile Sheet Data
-    public static ArrayList<TileSheetData> getTileSheetDataList(){
+    public static ArrayList<TileSheetData2> getTileSheetDataList(){
         readDataFromDisk();
 
         return tileSheetDataList;
@@ -140,7 +140,7 @@ public class TileSheetData implements Serializable{
             FileInputStream readData = new FileInputStream(saveFilePath);
             ObjectInputStream readStream = new ObjectInputStream(readData);
 
-            tileSheetDataList = (ArrayList<TileSheetData>) readStream.readObject();
+            tileSheetDataList = (ArrayList<TileSheetData2>) readStream.readObject();
             nextTileSheetID = (Integer) readStream.readObject();
             nextTileDataID = (Integer) readStream.readObject();
             readStream.close();
@@ -208,10 +208,12 @@ public class TileSheetData implements Serializable{
                 ", packageID: " + packageID +
                 ", tileSheetName: '" + tileSheetName + '\'' + "\n" +
                 ", path: '" + path + '\'' +
-                ", firstElement: " + firstElement +
+                ", firstElement: " + firstElement + "\n" +
                 ", lastElement: " + lastElement +
-                ", active: " + active +  "\n" +
-                ", tileDataList: " + tileDataList +
-                '}';
+                ", active: " + active +
+                ", nextTileSheetID: " + nextTileSheetID +
+                ", nextTileDataID: " + nextTileDataID +
+                ", tileDataID: " + tileDataID +
+                "}\n";
     }
 }

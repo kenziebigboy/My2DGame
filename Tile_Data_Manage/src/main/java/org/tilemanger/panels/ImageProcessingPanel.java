@@ -234,26 +234,38 @@ public class ImageProcessingPanel extends JPanel {
 
             updateStatus(statusText);
 
-            statusText += "\n\nCutting Image Into";
+            if(imageWidth <= 256 && imageHeight <= 256) {
 
-            maxCol = imageWidth / 16;
-            maxRow = imageHeight / 16;
-            statusText += "\n" + maxCol + " X " + maxRow + "Tiles";
+                statusText += "\n\nCutting Image Into";
 
-            updateStatus(statusText);
+                maxCol = imageWidth / 16;
+                maxRow = imageHeight / 16;
+                statusText += "\n" + maxCol + " X " + maxRow + "Tiles";
 
-            createButtonPanel(tileButtons, screenX, screenY, maxCol, maxRow);
-            setAddTile(maxCol,maxRow);
-            repaint();
+                updateStatus(statusText);
 
-            statusText += "\n\nPlease select any tile\nYOU DO NOT WANT TO \nADDED TO Tile Set\nClick Start To Add Tiles";
+                createButtonPanel(tileButtons, screenX, screenY, maxCol, maxRow);
+                setAddTile(maxCol, maxRow);
+                repaint();
 
-            updateStatus(statusText);
+                statusText += "\n\nPlease select any tile\nYOU DO NOT WANT TO \nADDED TO Tile Set\nClick Start To Add Tiles";
+                updateStatus(statusText);
 
-            noGoodTileSheet_BTN.setVisible(false);
-            yesGoodTileSheet_BTN.setVisible(false);
+                noGoodTileSheet_BTN.setVisible(false);
+                yesGoodTileSheet_BTN.setVisible(false);
 
-            startProcessingTile_BTN.setVisible(true);
+                startProcessingTile_BTN.setVisible(true);
+
+            } else {
+
+                statusText += "\n\nSorry by this Tile Sheet is\nto big to work with.";
+                updateStatus(statusText);
+
+                noGoodTileSheet_BTN.setVisible(false);
+                yesGoodTileSheet_BTN.setVisible(false);
+
+
+            }
 
         });
 
@@ -280,32 +292,37 @@ public class ImageProcessingPanel extends JPanel {
             if(!TileSheetData.checkInList(graphicsPackageID,filePath.getName())){
                 statusText += "\n TileSheetData not find.\n Creating TileSheetData";
                 updateStatus(statusText);
+
                 // Step 2: Make TileSheetData
-                TileSheetData tileSheetData = new TileSheetData(graphicsPackageID, filePath.getName(),
-                        getPath(filePath.getParent()),true);
+                //TileSheetData tileSheetData = new TileSheetData(graphicsPackageID, filePath.getName(),
+                  //      getPath(filePath.getParent()),true);
 
 
-                // Step 3: update GraphicsPackage with TileSheetDataID
-                if(!GraphicsPackages.addTileSheetData(graphicsPackageID, tileSheetData.tileSheet_ID)){
-                    JOptionPane.showMessageDialog(null,"TileSheet " + filePath.getName() +
-                                    " can not be add, found in list","Error Adding TileSheetData",
-                            JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
+//                // Step 3: update GraphicsPackage with TileSheetDataID
+//                if(!GraphicsPackages.addTileSheetData(graphicsPackageID, tileSheetData.tileSheet_ID)){
+//                    JOptionPane.showMessageDialog(null,"TileSheet " + filePath.getName() +
+//                                    " can not be add, found in list","Error Adding TileSheetData",
+//                            JOptionPane.WARNING_MESSAGE);
+//                    return;
+//                }
 
                 statusText += "\nGraphics Package Updated!\nMaking TileData Now!";
                 updateStatus(statusText);
 
 
-                // Step 4: Make TileData for TileSheetData
-                ArrayList<Integer> tileDataList =   makeTileData( tileSheetData, 16, 16);
+               /* // Step 4: Make TileData for TileSheetData
+                ArrayList<Integer> tileDataList =   makeTileData( tileSheetData, maxCol, maxRow);
 
                 // Step 5: Add TileData to TileSheetData
-                tileSheetData.add_TileData(tileDataList);
+                tileSheetData.add_TileData(tileDataList);*/
 
                 statusText += "\nTile Data Files have been made!\nYou can close this panel.";
                 updateStatus(statusText);
 
+            } else {
+
+                statusText += "\n\nThis Tile Sheet is\nalready in list.";
+                updateStatus(statusText);
             }
 
         });
@@ -394,15 +411,16 @@ public class ImageProcessingPanel extends JPanel {
     }
 
     public String getPath(String path){
-        String makePath = "/tiles/";
+        String makePath = "";
         boolean start = false;
         String[] parts = path.split(Pattern.quote(File.separator));
 
         for(String name : parts){
-            if(name.equals("graphics_packages")){ start = true; }
+
             if(start){
                 makePath += name + "/";
             }
+            if(name.equals("graphics_packages")){ start = true; }
         }
 
         return makePath;
@@ -416,7 +434,7 @@ public class ImageProcessingPanel extends JPanel {
 
         int col = 0;
         int row = 0;
-        while (col < maxCol && row < maxRow) {
+       /* while (col < maxCol && row < maxRow) {
             if(addTile[col][row]){
                 System.out.println("Making TileData: " + tileNum);
                 TileData tileData = new TileData(tileSheetData.tileSheet_ID, tileNum, col, row, 1);
@@ -429,9 +447,9 @@ public class ImageProcessingPanel extends JPanel {
                 col = 0;
                 row++;
             }
-        }
+        }*/
 
-        tileSheetData.updateTileDataElements(tileSheetData.tileSheet_ID, tileSheetData.getNextTileDataID(), tileNum--, tileDataIDs);
+        tileSheetData.updateTileDataElements(tileSheetData.tileSheet_ID, tileSheetData.getNextTileDataID(), tileNum - 1, tileDataIDs);
         TileSheetData.setNextTileDataID(tileNum);
 
         return tileDataIDs;
