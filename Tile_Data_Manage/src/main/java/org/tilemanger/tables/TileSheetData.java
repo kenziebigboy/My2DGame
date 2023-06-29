@@ -27,17 +27,16 @@ public class TileSheetData implements Serializable{
     @Serial
     private static final long serialVersionUID = -2887215203747855321L;
 
-    public TileSheetData(int tileSheet_ID, int packageId, String tileSheetName, String path, boolean active, ArrayList<TileData> tileDataList) {
+    public TileSheetData(int packageId, String tileSheetName, String path, boolean active) {
 
         readDataFromDisk();
 
-        //this.tileSheet_ID = nextTileSheetID;
-        this.tileSheet_ID = tileSheet_ID;
+        this.tileSheet_ID = nextTileSheetID;
         this.tileSheetName = tileSheetName;
         this.packageID = packageId;
         this.path = path;
         this.active = active;
-        this.tileDataList = tileDataList;
+
         tileSheetDataList.add(this);
         nextTileSheetID++;
 
