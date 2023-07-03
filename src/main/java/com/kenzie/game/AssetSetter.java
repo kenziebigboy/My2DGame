@@ -22,6 +22,7 @@ public class AssetSetter {
         addObjects("Tent", 0, 19, 20, null);
         addObjects("Woodcutter's Axe", 0, 26, 21, null);
         addObjects("Blue Shield", 0, 35, 21, null);
+        addObjects("Blue Shield", 0, 35, 21, null);
 
         for(int i = 9; i < 13; i++) {
             addObjects("Red Potion", 1, 10, 1, null);

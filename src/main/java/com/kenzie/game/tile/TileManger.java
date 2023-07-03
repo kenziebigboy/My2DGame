@@ -5,11 +5,11 @@ import com.kenzie.game.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class TileManger {
@@ -20,6 +20,8 @@ public class TileManger {
     boolean drawPath = false;
     ArrayList<String> fileNames = new ArrayList<>();
     ArrayList<String> collisionStatus = new ArrayList<>();
+    Map<Integer, TileImage> currentTileSet = new HashMap<>();
+    ArrayList<BufferedImage> usedTileSheet;
 
     public TileManger(GamePanel gp) {
         this.gp = gp;
@@ -95,6 +97,72 @@ public class TileManger {
         }
     }
 
+    public void createCurrentTileSet(int mapId){
+
+        // Current WorldMap
+        WorldMap wm = WorldMap.getWorldMapById(mapId);
+
+        // set Map Size
+        gp.maxWorldCol = wm.maxCol;
+        gp.maxWorldRow = wm.maxRow;
+
+        usedTileSheet = new ArrayList<>();
+        // Get all the Tile Sheet used to make up this CurrentTileSet
+        for(int i = 0; i < wm.tileDataSheetsID.size(); i++) {
+            // Get TileSheetData
+            TileSheetData tsd = TileSheetData.getById(wm.tileDataSheetsID.get(i));
+
+            usedTileSheet.add(loadTileSheet(i, new File (tsd.path + tsd.tileSheetName) ));
+        }
+
+        // Loop over all the Columns and Rows from WorldMap
+        int col = 0;
+        int row = 0;
+
+        while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
+
+            // Check to see if the ground tile is in the Map
+            if(!currentTileSet.containsKey(wm.mapData[col][row].backGroundTileID)){
+                TileImage ti = new TileImage(wm.mapData[col][row].collision,cutTileFromSheet(wm.mapData[col][row].backGroundTileSheetID, col, row));
+                currentTileSet.put(wm.mapData[col][row].backGroundTileID, ti);
+
+            }
+
+            if(!currentTileSet.containsKey(wm.mapData[col][row].foreGroundTileID)){
+                TileImage ti = new TileImage(wm.mapData[col][row].collision,cutTileFromSheet(wm.mapData[col][row].foreGroundTileSheetID, col, row));
+                currentTileSet.put(wm.mapData[col][row].foreGroundTileID, ti);
+
+            }
+
+            if (col == gp.maxWorldCol) {
+                col = 0;
+                row++;
+            }
+
+        }
+
+    }
+
+    public BufferedImage cutTileFromSheet(int tileSheetID, int col, int row){
+
+        return usedTileSheet.get(tileSheetID).getSubimage(col * 16, row * 16, 16, 16);
+    }
+
+    public BufferedImage loadTileSheet(int tileSheetId, File filePath){
+
+        BufferedImage bufferedImage = null;
+
+        try {
+
+            bufferedImage = ImageIO.read(filePath.getAbsoluteFile());
+
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+
+        return bufferedImage;
+    }
+
     public void setup(int index, String imageName, boolean collision) {
 
         UtilityTool uTool = new UtilityTool();
@@ -141,7 +209,6 @@ public class TileManger {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
     }
 
