@@ -5,9 +5,11 @@ import java.awt.*;
 public class Reference {
 
     public static final String FILEPATH                     = "./resources/";
-    public static final String GRAPHICS_PACKAGE_FILE_NAME   = "data_files/graphics_packages.dat";
-    public static final String TILE_SHEET_DATA_FILE_NAME    = "data_files/tile_sheet_data.dat";
-    public static final String TILE_DATA_FILE_NAME          = "data_files/tile_data.dat";
+    public static final String GRAPHICS_PACKAGE_FILE_NAME   = FILEPATH + "data_files/graphics_packages.dat";
+    public static final String TILE_SHEET_DATA_FILE_NAME    = FILEPATH + "data_files/tile_sheet_data.dat";
+    public static final String TILE_SHEET_DATA_FILE_NAME_TEMP   = FILEPATH + "data_files/tile_sheet_data_temp.dat";
+    public static final String TILE_DATA_FILE_NAME          = FILEPATH + "data_files/tile_data.dat";
+    public static final String TILE_DATA_FILE_NAME_TEMP     = FILEPATH + "data_files/tile_data_temp.dat";
     public static final String ICON_PATH                    = FILEPATH + "graphics_packages/";
 
     public static Font borderFont = new Font("SansSerif", Font.BOLD,20);
