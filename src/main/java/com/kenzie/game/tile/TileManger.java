@@ -141,8 +141,6 @@ public class TileManger {
 
         }
 
-
-
     }
 
     public BufferedImage cutTileFromSheet(int tileSheetID, int col, int row){
@@ -211,7 +209,6 @@ public class TileManger {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
     }
 

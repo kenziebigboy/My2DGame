@@ -143,6 +143,11 @@ public class UI {
         if (gp.gameState == gp.SLEEP_STATE) {
             drawSleepScreen();
         }
+
+        // Login
+        if(gp.gameState == gp.LOG_IN){
+            loginScreen();
+        }
     }
 
     public void drawGameOverScreen() {
@@ -1244,6 +1249,10 @@ public class UI {
 
     public int getItemIndexOnSlot(int slotCol, int slotRow) {
         return slotCol + (slotRow * 5);
+    }
+
+    public void loginScreen(){
+
     }
 
     public void drawSubWindow(int x, int y, int width, int height) {

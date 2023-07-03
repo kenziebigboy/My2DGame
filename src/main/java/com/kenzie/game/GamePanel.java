@@ -94,6 +94,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int SLEEP_STATE = 9;
     public final int MAP_STATE = 10;
     public final int CUT_SCENE_STATE = 11;
+    public final int LOG_IN = 12;
 
     // Others
     public  boolean bossBattleOn = false;
