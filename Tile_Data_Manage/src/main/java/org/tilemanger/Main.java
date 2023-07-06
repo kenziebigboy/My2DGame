@@ -1,17 +1,19 @@
 package org.tilemanger;
 
+import org.tilemanger.panels.DisplayRawData;
 import org.tilemanger.panels.ImageProcessingPanel;
 import org.tilemanger.panels.PackageManagerPanel;
 import org.tilemanger.panels.PackagesPanel;
+import org.tilemanger.tables.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class Main extends JFrame {
 
-
-
+    public int selectedCol;
+    public int selectedRow;
 
     // Packages Panel
     PackagesPanel packagesPanel;
@@ -22,6 +24,8 @@ public class Main extends JFrame {
     // Tile Sheet Image Pre View
     public static ImageProcessingPanel imagePerViewPanel;
 
+    public DisplayRawData displayRawData = new DisplayRawData(this);
+
 
     public Main() {
 
@@ -29,15 +33,16 @@ public class Main extends JFrame {
         setLayout(null);
         MenuSystem();
 
-        this.packagesPanel = new PackagesPanel();
+        this.packagesPanel = new PackagesPanel(this);
         add(packagesPanel);
 
         this.packageManagerPanel = new PackageManagerPanel();
         add(packageManagerPanel);
 
-        this.imagePerViewPanel = new ImageProcessingPanel();
+        this.imagePerViewPanel = new ImageProcessingPanel(this);
         add(imagePerViewPanel);
 
+        add(displayRawData);
 
     }
 
@@ -51,45 +56,59 @@ public class Main extends JFrame {
         main.setLocationRelativeTo(null);
         Dimension mainScreenDim = new Dimension(1000,800);
         main.setPreferredSize(mainScreenDim);
+
+    }
+
+    public int getStartX(int panelWidth){
+        return (getWidth() - panelWidth) / 2;
+    }
+
+    public int getStartY(int panelHeight){
+        return (getHeight() - panelHeight) / 2;
     }
 
     private void MenuSystem(){
 
         JMenuBar mainBar    = new JMenuBar();
         JMenu sheetData     = new JMenu("Sheet Data");
+        JMenu rawdata       = new JMenu("Raw Data");
 
         // Adding menu to bar
         mainBar.add(sheetData);
+        mainBar.add(rawdata);
 
         // Create menu items for sheet data
         JMenuItem packages  = new JMenuItem("Packages");
-
         JMenuItem viewTileSheets = new JMenuItem("View TileSheets");
 
         // Add menu items to sheet Data
         sheetData.add(packages);
-
         sheetData.add(viewTileSheets);
+
+        // Create Menu Items for Raw Data
+        JMenuItem displayRawGraphicsPackageData = new JMenuItem("Graphics Package");
+        JMenuItem displayRawTileSheetData = new JMenuItem("Tile Sheet Data");
+
+        // Add menu Items to Raw Data
+        rawdata.add(displayRawGraphicsPackageData);
+        rawdata.add(displayRawTileSheetData);
 
         setJMenuBar(mainBar);
 
         // Add Action Listeners for menus
-        packages.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        packages.addActionListener(e -> packagesPanel.displayPackagePanel());
 
-                packagesPanel.displayPackagePanel();
-            }
+        viewTileSheets.addActionListener(e -> {
+
         });
 
-
-        viewTileSheets.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
+        displayRawGraphicsPackageData.addActionListener(e -> {
+            displayRawData.displayRawGraphicsPackages(GraphicsPackages.getGraphicsPackagesList());
         });
 
+        displayRawTileSheetData.addActionListener(e -> {
+            displayRawData.displayRawTileSheetData(TileSheetData.getTileSheetDataList());
+        });
 
     }
 

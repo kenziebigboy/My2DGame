@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int tileSize = originalTileSize * scale; // 48 x 48 tile
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol;  // 760 pixels
+    public final int screenWidth = tileSize * maxScreenCol;  // 960 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
     // world settings
@@ -94,6 +94,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int SLEEP_STATE = 9;
     public final int MAP_STATE = 10;
     public final int CUT_SCENE_STATE = 11;
+    public final int LOG_IN = 12;
 
     // Others
     public  boolean bossBattleOn = false;

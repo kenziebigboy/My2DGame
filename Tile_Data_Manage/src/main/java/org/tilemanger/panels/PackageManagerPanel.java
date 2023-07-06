@@ -3,8 +3,6 @@ package org.tilemanger.panels;
 import org.tilemanger.Main;
 import org.tilemanger.Reference;
 import org.tilemanger.tables.GraphicsPackages;
-import org.tilemanger.tables.TileSheetData;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -12,8 +10,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 
 public class PackageManagerPanel extends JPanel {
 
@@ -25,7 +23,7 @@ public class PackageManagerPanel extends JPanel {
     public Font smallFont = Reference.smallFont;
     public boolean good = false;
 
-    public void displayPackageManager(int id, File openfile, boolean process ){
+    public void displayPackageManager(int id, File openfile, boolean process ) throws IOException {
 
         GraphicsPackages currentPackage = GraphicsPackages.getPackage(id);
 
@@ -62,8 +60,9 @@ public class PackageManagerPanel extends JPanel {
         // Display the Graphics Package working with
         JLabel graphicsPackage_LBL = new JLabel("Package: " +  currentPackage.getName());
         graphicsPackage_LBL.setFont(borderFont);
-        graphicsPackage_LBL.setBounds(50, 150, 200,50);
+        graphicsPackage_LBL.setBounds(50, 150, 400,50);
         graphicsPackage_LBL.setVisible(true);
+        graphicsPackage_LBL.setForeground(Color.BLUE);
         add(graphicsPackage_LBL);
 
         // ***************************************************************************************
@@ -110,7 +109,9 @@ public class PackageManagerPanel extends JPanel {
         // Setup Table
         // ***************************************************************************************
 
-        DefaultTableModel tileSheetDataTableModel = TileSheetData.getTableModel();
+        DefaultTableModel tileSheetDataTableModel = GraphicsPackages.getTableModelforTileSheetData(id);
+
+
 
         tileSheetDataTable = new JTable(tileSheetDataTableModel){
             @Override
@@ -119,16 +120,24 @@ public class PackageManagerPanel extends JPanel {
             }
         };
 
-        tileSheetDataTable.setRowHeight(450);
+        tileSheetDataTable.setRowHeight(256);
         tileSheetDataTable.setAutoCreateRowSorter(false);
         tileSheetDataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        int[] columnWidth = {50,450};
+        int[] columnWidth = {50,256};
 
         TableColumnModel tileSheetDataColumnModel = tileSheetDataTable.getColumnModel();
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i = 0; i < columnWidth.length; i++ ) {
+            tileSheetDataColumnModel.getColumn(i).setResizable(false);
+            tileSheetDataColumnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
+//            if (i != 1 &&  i != 6) {
+//                tvChannelsColumnModel.getColumn(i).setCellRenderer(centerRenderer);
+//            }
+        }
 
         JScrollPane tableScroll = new JScrollPane(tileSheetDataTable);
 
@@ -138,33 +147,37 @@ public class PackageManagerPanel extends JPanel {
         tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         add(tableScroll);
-
+        repaint();
         // ***************************************************************************************
         // Button Actions
         // ***************************************************************************************
 
-        addTileSheet_BTN.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        addTileSheet_BTN.addActionListener(e -> {
 
-                JFileChooser jFileChooser = new JFileChooser();
-                jFileChooser.setAcceptAllFileFilterUsed(false);
-                FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Image file", "jpg", "jpeg", "PNG");
-                jFileChooser.addChoosableFileFilter(fileNameExtensionFilter);
-                jFileChooser.setCurrentDirectory(new File(Reference.ICON_PATH));
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Image file", "jpg", "jpeg", "PNG");
+            jFileChooser.addChoosableFileFilter(fileNameExtensionFilter);
+            jFileChooser.setCurrentDirectory(new File(Reference.ICON_PATH));
 
-                int checkInput = jFileChooser.showOpenDialog(null);
+            int checkInput = jFileChooser.showOpenDialog(null);
 
-                if(checkInput == JFileChooser.APPROVE_OPTION){
-                    System.out.println(jFileChooser.getSelectedFile());
-                    setVisible(false);
-                    // Try to add tile sheet to Graphic Package
-                   Main.imagePerViewPanel.displayImageProcessingPanel(id, jFileChooser.getSelectedFile());
+            if(checkInput == JFileChooser.APPROVE_OPTION){
+                System.out.println(jFileChooser.getSelectedFile());
+                setVisible(false);
+                // Try to add tile sheet to Graphic Package
+               Main.imagePerViewPanel.displayImageProcessingPanel(id, jFileChooser.getSelectedFile());
+                removeAll();
+                setVisible(false);
+                repaint();
 
-                    System.out.println(good);
-
-                }
             }
+        });
+
+        closePackagePanel_BTN.addActionListener(e -> {
+            removeAll();
+            setVisible(false);
+            repaint();
         });
     }
 
