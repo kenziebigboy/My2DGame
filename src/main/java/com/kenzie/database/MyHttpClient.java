@@ -6,7 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class MyHttpClient {
+public class
+MyHttpClient {
 
     public String makeGETRequest(String url){
         HttpClient client = HttpClient.newHttpClient();
