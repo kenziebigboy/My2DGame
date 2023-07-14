@@ -139,8 +139,9 @@ public class Entity {
     public Projectile projectile;
     public boolean boss;
 
-    public String currentCharacterID;
+    public int currentCharacterID;
 
+    public int tempCharacterID;
     public String tempName;
     public int tempLife;
     public int tempMaxMana;

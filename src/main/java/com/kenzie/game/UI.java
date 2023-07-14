@@ -1,9 +1,11 @@
 package com.kenzie.game;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.kenzie.database.MyHttpClient;
 import com.kenzie.game.entity.Entity;
-import com.kenzie.game.object.OBJ_Coin_Bronze;
-import com.kenzie.game.object.OBJ_Heart;
-import com.kenzie.game.object.OBJ_ManaCrystal;
+import com.kenzie.game.object.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -1329,94 +1331,83 @@ public class UI {
                 if (gp.keyH.enterPressed) {
 
                     // send username and password to db
-//                MyHttpClient myHttpClient = new MyHttpClient();
-//                String URLString = "http://localhost:5001/example/fd72eb63-916a-45a2-8d30-949052a7fb68";
-//                String results = myHttpClient.makeGETRequest(URLString);
-                    String results = "bad";
+                MyHttpClient myHttpClient = new MyHttpClient();
+                String URLString = "http://localhost:5001/user/" + gp.userName.toLowerCase();
+                String results = myHttpClient.makeGETRequest(URLString);
+                    System.out.println(URLString);
 
+                    JsonElement jsonElement = JsonParser.parseString(results);
 
+                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+                    gp.userID = String.valueOf(jsonObject.get("memberId"));
+                    gp.player.currentCharacterID = Integer.parseInt(String.valueOf(jsonObject.get("currentCharacter").getAsInt()));
+                    System.out.println(gp.userID);
 
-                    if (results.equals("good")) {
+                    if (!results.equals("GET request failed: 404 status code received")) {
                         // Set User data
-                        gp.userID = "";
-                        gp.characterIDs = null;
-                        gp.player.currentCharacterID = "";
+                        System.out.println(results);
+                        // get user data from results
+
+
+
+
                         gp.gameState = gp.CHARACTER_SELECTOR_STATE;
 
 
                         // get current character
-                        if(gp.player.currentCharacterID != ""){
+                        if(gp.player.currentCharacterID != 0){
+
+                            URLString = "http://localhost:5001/character/" + gp.player.currentCharacterID;
+                            results = myHttpClient.makeGETRequest(URLString);
+                            jsonElement = JsonParser.parseString(results);
+
                             // get current and temp values character data
-                            gp.player.life = 0;
-                            gp.player.mana = 0;
-                            gp.player.maxMana = 0;
-                            gp.player.strength = 0;
-                            gp.player.dexterity = 0;
+                            gp.player.life = Integer.parseInt(String.valueOf(jsonObject.get("life").getAsInt()));
+                            gp.player.mana = Integer.parseInt(String.valueOf(jsonObject.get("mana").getAsInt()));
+                            gp.player.maxMana = Integer.parseInt(String.valueOf(jsonObject.get("maxMana").getAsInt()));
+                            gp.player.strength = Integer.parseInt(String.valueOf(jsonObject.get("strength").getAsInt()));
+                            gp.player.dexterity = Integer.parseInt(String.valueOf(jsonObject.get("dexterity").getAsInt()));
+
+                            Entity setMe = new Entity(gp);
+
+                            switch (String.valueOf(jsonObject.get("characterName"))){
+                                case "Normal Sword" -> setMe = new OBJ_Sword_Normal(gp);
+                            }
+
                             gp.player.currentWeapon = null;
+
+
                             gp.player.currentShield = null;
+
+
                             gp.player.projectile = null;
-                            gp.player.level = 0;
-                            gp.player.nextLevelExp = 0;
-                            gp.player.coin = 0;
-                            gp.player.name = "";
+
+
+                            gp.player.level = Integer.parseInt(String.valueOf(jsonObject.get("level").getAsInt()));
+                            gp.player.nextLevelExp = Integer.parseInt(String.valueOf(jsonObject.get("nextLevelExp").getAsInt()));
+                            gp.player.coin = Integer.parseInt(String.valueOf(jsonObject.get("coin").getAsInt()));
+                            gp.player.name =  String.valueOf(jsonObject.get("characterName"));
                             // set to current character ID
-                            gp.player.getCharacterImages(1);
+                            gp.player.getCharacterImages(Integer.parseInt(String.valueOf(jsonObject.get("nextLevelExp").getAsInt())));
 
                             // make temp values
-                            gp.player.tempLife = 0;
-                            gp.player.tempMana = 0;
-                            gp.player.tempMaxMana = 0;
-                            gp.player.tempStrength = 0;
-                            gp.player.tempDexterity = 0;
-                            gp.player.tempCurrentWeapon = null;
-                            gp.player.tempCurrentShield = null;
-                            gp.player.tempCurrentProjectile = null;
-                            gp.player.tempLevel = 0;
-                            gp.player.tempNextLevelExp = 0;
-                            gp.player.tempCoin = 0;
-                            gp.player.tempName = "";
-                            gp.player.getCharacterImages(1);
+                            gp.player.tempLife = gp.player.life;
+                            gp.player.tempMana = gp.player.mana;
+                            gp.player.tempMaxMana = gp.player.maxMana;
+                            gp.player.tempStrength = gp.player.strength;
+                            gp.player.tempDexterity = gp.player.dexterity;
+                            gp.player.tempCurrentWeapon = gp.player.currentWeapon;
+                            gp.player.tempCurrentShield = gp.player.currentShield;
+                            gp.player.tempCurrentProjectile = gp.player.projectile;
+                            gp.player.tempLevel = gp.player.level;
+                            gp.player.tempNextLevelExp = gp.player.nextLevelExp;
+                            gp.player.tempCoin = gp.player.coin;
+                            gp.player.tempName = gp.player.name;
+                            gp.player.tempCharacterID = gp.player.currentCharacterID;
 
 
                         } else {
-                            // generate character 0;
-
-                            // base life = 10 + random 0 - 5;
-                            gp.player.tempLife = 10 + gp.ut.rnd.nextInt(6);
-
-                            // base mana = 4;
-                            gp.player.tempMana = 4;
-
-                            // base max mana = 8
-                            gp.player.tempMaxMana = 8;
-
-                            // base strenght = 5 + random 0 - 10
-                            gp.player.tempStrength = 5 + gp.ut.rnd.nextInt(11);
-
-                            // base dexterity 5 + random 0 - 10;
-                            gp.player.tempDexterity = 5 + gp.ut.rnd.nextInt(11);
-
-                            // base level = 0;
-                            gp.player.tempLevel = 0;
-
-                            // base next level = 10 + random 0 - 5
-                            gp.player.tempNextLevelExp = 10 + gp.ut.rnd.nextInt(6);
-
-                            // base coin = 0
-                            gp.player.tempCoin = 0;
-
-                            // base name
-                            gp.player.tempName = gp.ut.getName();
-
-                            // base weapon sword
-                            gp.player.tempCurrentWeapon = null;
-
-                            // base shield wooden
-                            gp.player.tempCurrentShield = null;
-
-                            // base Projectile fire
-                            gp.player.tempCurrentProjectile = null;
-
+                           makeRandomCharacter();
 
                         }
 
@@ -1563,8 +1554,6 @@ public class UI {
 
         g2.drawString(text, x, y);
         g2.drawString(String.valueOf(gp.player.tempCurrentWeapon), x + 88, y);
-
-
 
         g2.setColor(Color.RED);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
@@ -1732,5 +1721,65 @@ public class UI {
 
         return text;
 
+    }
+
+    public void makeRandomCharacter(){
+
+        // random character
+        gp.player.tempCharacterID = gp.ut.rnd.nextInt(30) + 1;
+        gp.player.getCharacterImages(gp.player.tempCharacterID);
+
+        // base life = 10 + random 0 - 5;
+        gp.player.tempLife = 10 + gp.ut.rnd.nextInt(6);
+
+        // base mana = 4;
+        gp.player.tempMana = 4;
+
+        // base max mana = 8
+        gp.player.tempMaxMana = 8;
+
+        // base strenght = 5 + random 0 - 10
+        gp.player.tempStrength = 5 + gp.ut.rnd.nextInt(11);
+
+        // base dexterity 5 + random 0 - 10;
+        gp.player.tempDexterity = 5 + gp.ut.rnd.nextInt(11);
+
+        // base level = 0;
+        gp.player.tempLevel = 0;
+
+        // base next level = 10 + random 0 - 5
+        gp.player.tempNextLevelExp = 10 + gp.ut.rnd.nextInt(6);
+
+        // base coin = 0
+        gp.player.tempCoin = 0;
+
+        // base name
+        gp.player.tempName = gp.ut.getName();
+
+        // base weapon sword
+        Entity setMe = new Entity(gp);
+        int ramdomNum = gp.ut.rnd.nextInt(100);
+
+        if(ramdomNum < 75){
+            setMe = new OBJ_Sword_Normal(gp);
+        } else if (ramdomNum > 75 && ramdomNum < 95) {
+            setMe = new OBJ_Axe(gp);
+        } else {
+            setMe = new OBJ_Pickaxe(gp);
+        }
+
+        gp.player.tempCurrentWeapon = setMe;
+
+        // base shield wooden
+        gp.player.tempCurrentShield = new OBJ_Shield_Wood(gp);
+        ramdomNum = gp.ut.rnd.nextInt(100);
+
+        if(ramdomNum < 85) {
+            setMe = new OBJ_Fireball(gp);
+        } else {
+            setMe = new OBJ_Rock(gp);
+        }
+        // base Projectile fire
+        gp.player.tempCurrentProjectile = setMe;
     }
 }
