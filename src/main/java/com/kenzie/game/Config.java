@@ -56,7 +56,7 @@ public class Config {
 
             // Music Volume
             s = br.readLine();
-            System.out.println(s);
+
             gp.music.volumeScale = Integer.parseInt(s);
 
             // SE Volume

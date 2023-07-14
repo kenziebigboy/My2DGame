@@ -16,9 +16,13 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
     public Font maruMonica, purisaB;
-    BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank, coin;
+    BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank, coin, tempPlaler;
 
+    public boolean actionDone = false;
+    public int getAction = 0;
+    public int getActionNumber = 0;
     public boolean messaageOn = false;
+    public boolean showError = false;
     // public String message = "";
     // int messageCounter = 0;
 
@@ -145,8 +149,13 @@ public class UI {
         }
 
         // Login
-        if(gp.gameState == gp.LOG_IN){
+        if(gp.gameState == gp.LOG_IN_STATE){
             loginScreen();
+        }
+
+        // Character Selector State
+        if(gp.gameState == gp.CHARACTER_SELECTOR_STATE){
+            characterSector();
         }
     }
 
@@ -409,7 +418,7 @@ public class UI {
             // Menu
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
 
-            text = "NEW GAME";
+            text = "LOGIN";
             x = getXforCenteredText(text);
             y += gp.tileSize * 3.5;
             g2.drawString(text, x, y);
@@ -417,19 +426,19 @@ public class UI {
                 g2.drawString(">", x - gp.tileSize, y);
             }
 
-            text = "LOAD GAME";
-            x = getXforCenteredText(text);
-            y += gp.tileSize;
-            g2.drawString(text, x, y);
-            if (commandNum == 1) {
-                g2.drawString(">", x - gp.tileSize, y);
-            }
+//            text = "LOAD GAME";
+//            x = getXforCenteredText(text);
+//            y += gp.tileSize;
+//            g2.drawString(text, x, y);
+//            if (commandNum == 1) {
+//                g2.drawString(">", x - gp.tileSize, y);
+//            }
 
             text = "QUIT";
             x = getXforCenteredText(text);
             y += gp.tileSize;
             g2.drawString(text, x, y);
-            if (commandNum == 2) {
+            if (commandNum == 1) {
                 g2.drawString(">", x - gp.tileSize, y);
             }
         } else if (titleScreenState == 1) {
@@ -1253,6 +1262,433 @@ public class UI {
 
     public void loginScreen(){
 
+
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
+        String text = "Quest for the JAVA gods";
+        int x = getXforCenteredText(text);
+        int y = gp.tileSize * 3;
+
+        // Shadow
+        g2.setColor(Color.GRAY);
+        g2.drawString(text, x + 5, y + 5);
+
+        // Main Color
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+
+        // Login
+
+        g2.setColor(Color.BLUE);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 44F));
+        text = "Login";
+        x = getXforCenteredText(text);
+        y = gp.tileSize * 5;
+        g2.drawString(text, x, y);
+
+        g2.setColor(Color.GRAY);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 18F));
+        text = "Use Arrow Keys";
+        x = getXforCenteredText(text);
+        y = gp.tileSize * 5 + 30;
+        g2.drawString(text, x, y);
+
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        text = "User Name: ";
+        x = 200;
+        y += 75;
+        g2.drawString(text, x, y);
+        g2.drawString(gp.userName, x + 140, y);
+        if (commandNum == 0) {
+            g2.drawString(">", x - gp.tileSize, y);
+            gp.userName = getText(gp.userName);
+        }
+
+        text = "Password: ";
+        x = 210;
+        y += 50;
+        g2.drawString(text, x, y);
+        g2.drawString(gp.password, x + 136, y);
+
+        if (commandNum == 1) {
+            g2.drawString(">", x - gp.tileSize, y);
+            gp.password = getText(gp.password);
+        }
+
+        g2.setColor(Color.GREEN);
+        text = "Enter: ";
+        x = 262;
+        y += 50;
+        g2.drawString(text, x, y);
+        if (commandNum == 2) {
+            g2.drawString(">", x - gp.tileSize, y);
+
+            if(!showError) {
+                if (gp.keyH.enterPressed) {
+
+                    // send username and password to db
+//                MyHttpClient myHttpClient = new MyHttpClient();
+//                String URLString = "http://localhost:5001/example/fd72eb63-916a-45a2-8d30-949052a7fb68";
+//                String results = myHttpClient.makeGETRequest(URLString);
+                    String results = "bad";
+
+
+
+                    if (results.equals("good")) {
+                        // Set User data
+                        gp.userID = "";
+                        gp.characterIDs = null;
+                        gp.player.currentCharacterID = "";
+                        gp.gameState = gp.CHARACTER_SELECTOR_STATE;
+
+
+                        // get current character
+                        if(gp.player.currentCharacterID != ""){
+                            // get current and temp values character data
+                            gp.player.life = 0;
+                            gp.player.mana = 0;
+                            gp.player.maxMana = 0;
+                            gp.player.strength = 0;
+                            gp.player.dexterity = 0;
+                            gp.player.currentWeapon = null;
+                            gp.player.currentShield = null;
+                            gp.player.projectile = null;
+                            gp.player.level = 0;
+                            gp.player.nextLevelExp = 0;
+                            gp.player.coin = 0;
+                            gp.player.name = "";
+                            // set to current character ID
+                            gp.player.getCharacterImages(1);
+
+                            // make temp values
+                            gp.player.tempLife = 0;
+                            gp.player.tempMana = 0;
+                            gp.player.tempMaxMana = 0;
+                            gp.player.tempStrength = 0;
+                            gp.player.tempDexterity = 0;
+                            gp.player.tempCurrentWeapon = null;
+                            gp.player.tempCurrentShield = null;
+                            gp.player.tempCurrentProjectile = null;
+                            gp.player.tempLevel = 0;
+                            gp.player.tempNextLevelExp = 0;
+                            gp.player.tempCoin = 0;
+                            gp.player.tempName = "";
+                            gp.player.getCharacterImages(1);
+
+
+                        } else {
+                            // generate character 0;
+
+                            // base life = 10 + random 0 - 5;
+                            gp.player.tempLife = 10 + gp.ut.rnd.nextInt(6);
+
+                            // base mana = 4;
+                            gp.player.tempMana = 4;
+
+                            // base max mana = 8
+                            gp.player.tempMaxMana = 8;
+
+                            // base strenght = 5 + random 0 - 10
+                            gp.player.tempStrength = 5 + gp.ut.rnd.nextInt(11);
+
+                            // base dexterity 5 + random 0 - 10;
+                            gp.player.tempDexterity = 5 + gp.ut.rnd.nextInt(11);
+
+                            // base level = 0;
+                            gp.player.tempLevel = 0;
+
+                            // base next level = 10 + random 0 - 5
+                            gp.player.tempNextLevelExp = 10 + gp.ut.rnd.nextInt(6);
+
+                            // base coin = 0
+                            gp.player.tempCoin = 0;
+
+                            // base name
+                            gp.player.tempName = gp.ut.getName();
+
+                            // base weapon sword
+                            gp.player.tempCurrentWeapon = null;
+
+                            // base shield wooden
+                            gp.player.tempCurrentShield = null;
+
+                            // base Projectile fire
+                            gp.player.tempCurrentProjectile = null;
+
+
+                        }
+
+
+
+                    } else {
+                        // Show message that Login Did work try again
+                        showError = true;
+                        gp.keyH.enterPressed = false;
+                    }
+
+
+                }
+            }
+
+        }
+
+        if(showError){
+            g2.setColor(Color.RED);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 44F));
+            text = "Login Failed, Try Again!";
+            x = getXforCenteredText(text);
+            y += 55;
+            g2.drawString(text, x, y);
+
+            g2.setColor(Color.GRAY);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+            text = "Enter to reset.";
+            x = getXforCenteredText(text);
+            y += 25;
+            g2.drawString(text, x, y);
+
+            if(gp.keyH.enterPressed){
+                gp.userName = "";
+                gp.password = "";
+                showError = false;
+                commandNum = 0;
+
+            }
+        }
+
+
+
+        if(gp.keyH.enterPressed){
+            gp.keyH.enterPressed = false;
+        }
+
+
+
+    }
+
+    public void testScreen(){
+        int x = 50;
+        int y = 50;
+
+
+
+        if(gp.keyH.backSpace){
+
+            if(gp.userName.length() != 0){
+                gp.userName = gp.userName.substring(0,gp.userName.length() - 1);
+            }
+            gp.keyH.backSpace = false;
+
+        } else if(gp.getText) {
+
+                gp.userName += gp.nextLetter;
+                gp.getText = false;
+
+        }
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(32f));
+
+        g2.drawString("User Name", x, y);
+
+        g2.drawString(gp.userName, x + 130, y);
+
+
+    }
+
+    public void characterSector(){
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 34F));
+        String text = "Character Selector";
+        int x = getXforCenteredText(text);
+        int y = gp.tileSize * 1;
+
+        // Shadow
+        g2.setColor(Color.GRAY);
+        g2.drawString(text, x + 5, y + 5);
+
+        // Main Color
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Strength: ";
+        x = 100;
+        y = gp.tileSize * 3;
+
+        // Main Color
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempStrength), x + 90, y);
+
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Dexterity: ";
+        x = 97;
+        y += 50;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempDexterity), x +95, y);
+
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Life: ";
+        x = 146;
+        y += 50;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempLife), x + 49, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Mana: ";
+        x = 131;
+        y += 50;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempMana), x + 65, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Coins: ";
+        x = 131;
+        y += 50;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempCoin), x + 67, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Weapon: ";
+        x = 110;
+        y += 50;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempCurrentWeapon), x + 88, y);
+
+
+
+        g2.setColor(Color.RED);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Kills: ";
+        x = 747;
+        y = gp.tileSize * 3;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempKills), x + 50, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Deaths: ";
+        x = 725;
+        y += 50;
+        g2.setColor(Color.GRAY);
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempDeaths), x + 73, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Level: ";
+        x = 740;
+        y += 50;
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempLevel), x + 59, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Next Level: ";
+        x = 693;
+        y += 50;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempNextLevelExp), x + 105, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Projectile: ";
+        x = 701;
+        y += 50;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempCurrentProjectile), x + 97, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Shield: ";
+        x = 727;
+        y += 50;
+
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempCurrentShield), x + 69, y);
+
+
+        // display current character
+        count++;
+        if(count > 10) {
+            image++;
+            if (image == 3) {
+                image = 0;
+                actionDone = true;
+            }
+            count = 0;
+        }
+
+        if(actionDone) {
+            getAction = gp.ut.rnd.nextInt(100) + 1;
+            getActionNumber = gp.ut.rnd.nextInt(16) + 1;
+            image = 0;
+            actionDone = false;
+        }
+
+
+        if(getAction < 85){
+            tempPlaler = gp.player.down[image];
+        } else {
+            switch (getActionNumber){
+                case 1 -> tempPlaler = gp.player.down[image];
+                case 2 -> tempPlaler = gp.player.up[image];
+                case 3 -> tempPlaler = gp.player.left[image];
+                case 4 -> tempPlaler = gp.player.right[image];
+                case 5 -> tempPlaler = gp.player.sword_Down[image];
+                case 6 -> tempPlaler = gp.player.sword_Up[image];
+                case 7 -> tempPlaler = gp.player.sword_Left[image];
+                case 8 -> tempPlaler = gp.player.sword_Right[image];
+                case 9 -> tempPlaler = gp.player.pickaxe_Down[image];
+                case 10 -> tempPlaler = gp.player.pickaxe_Up[image];
+                case 11 -> tempPlaler = gp.player.pickaxe_Left[image];
+                case 12 -> tempPlaler = gp.player.pickaxe_Right[image];
+                case 13 -> tempPlaler = gp.player.axe_Down[image];
+                case 14 -> tempPlaler = gp.player.axe_Up[image];
+                case 15 -> tempPlaler = gp.player.axe_Left[image];
+                case 16 -> tempPlaler = gp.player.axe_Right[image];
+            }
+
+        }
+
+        g2.drawImage(tempPlaler, 400, 200, gp.tileSize * 3, gp.tileSize * 3, null);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        text = "Name: ";
+        x = 430;
+        y = 360;
+        g2.setColor(Color.MAGENTA);
+        g2.drawString(text, x, y);
+        g2.drawString(String.valueOf(gp.player.tempCurrentShield), x + 69, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 38F));
+        text = "Select Character";
+        x = 400;
+        y = 460;
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+        if (commandNum == 0) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+
+        text = "Next Character";
+        x = 400;
+        y += 50;
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+        if (commandNum == 1) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+
+
     }
 
     public void drawSubWindow(int x, int y, int width, int height) {
@@ -1276,5 +1712,25 @@ public class UI {
     public int getXforAlignToRight(String text, int tailX) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return tailX - length;
+    }
+
+    public String getText(String text){
+
+        if(gp.keyH.backSpace){
+
+            if(text.length() != 0){
+                text =  text.substring(0,text.length() - 1);
+            }
+            gp.keyH.backSpace = false;
+
+        } else if(gp.getText) {
+
+            text += gp.nextLetter;
+            gp.getText = false;
+
+        }
+
+        return text;
+
     }
 }

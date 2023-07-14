@@ -1,5 +1,6 @@
 package org.tilemanger.tables;
 
+import com.google.gson.Gson;
 import org.tilemanger.Reference;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
@@ -109,6 +110,20 @@ public class TileSheetData implements Serializable{
         return tileSheetDataList;
     }
 
+    // Get All Tile Sheet Data For a Given Graphic Package
+    public static ArrayList<TileSheetData> getTileSheetsForGP(ArrayList<Integer> gpTileSheetDataIds){
+
+        readDataFromDisk();
+
+        ArrayList<TileSheetData> newList = new ArrayList<>();
+
+        for (Integer gpTileSheetDataId : gpTileSheetDataIds) {
+            newList.add(tileSheetDataList.get(gpTileSheetDataId));
+        }
+
+         return newList;
+    }
+
     public static DefaultTableModel getTableModel(){
 
         return new DefaultTableModel(makeTableRows(), COL_HEADERS){
@@ -151,13 +166,19 @@ public class TileSheetData implements Serializable{
     }
 
     // Write data to disk
-    private static void writeDataToDisk(){
+    public static void writeDataToDisk(){
+
+        readDataFromDisk();
+
+        Gson gson = new Gson();
+
+        String tileSheetDataListJson = gson.toJson(tileSheetDataList);
 
         try{
-            FileOutputStream writeData = new FileOutputStream(saveFilePath);
+            FileOutputStream writeData = new FileOutputStream("./resources/data_files/tile_sheet_data.txt");
             ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
 
-            writeStream.writeObject(tileSheetDataList);
+            writeStream.writeObject(tileSheetDataListJson);
             writeStream.writeObject(nextTileSheetID);
             writeStream.writeObject(nextTileDataID);
             writeStream.flush();
@@ -167,6 +188,7 @@ public class TileSheetData implements Serializable{
             e.printStackTrace();
         }
 
+        System.exit(0);
     }
 
     // Make the table row data
