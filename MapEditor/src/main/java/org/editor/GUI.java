@@ -716,9 +716,10 @@ public class GUI {
 
     private void createLabel() {
         this.label.add(new JLabel());
-        ((JLabel) this.label.get(0)).setForeground(Color.white);
-        ((JLabel) this.label.get(0)).setFont(this.font1.deriveFont(26.0F));
-        ((JLabel) this.label.get(0)).setText("Selected:");
+        this.label.get(0).setForeground(Color.white);
+        this.label.get(0).setFont(this.font1.deriveFont(26.0F));
+        this.label.get(0).setText("Selected:");
+
         this.window.add(this.label.get(0));
 
         this.label.add(new JLabel());

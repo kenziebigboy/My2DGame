@@ -489,6 +489,7 @@ public class Main {
 
             int tileNum = this.mapTileNum[col][row];
 
+
             if (this.tiles.size() != 0 && tileNum >= 0) {
                 g2.drawImage(((Tile) this.tiles.get(tileNum)).image, x, y, blockSize, blockSize, null);
             }

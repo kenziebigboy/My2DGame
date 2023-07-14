@@ -865,7 +865,7 @@ public class Player extends Entity {
                 } else {
                     if(!attacking){
                         image = left[spriteNum];
-                        System.out.println(spriteNum);
+
                     } else {
                         switch (currentWeapon.type){
                             case TYPE_SWORD -> image = sword_Left[spriteNum];

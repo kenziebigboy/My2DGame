@@ -22,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable{
     // screen settings
     final int originalTileSize = 16; // 16x16 tile
     final int  scale = 3;
+    public JPanel test = new JPanel();
 
     public final int tileSize = originalTileSize * scale; // 48 x 48 tile
     public final int maxScreenCol = 20;
@@ -94,10 +95,20 @@ public class GamePanel extends JPanel implements Runnable{
     public final int SLEEP_STATE = 9;
     public final int MAP_STATE = 10;
     public final int CUT_SCENE_STATE = 11;
-    public final int LOG_IN = 12;
+    public final int LOG_IN_STATE = 12;
+    public final int CHARACTER_SELECTOR_STATE = 13;
+    public final int CHARACTER_STATS_STATE = 14;
+    public final int QUESTION_STATE = 15;
+    public final int TEST_STATE = 16;
 
     // Others
     public  boolean bossBattleOn = false;
+    public char nextLetter;
+    public String userName = "";
+    public String password = "";
+    public String userID = "";
+    public ArrayList<Integer> characterIDs = new ArrayList<>();
+    public boolean getText = false;
 
     // Area
     public int currentArea;
@@ -113,6 +124,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+
+
+
+
 
     }
 
@@ -405,8 +420,12 @@ public class GamePanel extends JPanel implements Runnable{
         if(gameState == TITLE_STATE) {
 
             ui.draw(g2);
-        } else if (gameState == MAP_STATE){
+        } else if (gameState == MAP_STATE) {
             map.drawFullMapScreen(g2);
+        }else if (gameState == LOG_IN_STATE){
+            ui.draw(g2);
+        } else if(gameState == CHARACTER_SELECTOR_STATE) {
+            ui.draw(g2);
         } else { // Others
 
             // Tile

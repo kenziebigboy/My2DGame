@@ -1,6 +1,9 @@
 package org.tilemanger.tables;
 
+
+import com.google.gson.Gson;
 import org.tilemanger.Reference;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
@@ -54,6 +57,23 @@ public class GraphicsPackages implements Serializable{
         return name;
     }
 
+    // Get the Package ID
+    public int getPackageID(){
+        return packageID;
+    }
+
+    // Get TileSheetData ArrayList
+    public static ArrayList<Integer> getTileSheetDataArrayList(int packageID){
+        readDataFromDisk();
+
+        int index = findElementIndex(packageID);
+
+        if(index == -1){
+            return null;
+        }
+
+        return graphicsPackagesList.get(index).tileSheetIDList;
+    }
     // Get the Package
     public static GraphicsPackages getPackage(int id){
 
@@ -205,6 +225,36 @@ public class GraphicsPackages implements Serializable{
 
     }
 
+    public static void writeDataAsJson(){
+
+        readDataFromDisk();
+
+        Gson gson = new Gson();
+
+        String graphicsPackageListJson = gson.toJson(graphicsPackagesList);
+
+
+
+        try{
+            FileOutputStream writeData = new FileOutputStream("./resources/data_files/graphics_packages.txt");
+            ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
+
+
+            writeStream.writeObject(graphicsPackageListJson);
+            writeStream.writeObject(nextGraphicsPackageID);
+            writeStream.flush();
+            writeStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("Done");
+        System.exit(0);
+
+    }
+
     // Make the table row data
     private static Object[][] makeTableRows(){
 
@@ -254,7 +304,7 @@ public class GraphicsPackages implements Serializable{
     private static int findElementIndex(int id){
 
         for(int i = 0; i < graphicsPackagesList.size(); i++){
-            System.out.println(graphicsPackagesList.get(i).packageID);
+
             if(graphicsPackagesList.get(i).packageID == id){
                 return i;
             }

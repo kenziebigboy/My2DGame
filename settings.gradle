@@ -2,4 +2,5 @@ rootProject.name = 'My2DGame'
 include 'Tile_Data_Manger'
 include 'Tile_Data_Manage'
 include 'MapEditor'
+include 'MapMaker'
 

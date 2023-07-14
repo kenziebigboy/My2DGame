@@ -139,6 +139,26 @@ public class Entity {
     public Projectile projectile;
     public boolean boss;
 
+    public String currentCharacterID;
+
+    public String tempName;
+    public int tempLife;
+    public int tempMaxMana;
+    public int tempMana;
+    public int tempLevel;
+    public int tempStrength;
+    public int tempDexterity;
+    public int tempKills;
+    public int tempDeaths;
+    public int tempExp;
+    public int tempNextLevelExp;
+    public int tempCoin;
+    public Entity tempCurrentWeapon;
+    public Entity tempCurrentShield;
+    public Entity tempCurrentProjectile;
+
+
+
     // Item Attributes
     public ArrayList<Entity> inventory = new ArrayList<>();
     public final int maxInventorySize = 20;
