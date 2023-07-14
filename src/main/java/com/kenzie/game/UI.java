@@ -1348,11 +1348,7 @@ public class UI {
                         System.out.println(results);
                         // get user data from results
 
-
-
-
                         gp.gameState = gp.CHARACTER_SELECTOR_STATE;
-
 
                         // get current character
                         if(gp.player.currentCharacterID != 0){
@@ -1360,6 +1356,7 @@ public class UI {
                             URLString = "http://localhost:5001/character/" + gp.player.currentCharacterID;
                             results = myHttpClient.makeGETRequest(URLString);
                             jsonElement = JsonParser.parseString(results);
+                            jsonObject = jsonElement.getAsJsonObject();
 
                             // get current and temp values character data
                             gp.player.life = Integer.parseInt(String.valueOf(jsonObject.get("life").getAsInt()));
@@ -1372,15 +1369,22 @@ public class UI {
 
                             switch (String.valueOf(jsonObject.get("characterName"))){
                                 case "Normal Sword" -> setMe = new OBJ_Sword_Normal(gp);
+                                case "Pickaxe" -> setMe = new OBJ_Pickaxe(gp);
+                                case "Woodcutter's Axe" -> setMe = new OBJ_Axe(gp);
                             }
 
-                            gp.player.currentWeapon = null;
+                            gp.player.currentWeapon = setMe;
 
 
-                            gp.player.currentShield = null;
+                            gp.player.currentShield = new OBJ_Shield_Wood(gp);
+
+                            switch (Integer.parseInt(String.valueOf(jsonObject.get("currentProjectile").getAsInt()))){
+                                case 1 -> setMe = new OBJ_Fireball(gp);
+                                case 2 -> setMe = new OBJ_Rock(gp);
+                            }
 
 
-                            gp.player.projectile = null;
+                            //gp.player.projectile = setMe;
 
 
                             gp.player.level = Integer.parseInt(String.valueOf(jsonObject.get("level").getAsInt()));
@@ -1666,6 +1670,35 @@ public class UI {
         g2.drawString(text, x, y);
         if (commandNum == 0) {
             g2.drawString(">", x - gp.tileSize, y);
+
+            if(gp.keyH.enterPressed){
+                // update user with new current character id
+                MyHttpClient myHttpClient = new MyHttpClient();
+                String URLString = "http://localhost:5001/user/" + gp.userName.toLowerCase();
+                String requestBody = "{" + "userName" + ":" + gp.userName + ",";
+               /* re
+
+
+
+                        "memberId": "133e4214-c7a5-4235-8e55-4a781e026224",
+                        "email":"mcbigboy@gmail.com",
+                        "firstName":"Michael",
+                        "lastName":"Collier",
+                        "password":"password",
+                        "dateOfBirth":"02/04/1964",
+                        "characterListId":null,
+                        "isActive":true,
+                        "currentCharacter":"0"}"
+
+                String results = myHttpClient.makePUTRequest(URLString, requestBody);*/
+
+                // Make new character
+                // update curren charcter data
+
+                gp.gameState = gp.PLAY_STATE;
+
+            }
+
         }
 
         text = "Next Character";
@@ -1675,6 +1708,9 @@ public class UI {
         g2.drawString(text, x, y);
         if (commandNum == 1) {
             g2.drawString(">", x - gp.tileSize, y);
+            if(gp.keyH.enterPressed){
+                makeRandomCharacter();
+            }
         }
 
 
