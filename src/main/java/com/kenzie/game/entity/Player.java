@@ -2,10 +2,15 @@ package com.kenzie.game.entity;
 
 import com.kenzie.game.GamePanel;
 import com.kenzie.game.KeyHandler;
+import com.kenzie.game.UtilityTool;
 import com.kenzie.game.object.*;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 
 public class Player extends Entity {
 
@@ -18,6 +23,7 @@ public class Player extends Entity {
     public boolean attackCanceled = false;
     public boolean lightUpdated = false;
 
+
     //public int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -27,8 +33,11 @@ public class Player extends Entity {
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
-
-        solidArea = new Rectangle(8, 16, 32, 32);
+        if(blueBoy) {
+            solidArea = new Rectangle(8, 16, 32, 32);
+        } else {
+            solidArea = new Rectangle(24, 16, 32, 32);
+        }
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -72,9 +81,16 @@ public class Player extends Entity {
         attack = getAttack(); // The total attack value is decided by strength and weapon
         defense = getDefense(); // The total defense value is decided by dexterity and shield
 
-        getImage();
-        getAttackImage();
-        getGuardImage();
+        if(blueBoy) {
+            getImage();
+            getAttackImage();
+            getGuardImage();
+        } else {
+            UtilityTool uTools = new UtilityTool();
+            getCharacterImages(uTools.rnd.nextInt(30) + 1);
+        }
+
+
         setItems();
         setDialogue();
 
@@ -82,7 +98,7 @@ public class Player extends Entity {
 
     public void setDefaultPositions(){
 
-        gp.currentMap = 3;
+        gp.currentMap = 0;
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         direction = "down";
@@ -155,6 +171,127 @@ public class Player extends Entity {
             }
         }
         return currentShieldSlot;
+    }
+
+    public void getCharacterImages(int characterID){
+
+        BufferedImage image = null;
+
+        String name = "!Character";
+        if(characterID < 10){
+            name += "0" + characterID;
+        } else {
+            name += characterID;
+        }
+
+        name += ".png";
+
+        try {
+
+            image = ImageIO.read(new File("./resources/characters/" + name));
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        // initalizing rows and columns
+        int rows = 8;
+        int columns = 12;
+
+        BufferedImage imgs[] = new BufferedImage[96];
+
+        // Equally dividing original image into subimages
+        int subimage_Width = image.getWidth() / columns;
+        int subimage_Height = image.getHeight() / rows;
+
+        int current_img = 0;
+        UtilityTool uTool = new UtilityTool();
+
+        // iterating over rows and columns for each sub-image
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                // Creating sub image
+                imgs[current_img] = new BufferedImage(subimage_Width, subimage_Height, image.getType());
+                Graphics2D img_creator = imgs[current_img].createGraphics();
+
+                // coordinates of source image
+                int src_first_x = subimage_Width * j;
+                int src_first_y = subimage_Height * i;
+
+                // coordinates of sub-image
+                int dst_corner_x = subimage_Width * j + subimage_Width;
+                int dst_corner_y = subimage_Height * i + subimage_Height;
+
+                img_creator.drawImage(image, 0, 0, subimage_Width, subimage_Height, src_first_x, src_first_y, dst_corner_x, dst_corner_y, null);
+
+                current_img++;
+            }
+        }
+
+        for(int i = 0; i < imgs.length; i++){
+            imgs[i] = uTool.scaleImage(imgs[i], gp.tileSize * 2, gp.tileSize * 2);
+        }
+
+        down[0] = imgs[0];
+        down[1] = imgs[1];
+        down[2] = imgs[2];
+        left[0] = imgs[12];
+        left[1] = imgs[13];
+        left[2] = imgs[14];
+        right[0] = imgs[24];
+        right[1] = imgs[25];
+        right[2] = imgs[26];
+        up[0] = imgs[36];
+        up[1] = imgs[37];
+        up[2] = imgs[38];
+
+        sword_Down[0] = imgs[3];
+        sword_Down[1] = imgs[4];
+        sword_Down[2] = imgs[5];
+        sword_Left[0] = imgs[15];
+        sword_Left[1] = imgs[16];
+        sword_Left[2] = imgs[17];
+        sword_Right[0] = imgs[27];
+        sword_Right[1] = imgs[28];
+        sword_Right[2] = imgs[29];
+        sword_Up[0] = imgs[39];
+        sword_Up[1] = imgs[40];
+        sword_Up[2] = imgs[41];
+
+        axe_Down[0] = imgs[6];
+        axe_Down[1] = imgs[7];
+        axe_Down[2] = imgs[8];
+        axe_Left[0] = imgs[18];
+        axe_Left[1] = imgs[19];
+        axe_Left[2] = imgs[20];
+        axe_Right[0] = imgs[30];
+        axe_Right[1] = imgs[31];
+        axe_Right[2] = imgs[32];
+        axe_Up[0] = imgs[42];
+        axe_Up[1] = imgs[43];
+        axe_Up[2] = imgs[44];
+
+        pickaxe_Down[0] = imgs[9];
+        pickaxe_Down[1] = imgs[10];
+        pickaxe_Down[2] = imgs[11];
+        pickaxe_Left[0] = imgs[21];
+        pickaxe_Left[1] = imgs[22];
+        pickaxe_Left[2] = imgs[23];
+        pickaxe_Right[0] = imgs[33];
+        pickaxe_Right[1] = imgs[34];
+        pickaxe_Right[2] = imgs[35];
+        pickaxe_Up[0] = imgs[45];
+        pickaxe_Up[1] = imgs[46];
+        pickaxe_Up[2] = imgs[47];
+
+        up1 = up[0];
+        down1 = down[0];
+        left1 = left[0];
+        right1 = right[0];
+
+        System.out.println(left[0].getWidth());
     }
 
     public void getImage() {
@@ -339,18 +476,34 @@ public class Player extends Entity {
             guardCounter = 0;
 
             spriteCounter++;
-            if (spriteCounter > 12) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
-                    spriteNum = 1;
+            if(blueBoy) {
+                if (spriteCounter > 12) {
+                    if (spriteNum == 1) {
+                        spriteNum = 2;
+                    } else if (spriteNum == 2) {
+                        spriteNum = 1;
+                    }
+                    spriteCounter = 0;
                 }
-                spriteCounter = 0;
+            } else {
+                if(spriteCounter > 10){
+                    spriteNum++;
+
+                    if(spriteNum == 3){
+                        spriteNum = 0;
+                    }
+
+                    spriteCounter = 0;
+                }
             }
         } else {
             standCounter++;
             if(standCounter == 20){
-                spriteNum = 1;
+                if(blueBoy) {
+                    spriteNum = 1;
+                } else {
+                    spriteNum = 0;
+                }
                 standCounter = 0;
             }
             guarding = false;
@@ -647,53 +800,102 @@ public class Player extends Entity {
     public void draw(Graphics2D g2) {
       /*  g2.setColor(Color.WHITE);
         g2.fillRect(x,y,gp.tileSize, gp.tileSize);*/
-
+        System.out.println("Yes Here");
         BufferedImage image = null;
         int tempScreenX = screenX;
         int tempScreenY = screenY;
 
         switch (direction) {
             case "up" -> {
-                if(!attacking) {
-                    if (spriteNum == 1) {image = up1;}
-                    if (spriteNum == 2) {image = up2;}
+                if(blueBoy) {
+                    if (!attacking) {
+                        if (spriteNum == 1) {image = up1;}
+                        if (spriteNum == 2) {image = up2;}
+                    } else {
+                        tempScreenY = screenY - gp.tileSize;
+                        if (spriteNum == 1) {image = attackUp1;}
+                        if (spriteNum == 2) {image = attackUp2;}
+                    }
+                    if (guarding) {image = guardUp;}
                 } else {
-                    tempScreenY = screenY  - gp.tileSize;
-                    if (spriteNum == 1) {image = attackUp1;}
-                    if (spriteNum == 2) {image = attackUp2;}
+                    if(!attacking){
+                        image = up[spriteNum];
+                    } else {
+                        switch (currentWeapon.type){
+                            case TYPE_SWORD -> image = sword_Up[spriteNum];
+                            case TYPE_AXE -> image = axe_Up[spriteNum];
+                            case TYPE_PICKAXE -> image = pickaxe_Up[spriteNum];
+                        }
+                    }
                 }
-                if(guarding){ image = guardUp;}
             }
             case "down" -> {
-                if (!attacking) {
-                    if (spriteNum == 1) {image = down1;}
-                    if (spriteNum == 2) {image = down2;}
+                if(blueBoy) {
+                    if (!attacking) {
+                        if (spriteNum == 1) {image = down1;}
+                        if (spriteNum == 2) {image = down2;}
+                    } else {
+                        if (spriteNum == 1) {image = attackDown1;}
+                        if (spriteNum == 2) {image = attackDown2;}
+                    }
+                    if (guarding) {image = guardDown;}
                 } else {
-                    if (spriteNum == 1) {image = attackDown1;}
-                    if (spriteNum == 2) {image = attackDown2;}
+                    if(!attacking){
+                        image = down[spriteNum];
+                    } else {
+                        switch (currentWeapon.type){
+                            case TYPE_SWORD -> image = sword_Down[spriteNum];
+                            case TYPE_AXE -> image = axe_Down[spriteNum];
+                            case TYPE_PICKAXE -> image = pickaxe_Down[spriteNum];
+                        }
+                    }
                 }
-                if(guarding){ image = guardDown;}
             }
             case "left" -> {
-                if(!attacking) {
-                    if (spriteNum == 1) {image = left1;}
-                    if (spriteNum == 2) {image = left2;}
+                if(blueBoy) {
+                    if (!attacking) {
+                        if (spriteNum == 1) {image = left1;}
+                        if (spriteNum == 2) {image = left2;}
+                    } else {
+                        tempScreenX = screenX - gp.tileSize;
+                        if (spriteNum == 1) {image = attackLeft1;}
+                        if (spriteNum == 2) {image = attackLeft2;}
+                    }
+                    if (guarding) {image = guardLeft;}
                 } else {
-                    tempScreenX = screenX - gp.tileSize;
-                    if (spriteNum == 1) {image = attackLeft1;}
-                    if (spriteNum == 2) {image = attackLeft2;}
+                    if(!attacking){
+                        image = left[spriteNum];
+
+                    } else {
+                        switch (currentWeapon.type){
+                            case TYPE_SWORD -> image = sword_Left[spriteNum];
+                            case TYPE_AXE -> image = axe_Left[spriteNum];
+                            case TYPE_PICKAXE -> image = pickaxe_Left[spriteNum];
+                        }
+                    }
                 }
-                if(guarding){ image = guardLeft;}
             }
             case "right" -> {
-                if(!attacking) {
-                    if (spriteNum == 1) {image = right1;}
-                    if (spriteNum == 2) {image = right2;}
+                if(blueBoy) {
+                    if (!attacking) {
+                        if (spriteNum == 1) {image = right1;}
+                        if (spriteNum == 2) {image = right2;}
+                    } else {
+                        if (spriteNum == 1) {image = attackRight1;}
+                        if (spriteNum == 2) {image = attackRight2;}
+                    }
+                    if (guarding) {image = guardRight;}
                 } else {
-                    if (spriteNum == 1) {image = attackRight1;}
-                    if (spriteNum == 2) {image = attackRight2;}
+                    if(!attacking){
+                        image = right[spriteNum];
+                    } else {
+                        switch (currentWeapon.type){
+                            case TYPE_SWORD -> image = sword_Right[spriteNum];
+                            case TYPE_AXE -> image = axe_Right[spriteNum];
+                            case TYPE_PICKAXE -> image = pickaxe_Right[spriteNum];
+                        }
+                    }
                 }
-                if(guarding){ image = guardRight;}
             }
         }
 
@@ -707,6 +909,7 @@ public class Player extends Entity {
 
         // Reset alpha
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
 
         // Debug
   /*      g2.setFont(new Font("Arial", Font.PLAIN, 26));

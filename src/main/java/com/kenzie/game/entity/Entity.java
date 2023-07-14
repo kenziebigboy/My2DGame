@@ -19,6 +19,37 @@ public class Entity {
             attackLeft1, attackLeft2, attackRight1, attackRight2,
             guardUp, guardDown, guardLeft, guardRight;
     public BufferedImage image, image2, image3;
+
+    public BufferedImage[] up = new BufferedImage[3];
+    public BufferedImage[] down = new BufferedImage[3];
+    public BufferedImage[] left = new BufferedImage[3];
+    public BufferedImage[] right = new BufferedImage[3];
+
+    public BufferedImage[] sword_Up = new BufferedImage[3];
+    public BufferedImage[] sword_Down = new BufferedImage[3];
+    public BufferedImage[] sword_Left = new BufferedImage[3];
+    public BufferedImage[] sword_Right = new BufferedImage[3];
+
+    public BufferedImage[] axe_Up = new BufferedImage[3];
+    public BufferedImage[] axe_Down = new BufferedImage[3];
+    public BufferedImage[] axe_Left = new BufferedImage[3];
+    public BufferedImage[] axe_Right = new BufferedImage[3];
+
+    public BufferedImage[] pickaxe_Up = new BufferedImage[3];
+    public BufferedImage[] pickaxe_Down = new BufferedImage[3];
+    public BufferedImage[] pickaxe_Left = new BufferedImage[3];
+    public BufferedImage[] pickaxe_Right = new BufferedImage[3];
+
+    public BufferedImage[] watercan_Up = new BufferedImage[3];
+    public BufferedImage[] watercan_Down = new BufferedImage[3];
+    public BufferedImage[] watercan_Left = new BufferedImage[3];
+    public BufferedImage[] watercan_Right = new BufferedImage[3];
+
+    public BufferedImage[] hoe_Up = new BufferedImage[3];
+    public BufferedImage[] hoe_Down = new BufferedImage[3];
+    public BufferedImage[] hoe_Left = new BufferedImage[3];
+    public BufferedImage[] hoe_Right = new BufferedImage[3];
+
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public Rectangle attackArea = new Rectangle(0,0,0,0);
     public  int solidAreaDefaultX, solidAreaDefaultY;
@@ -26,6 +57,7 @@ public class Entity {
     public Entity attacker;
     public Entity linkedEntity;
     public boolean temp = false;
+    public boolean blueBoy = false;
 
     // State
     public int worldX, worldY;
@@ -107,6 +139,27 @@ public class Entity {
     public Projectile projectile;
     public boolean boss;
 
+    public int currentCharacterID;
+
+    public int tempCharacterID;
+    public String tempName;
+    public int tempLife;
+    public int tempMaxMana;
+    public int tempMana;
+    public int tempLevel;
+    public int tempStrength;
+    public int tempDexterity;
+    public int tempKills;
+    public int tempDeaths;
+    public int tempExp;
+    public int tempNextLevelExp;
+    public int tempCoin;
+    public Entity tempCurrentWeapon;
+    public Entity tempCurrentShield;
+    public Entity tempCurrentProjectile;
+
+
+
     // Item Attributes
     public ArrayList<Entity> inventory = new ArrayList<>();
     public final int maxInventorySize = 20;
@@ -149,11 +202,12 @@ public class Entity {
     public int getRow(){ return (worldY + solidArea.y) / gp.tileSize; }
 
     public int getCenterX(){
-        return worldX + left1.getWidth();
+            return worldX + left1.getWidth();
     }
 
     public int getCenterY(){
         return worldY + up1.getHeight();
+
     }
 
     public int getXDistance(Entity target) {
@@ -516,6 +570,15 @@ public class Entity {
         spriteCounter++;
 
         if(spriteCounter <= motion1_duration){
+
+            if(blueBoy) {
+                spriteNum = 1;
+            } else {
+                spriteNum = 0;
+            }
+        }
+
+        if(!blueBoy && spriteCounter > motion1_duration && spriteCounter <= motion2_duration / 2 ){
             spriteNum = 1;
         }
 

@@ -1,8 +1,10 @@
 package org.tilemanger.tables;
 
+
+import com.google.gson.Gson;
 import org.tilemanger.Reference;
 
-
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.util.ArrayList;
@@ -18,7 +20,8 @@ public class GraphicsPackages implements Serializable{
     private static final String[] COL_HEADERS = {"ID", "Name"};
     private static int nextGraphicsPackageID = 0;
 
-    static String path = Reference.FILEPATH + "/" + Reference.GRAPHICS_PACKAGE_FILE_NAME;
+    static String path = Reference.GRAPHICS_PACKAGE_FILE_NAME;
+
     @Serial
     private static final long serialVersionUID = 6529685098267757690L;
 
@@ -26,14 +29,10 @@ public class GraphicsPackages implements Serializable{
 
         readDataFromDisk();
 
-
         this.packageID = nextGraphicsPackageID;
         this.name = name;
-
         nextGraphicsPackageID++;
-
         graphicsPackagesList.add(this);
-
         writeDataToDisk();
 
     }
@@ -43,11 +42,38 @@ public class GraphicsPackages implements Serializable{
         return nextGraphicsPackageID -1;
     }
 
+    // Reset TileSheetData = null
+    public static void resetTileSheetData(int packageID){
+        readDataFromDisk();
+
+        graphicsPackagesList.get(packageID).tileSheetIDList = null;
+
+        writeDataToDisk();
+
+    }
+
     // Get the Package Name
     public String getName(){
         return name;
     }
 
+    // Get the Package ID
+    public int getPackageID(){
+        return packageID;
+    }
+
+    // Get TileSheetData ArrayList
+    public static ArrayList<Integer> getTileSheetDataArrayList(int packageID){
+        readDataFromDisk();
+
+        int index = findElementIndex(packageID);
+
+        if(index == -1){
+            return null;
+        }
+
+        return graphicsPackagesList.get(index).tileSheetIDList;
+    }
     // Get the Package
     public static GraphicsPackages getPackage(int id){
 
@@ -81,12 +107,17 @@ public class GraphicsPackages implements Serializable{
     }
 
     // Add TileSheet Data
-    public static boolean  addTileSheetData(int id, String fileName){
+    public static boolean  addTileSheetData(int id, int tileSheetDataID){
 
         readDataFromDisk();
 
         // Check to see if tile sheet is in list
+        if(!checkForTileSheetData(id, tileSheetDataID)){
+            graphicsPackagesList.get(id).tileSheetIDList.add(tileSheetDataID);
 
+            writeDataToDisk();
+            return true;
+        }
 
         return false;
     }
@@ -106,6 +137,7 @@ public class GraphicsPackages implements Serializable{
         return -1;
     }
 
+    // Get Table of all the Graphics Packages
     public static DefaultTableModel getTableModel(){
 
         return new DefaultTableModel(makeTableRows(), COL_HEADERS){
@@ -120,6 +152,31 @@ public class GraphicsPackages implements Serializable{
             }
         };
 
+    }
+
+    // Get Table of all the TileSheetData for a given Graphics Package
+    public static DefaultTableModel getTableModelforTileSheetData(int packageID) throws IOException {
+
+        return new DefaultTableModel(makeTableRowsForTileSheetData(packageID), COL_HEADERS){
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return Integer.class;
+                    case 1:
+                        return Icon.class;
+                    default:
+                        return String.class;
+                }
+            }
+        };
+
+    }
+
+    // Get all Graphics Packages
+    public static ArrayList<GraphicsPackages> getGraphicsPackagesList(){
+        readDataFromDisk();
+        return graphicsPackagesList;
     }
 
     // Read data from disk
@@ -168,13 +225,43 @@ public class GraphicsPackages implements Serializable{
 
     }
 
+    public static void writeDataAsJson(){
+
+        readDataFromDisk();
+
+        Gson gson = new Gson();
+
+        String graphicsPackageListJson = gson.toJson(graphicsPackagesList);
+
+
+
+        try{
+            FileOutputStream writeData = new FileOutputStream("./resources/data_files/graphics_packages.txt");
+            ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
+
+
+            writeStream.writeObject(graphicsPackageListJson);
+            writeStream.writeObject(nextGraphicsPackageID);
+            writeStream.flush();
+            writeStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("Done");
+        System.exit(0);
+
+    }
+
     // Make the table row data
     private static Object[][] makeTableRows(){
 
         graphicsPackagesList.clear();
 
         readDataFromDisk();
-        System.out.println(graphicsPackagesList.size());
+
         Object[][] rows = new Object[graphicsPackagesList.size()][COL_HEADERS.length];
 
         for(int i = 0; i < graphicsPackagesList.size(); i++){
@@ -187,11 +274,37 @@ public class GraphicsPackages implements Serializable{
         return rows;
     }
 
+    private static Object[][] makeTableRowsForTileSheetData(int packageID) {
+
+        graphicsPackagesList.clear();
+
+        readDataFromDisk();
+
+        GraphicsPackages graphicsPackage = graphicsPackagesList.get(packageID);
+
+        Object[][] rows = new Object[graphicsPackage.tileSheetIDList.size()][COL_HEADERS.length];
+
+        for(int i = 0; i < graphicsPackage.tileSheetIDList.size(); i++){
+
+            int index = graphicsPackage.tileSheetIDList.get(i);
+
+            TileSheetData tileSheetData = TileSheetData.getById(index);
+
+            File directory = new File("./resources/graphics_packages/" + tileSheetData.path + tileSheetData.tileSheetName );
+            System.out.println(directory.toString());
+            rows[i][0] = tileSheetData.tileSheet_ID;
+            rows[i][1] = new ImageIcon( directory.toString());
+//
+        }
+
+        return rows;
+    }
+
     // Find package by id
     private static int findElementIndex(int id){
 
         for(int i = 0; i < graphicsPackagesList.size(); i++){
-            System.out.println(graphicsPackagesList.get(i).packageID);
+
             if(graphicsPackagesList.get(i).packageID == id){
                 return i;
             }
@@ -207,4 +320,26 @@ public class GraphicsPackages implements Serializable{
 //
 //
 //    }
+
+    private static boolean checkForTileSheetData(int gpaphicsPackageID,  int tileSheetDataID){
+
+        for(int i = 0; i < graphicsPackagesList.get(gpaphicsPackageID).tileSheetIDList.size(); i++){
+            if(graphicsPackagesList.get(gpaphicsPackageID).tileSheetIDList.get(i) == tileSheetDataID){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "GraphicsPackages{" +
+                "packageID=" + packageID +
+                ", name='" + name + '\'' +
+                ", tileSheetIDList=" + tileSheetIDList +
+                "}\n";
+    }
+
+
 }

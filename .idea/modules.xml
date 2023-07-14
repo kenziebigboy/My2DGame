@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MapEditor/My2DGame.MapEditor.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MapEditor/My2DGame.MapEditor.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MapMaker/My2DGame.MapMaker.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MapMaker/My2DGame.MapMaker.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Tile_Data_Manage/My2DGame.Tile_Data_Manage.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Tile_Data_Manage/My2DGame.Tile_Data_Manage.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/My2DGame.main.iml" filepath="$PROJECT_DIR$/.idea/modules/My2DGame.main.iml" />
+    </modules>
+  </component>
+</project>
